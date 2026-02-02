@@ -309,12 +309,11 @@
     box-shadow: 0 0 60px hsl(0 0% 100% / 0.08);
   }
 
-  /* Background grid */
+  /* Background grid - dot matrix pattern */
   .bg-grid {
-    background-image: 
-      linear-gradient(hsl(var(--border) / 0.3) 1px, transparent 1px),
-      linear-gradient(90deg, hsl(var(--border) / 0.3) 1px, transparent 1px);
-    background-size: 64px 64px;
+    background-image: radial-gradient(circle, hsl(0 0% 100% / 0.06) 1px, transparent 1px);
+    background-size: 32px 32px;
+    background-position: 0 0, 16px 16px;
   }
 
   /* Background dots */

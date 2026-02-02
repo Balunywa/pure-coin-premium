@@ -45,7 +45,7 @@ export const CapabilitiesSection = () => {
   return (
     <section className="py-32 md:py-48 relative overflow-hidden">
       {/* Subtle grid background */}
-      <div className="absolute inset-0 bg-grid opacity-[0.02]" />
+      <div className="absolute inset-0 bg-grid opacity-100" />
 
       <div className="section-container relative z-10">
         <FadeIn className="text-center mb-20">

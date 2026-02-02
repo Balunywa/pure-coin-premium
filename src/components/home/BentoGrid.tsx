@@ -44,7 +44,7 @@ const features = [
 export const BentoGrid = () => {
   return (
     <section className="py-32 md:py-48 relative overflow-hidden">
-      <div className="absolute inset-0 bg-grid opacity-[0.015]" />
+      <div className="absolute inset-0 bg-grid opacity-100" />
 
       <div className="section-container relative z-10">
         <FadeIn className="text-center mb-20">

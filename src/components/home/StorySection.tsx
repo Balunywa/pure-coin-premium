@@ -41,13 +41,13 @@ export const StorySection = () => {
       ref={sectionRef}
       className="py-32 md:py-48 relative overflow-hidden"
     >
-      {/* Moving linework background */}
+      {/* Dot matrix background */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute inset-0 bg-grid opacity-20" />
+        <div className="absolute inset-0 bg-grid opacity-100" />
         <div
-          className="absolute -top-40 left-1/2 -translate-x-1/2 w-[900px] h-[900px] rounded-full max-w-full"
+          className="absolute inset-0"
           style={{
-            background: 'radial-gradient(circle, hsl(0 0% 100% / 0.04) 0%, transparent 70%)',
+            background: 'radial-gradient(ellipse 60% 40% at 50% 50%, hsl(0 0% 100% / 0.02) 0%, transparent 70%)',
           }}
         />
       </div>
