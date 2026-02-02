@@ -9,7 +9,7 @@ export const Footer = () => {
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           {/* Logo */}
           <Link to="/" className="text-lg font-semibold tracking-tight text-foreground">
-            Pure Coin
+            Pure Coin Innovations
           </Link>
 
           {/* Links */}
@@ -36,7 +36,7 @@ export const Footer = () => {
 
           {/* Copyright */}
           <p className="text-sm text-muted-foreground">
-            © {currentYear} Pure Coin
+            © {currentYear} Pure Coin Innovations
           </p>
         </div>
       </div>
