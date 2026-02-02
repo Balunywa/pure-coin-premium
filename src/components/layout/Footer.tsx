@@ -1,58 +1,97 @@
 import { Link } from 'react-router-dom';
 
-const footerLinks = [
-  { name: 'Privacy', path: '/legal' },
-  { name: 'Terms', path: '/legal' },
-  { name: 'Contact', path: '/contact' },
-];
+const footerLinks = {
+  product: [
+    { name: 'CrewvoPay', path: '/crewvopay' },
+    { name: 'Features', path: '/crewvopay' },
+    { name: 'Pricing', path: '/crewvopay' },
+  ],
+  company: [
+    { name: 'About', path: '/company' },
+    { name: 'Careers', path: '/company' },
+    { name: 'Contact', path: '/contact' },
+  ],
+  legal: [
+    { name: 'Privacy', path: '/legal' },
+    { name: 'Terms', path: '/legal' },
+    { name: 'Support', path: '/contact' },
+  ],
+};
 
 export const Footer = () => {
   return (
-    <footer className="border-t border-border/50">
-      <div className="section-container py-12 md:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-          {/* Company Info */}
-          <div className="space-y-4">
-            <Link
-              to="/"
-              className="text-lg font-semibold tracking-tight hover:opacity-80 transition-opacity"
-            >
+    <footer className="border-t border-border bg-muted/30">
+      <div className="section-container py-16 md:py-20">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
+          {/* Brand */}
+          <div className="col-span-2 md:col-span-1">
+            <Link to="/" className="text-xl font-bold tracking-tight">
               Pure Coin
             </Link>
-            <div className="space-y-2 text-sm text-muted-foreground">
-              <p>Pure Coin Innovations Ltd.</p>
-              <p>Kampala, Uganda</p>
-              <p>
-                <a
-                  href="mailto:support@purecoin.ug"
-                  className="hover:text-foreground transition-colors"
-                >
-                  support@purecoin.ug
-                </a>
-              </p>
-            </div>
+            <p className="text-sm text-muted-foreground mt-4 max-w-xs">
+              Building the future of money movement in Uganda.
+            </p>
           </div>
 
-          {/* Links */}
-          <div className="md:text-right">
-            <nav className="flex flex-wrap gap-6 md:justify-end">
-              {footerLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  to={link.path}
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  {link.name}
-                </Link>
+          {/* Product */}
+          <div>
+            <h4 className="font-semibold mb-4">Product</h4>
+            <ul className="space-y-3">
+              {footerLinks.product.map((link) => (
+                <li key={link.name}>
+                  <Link
+                    to={link.path}
+                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {link.name}
+                  </Link>
+                </li>
               ))}
-            </nav>
+            </ul>
+          </div>
+
+          {/* Company */}
+          <div>
+            <h4 className="font-semibold mb-4">Company</h4>
+            <ul className="space-y-3">
+              {footerLinks.company.map((link) => (
+                <li key={link.name}>
+                  <Link
+                    to={link.path}
+                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Legal */}
+          <div>
+            <h4 className="font-semibold mb-4">Legal</h4>
+            <ul className="space-y-3">
+              {footerLinks.legal.map((link) => (
+                <li key={link.name}>
+                  <Link
+                    to={link.path}
+                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
 
-        {/* Copyright */}
-        <div className="mt-12 pt-8 border-t border-border/30">
+        {/* Bottom bar */}
+        <div className="border-t border-border mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} Pure Coin Innovations Ltd. All rights reserved.
+            © {new Date().getFullYear()} Pure Coin Innovations Ltd. Kampala, Uganda.
+          </p>
+          <p className="text-sm text-muted-foreground">
+            support@purecoin.ug
           </p>
         </div>
       </div>

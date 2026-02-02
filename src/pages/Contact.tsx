@@ -1,43 +1,20 @@
 import { useState } from 'react';
-import { MapPin, Mail, Phone } from 'lucide-react';
+import { Mail, MapPin, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
-import { GlassCard } from '@/components/ui/GlassCard';
 import { useToast } from '@/hooks/use-toast';
 
-const contactInfo = [
-  {
-    icon: MapPin,
-    label: 'Location',
-    value: 'Kampala, Uganda',
-    href: null,
-  },
-  {
-    icon: Mail,
-    label: 'Email',
-    value: 'hello@purecoin.ug',
-    href: 'mailto:hello@purecoin.ug',
-  },
-  {
-    icon: Phone,
-    label: 'Phone',
-    value: '+256 700 000 000',
-    href: 'tel:+256700000000',
-  },
-];
-
 const Contact = () => {
-  const { toast } = useToast();
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     message: '',
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,7 +25,7 @@ const Contact = () => {
 
     toast({
       title: 'Message sent',
-      description: 'Thank you for reaching out. We will get back to you soon.',
+      description: "We'll get back to you within 24 hours.",
     });
 
     setFormData({ name: '', email: '', message: '' });
@@ -67,116 +44,136 @@ const Contact = () => {
       {/* Hero */}
       <section className="pt-32 pb-20 md:pt-40 md:pb-32">
         <div className="section-container">
-          <ScrollReveal>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight leading-[1.1] mb-6">
-              Contact
-            </h1>
-          </ScrollReveal>
-          <ScrollReveal delay={100}>
-            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl">
-              Have a question or want to work together? We would love to hear from you.
-            </p>
-          </ScrollReveal>
+          <div className="max-w-2xl">
+            <ScrollReveal>
+              <h1 className="mb-6">Let's talk.</h1>
+            </ScrollReveal>
+            <ScrollReveal delay={100}>
+              <p className="text-xl md:text-2xl text-muted-foreground">
+                Questions about CrewvoPay? Want to partner? Just want to say hi? We're here.
+              </p>
+            </ScrollReveal>
+          </div>
         </div>
       </section>
 
-      {/* Contact Form & Info */}
-      <section className="pb-20 md:pb-32">
+      {/* Contact Content */}
+      <section className="pb-24 md:pb-32">
         <div className="section-container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
             {/* Form */}
             <ScrollReveal>
-              <GlassCard>
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="name">Name</Label>
-                    <Input
-                      id="name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      placeholder="Your name"
-                      required
-                      className="bg-background/50 border-border/50 focus:border-primary"
-                    />
-                  </div>
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div>
+                  <label htmlFor="name" className="block text-sm font-medium mb-2">
+                    Name
+                  </label>
+                  <Input
+                    id="name"
+                    name="name"
+                    type="text"
+                    placeholder="Your name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                    className="h-12"
+                  />
+                </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                      id="email"
-                      name="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      placeholder="you@example.com"
-                      required
-                      className="bg-background/50 border-border/50 focus:border-primary"
-                    />
-                  </div>
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium mb-2">
+                    Email
+                  </label>
+                  <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    placeholder="you@example.com"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    className="h-12"
+                  />
+                </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="message">Message</Label>
-                    <Textarea
-                      id="message"
-                      name="message"
-                      value={formData.message}
-                      onChange={handleChange}
-                      placeholder="Tell us about your project or question..."
-                      rows={5}
-                      required
-                      className="bg-background/50 border-border/50 focus:border-primary resize-none"
-                    />
-                  </div>
+                <div>
+                  <label htmlFor="message" className="block text-sm font-medium mb-2">
+                    Message
+                  </label>
+                  <Textarea
+                    id="message"
+                    name="message"
+                    placeholder="How can we help?"
+                    value={formData.message}
+                    onChange={handleChange}
+                    required
+                    rows={6}
+                    className="resize-none"
+                  />
+                </div>
 
-                  <Button
-                    type="submit"
-                    size="lg"
-                    className="w-full"
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting ? 'Sending...' : 'Send message'}
-                  </Button>
-                </form>
-              </GlassCard>
+                <Button 
+                  type="submit" 
+                  size="lg" 
+                  disabled={isSubmitting}
+                  className="w-full sm:w-auto text-base px-8 group"
+                >
+                  {isSubmitting ? 'Sending...' : 'Send message'}
+                  {!isSubmitting && (
+                    <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  )}
+                </Button>
+              </form>
             </ScrollReveal>
 
             {/* Contact Info */}
-            <div className="space-y-6">
-              <ScrollReveal>
-                <h2 className="text-2xl font-semibold tracking-tight mb-6">
-                  Get in touch
-                </h2>
-              </ScrollReveal>
-
-              {contactInfo.map((item, index) => (
-                <ScrollReveal key={item.label} delay={index * 100}>
-                  <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-lg bg-secondary flex items-center justify-center flex-shrink-0">
-                      <item.icon className="w-5 h-5 text-muted-foreground" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground mb-1">{item.label}</p>
-                      {item.href ? (
-                        <a
-                          href={item.href}
-                          className="text-foreground hover:text-primary transition-colors font-medium"
+            <div>
+              <ScrollReveal delay={100}>
+                <div className="bg-muted rounded-3xl p-8 mb-8">
+                  <h3 className="mb-6">Other ways to reach us</h3>
+                  <div className="space-y-6">
+                    <div className="flex items-start gap-4">
+                      <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <Mail className="w-5 h-5 text-primary" />
+                      </div>
+                      <div>
+                        <p className="font-medium mb-1">Email</p>
+                        <a 
+                          href="mailto:hello@purecoin.ug" 
+                          className="text-muted-foreground hover:text-foreground transition-colors"
                         >
-                          {item.value}
+                          hello@purecoin.ug
                         </a>
-                      ) : (
-                        <p className="text-foreground font-medium">{item.value}</p>
-                      )}
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-4">
+                      <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <MapPin className="w-5 h-5 text-primary" />
+                      </div>
+                      <div>
+                        <p className="font-medium mb-1">Location</p>
+                        <p className="text-muted-foreground">
+                          Kampala, Uganda
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </ScrollReveal>
-              ))}
+                </div>
+              </ScrollReveal>
 
-              <ScrollReveal delay={400}>
-                <div className="pt-8 border-t border-border/30">
-                  <p className="text-muted-foreground">
-                    Based in Kampala, Uganda. Building premium money products for East Africa.
+              <ScrollReveal delay={200}>
+                <div className="bg-foreground text-background rounded-3xl p-8">
+                  <h3 className="text-background mb-4">For CrewvoPay support</h3>
+                  <p className="text-background/70 mb-4">
+                    If you're a CrewvoPay user and need help with your account or a transaction:
                   </p>
+                  <a 
+                    href="mailto:support@crewvopay.ug"
+                    className="text-primary font-medium hover:underline"
+                  >
+                    support@crewvopay.ug
+                  </a>
                 </div>
               </ScrollReveal>
             </div>

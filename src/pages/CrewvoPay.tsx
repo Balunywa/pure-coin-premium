@@ -1,9 +1,8 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, Zap, Eye, Building } from 'lucide-react';
+import { ArrowRight, Zap, Eye, Building, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
-import { GlassCard } from '@/components/ui/GlassCard';
 import {
   Accordion,
   AccordionContent,
@@ -14,41 +13,44 @@ import {
 const features = [
   {
     icon: Zap,
-    title: 'Send & request in seconds',
-    description: 'Instant peer-to-peer transfers. No waiting, no complications. Just fast, reliable money movement.',
+    title: 'Transfer in seconds',
+    description: 'Money moves instantly between CrewvoPay accounts. No processing time. No waiting.',
+    benefits: ['Instant P2P transfers', 'Real-time notifications', 'Transaction history'],
   },
   {
     icon: Eye,
-    title: 'Virtual balance you can track',
-    description: 'Keep a clear view of your funds. See every transaction, understand every movement.',
+    title: 'Track every shilling',
+    description: 'See exactly where your money goes. Clear balance, clear history, clear insights.',
+    benefits: ['Live balance updates', 'Spending categories', 'Export statements'],
   },
   {
     icon: Building,
-    title: 'Built on Uganda mobile money',
-    description: 'Leverage the infrastructure you already trust. Fund your wallet directly from your mobile money account.',
+    title: 'Mobile money integration',
+    description: 'Connect MTN MoMo or Airtel Money. Fund your wallet in seconds.',
+    benefits: ['MTN Mobile Money', 'Airtel Money', 'Instant top-up'],
   },
 ];
 
 const faqs = [
   {
-    question: 'How do I create a CrewvoPay account?',
-    answer: 'Download the CrewvoPay app and follow the simple registration process. You will need a valid mobile money account to fund your wallet.',
+    question: 'How do I sign up for CrewvoPay?',
+    answer: 'Download the app, enter your phone number, and verify with a one-time code. You can start receiving money immediately.',
   },
   {
-    question: 'What are the transaction limits?',
-    answer: 'Transaction limits are set based on your verification level. Contact our support team for specific details about your account.',
+    question: 'What are the fees?',
+    answer: 'Sending money between CrewvoPay accounts is free. Mobile money withdrawals have a small fee shown before you confirm.',
   },
   {
-    question: 'How long do transfers take?',
-    answer: 'CrewvoPay transfers are instant. Send money to anyone with a CrewvoPay account and they will receive it immediately.',
+    question: 'How fast are transfers?',
+    answer: 'Transfers between CrewvoPay users are instant. Mobile money deposits and withdrawals typically complete in under 30 seconds.',
   },
   {
-    question: 'Is my money safe?',
-    answer: 'Yes. We use industry-standard security practices to protect your funds and personal information. Your data is encrypted and stored securely.',
+    question: 'Is my money secure?',
+    answer: 'Yes. We use bank-level encryption for all transactions. Your funds are protected with multi-factor authentication.',
   },
   {
-    question: 'How do I contact support?',
-    answer: 'You can reach our support team at support@crewvopay.ug or through the in-app support feature. We typically respond within 24 hours.',
+    question: 'What if I need help?',
+    answer: 'Reach our support team via the app or email support@crewvopay.ug. We respond within 24 hours, usually much faster.',
   },
 ];
 
@@ -56,104 +58,119 @@ const CrewvoPay = () => {
   return (
     <PageLayout>
       {/* Hero */}
-      <section className="pt-32 pb-20 md:pt-40 md:pb-32">
+      <section className="pt-32 pb-20 md:pt-40 md:pb-32 bg-gradient-to-b from-primary/10 to-background">
         <div className="section-container">
-          <ScrollReveal>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight leading-[1.1] mb-6">
-              CrewvoPay
-            </h1>
-          </ScrollReveal>
-          <ScrollReveal delay={100}>
-            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-10">
-              A mobile-money powered wallet for fast P2P transfers and virtual balances. Simple. Fast. Reliable.
-            </p>
-          </ScrollReveal>
-          <ScrollReveal delay={200}>
-            <Button asChild size="lg" className="group">
-              <Link to="/contact">
-                Get started
-                <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </Button>
-          </ScrollReveal>
+          <div className="max-w-3xl">
+            <ScrollReveal>
+              <p className="text-primary font-semibold mb-4">CrewvoPay</p>
+              <h1 className="mb-6">
+                The wallet that keeps up.
+              </h1>
+            </ScrollReveal>
+            <ScrollReveal delay={100}>
+              <p className="text-xl md:text-2xl text-muted-foreground mb-10">
+                Send money to anyone in Uganda. Track your balance. 
+                Move funds in and out of mobile money. All in one app.
+              </p>
+            </ScrollReveal>
+            <ScrollReveal delay={200}>
+              <Button asChild size="lg" className="text-base px-8 group">
+                <Link to="/contact">
+                  Get early access
+                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </Button>
+            </ScrollReveal>
+          </div>
         </div>
       </section>
 
       {/* Features */}
-      <section className="py-20 md:py-32 border-t border-border/30">
-        <div className="section-container space-y-20 md:space-y-32">
-          {features.map((feature, index) => (
-            <ScrollReveal key={feature.title} delay={index * 100}>
-              <div className={`grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center ${index % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}>
-                <div className={index % 2 === 1 ? 'lg:order-2' : ''}>
-                  <feature.icon className="w-10 h-10 text-primary mb-6" />
-                  <h2 className="text-2xl md:text-3xl font-semibold tracking-tight mb-4">
-                    {feature.title}
-                  </h2>
-                  <p className="text-lg text-muted-foreground">
-                    {feature.description}
-                  </p>
-                </div>
-                <div className={`${index % 2 === 1 ? 'lg:order-1' : ''}`}>
-                  <GlassCard className="aspect-[4/3] flex items-center justify-center">
-                    <div className="w-24 h-24 rounded-2xl bg-secondary/50 flex items-center justify-center">
-                      <feature.icon className="w-12 h-12 text-muted-foreground" />
+      <section className="py-24 md:py-32">
+        <div className="section-container">
+          <div className="space-y-24 md:space-y-32">
+            {features.map((feature, index) => (
+              <ScrollReveal key={feature.title}>
+                <div className={`grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center ${
+                  index % 2 === 1 ? 'lg:flex-row-reverse' : ''
+                }`}>
+                  <div className={index % 2 === 1 ? 'lg:order-2' : ''}>
+                    <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-6">
+                      <feature.icon className="w-7 h-7 text-primary" />
                     </div>
-                  </GlassCard>
+                    <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                      {feature.title}
+                    </h2>
+                    <p className="text-lg text-muted-foreground mb-8">
+                      {feature.description}
+                    </p>
+                    <ul className="space-y-3">
+                      {feature.benefits.map((benefit) => (
+                        <li key={benefit} className="flex items-center gap-3">
+                          <Check className="w-5 h-5 text-primary" />
+                          <span className="text-foreground">{benefit}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className={index % 2 === 1 ? 'lg:order-1' : ''}>
+                    <div className="bg-muted rounded-3xl aspect-[4/3] flex items-center justify-center">
+                      <div className="w-24 h-24 rounded-2xl bg-primary/20 flex items-center justify-center">
+                        <feature.icon className="w-12 h-12 text-primary" />
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </ScrollReveal>
-          ))}
+              </ScrollReveal>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* Support & FAQ */}
-      <section className="py-20 md:py-32 border-t border-border/30">
+      {/* FAQ Section */}
+      <section className="py-24 md:py-32 bg-muted">
         <div className="section-container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
             {/* Support */}
             <div>
               <ScrollReveal>
-                <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-6">
-                  Support
-                </h2>
+                <h2 className="mb-6">Need help?</h2>
+                <p className="text-lg text-muted-foreground mb-8">
+                  Our support team is based in Kampala. Real people who understand the product.
+                </p>
               </ScrollReveal>
               <ScrollReveal delay={100}>
-                <GlassCard className="mb-6">
-                  <h3 className="text-lg font-medium mb-2">Need help?</h3>
-                  <p className="text-muted-foreground mb-4">
-                    Our support team is here to assist you with any questions or issues.
-                  </p>
-                  <a
-                    href="mailto:support@crewvopay.ug"
-                    className="text-primary hover:opacity-80 transition-opacity font-medium"
-                  >
-                    support@crewvopay.ug
-                  </a>
-                </GlassCard>
-              </ScrollReveal>
-              <ScrollReveal delay={200}>
-                <p className="text-sm text-muted-foreground">
-                  Response time: Within 24 hours
-                </p>
+                <div className="bg-background rounded-2xl border border-border p-8">
+                  <h3 className="mb-4">Get in touch</h3>
+                  <div className="space-y-4">
+                    <div>
+                      <p className="text-sm text-muted-foreground">Email</p>
+                      <a href="mailto:support@crewvopay.ug" className="text-primary font-medium hover:underline">
+                        support@crewvopay.ug
+                      </a>
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Response time</p>
+                      <p className="font-medium">Within 24 hours</p>
+                    </div>
+                  </div>
+                </div>
               </ScrollReveal>
             </div>
 
             {/* FAQ */}
             <div>
               <ScrollReveal>
-                <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-6">
-                  Frequently asked questions
-                </h2>
+                <h2 className="mb-8">Common questions</h2>
               </ScrollReveal>
               <ScrollReveal delay={100}>
                 <Accordion type="single" collapsible className="w-full">
                   {faqs.map((faq, index) => (
-                    <AccordionItem key={index} value={`item-${index}`} className="border-border/50">
-                      <AccordionTrigger className="text-left hover:no-underline hover:text-foreground">
+                    <AccordionItem key={index} value={`item-${index}`} className="border-border">
+                      <AccordionTrigger className="text-left hover:no-underline py-4">
                         {faq.question}
                       </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground">
+                      <AccordionContent className="text-muted-foreground pb-4">
                         {faq.answer}
                       </AccordionContent>
                     </AccordionItem>
@@ -162,6 +179,28 @@ const CrewvoPay = () => {
               </ScrollReveal>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-24 md:py-32">
+        <div className="section-container text-center">
+          <ScrollReveal>
+            <h2 className="mb-6">Ready to try CrewvoPay?</h2>
+          </ScrollReveal>
+          <ScrollReveal delay={100}>
+            <p className="text-lg text-muted-foreground mb-10 max-w-xl mx-auto">
+              Be among the first to experience faster money movement.
+            </p>
+          </ScrollReveal>
+          <ScrollReveal delay={200}>
+            <Button asChild size="lg" className="text-base px-8 group">
+              <Link to="/contact">
+                Request access
+                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </Button>
+          </ScrollReveal>
         </div>
       </section>
     </PageLayout>
