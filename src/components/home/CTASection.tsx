@@ -6,7 +6,7 @@ import { ArrowRight, Sparkles } from 'lucide-react';
 
 export const CTASection = () => {
   return (
-    <section className="py-40 md:py-56 relative overflow-hidden">
+    <section className="py-40 md:py-56 relative overflow-hidden max-w-full">
       {/* Background effects */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-t from-card/50 to-transparent" />

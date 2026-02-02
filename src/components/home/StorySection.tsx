@@ -42,10 +42,10 @@ export const StorySection = () => {
       className="py-32 md:py-48 relative overflow-hidden"
     >
       {/* Moving linework background */}
-      <div className="absolute inset-0 pointer-events-none">
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute inset-0 bg-grid opacity-20" />
         <div
-          className="absolute -top-40 left-1/2 -translate-x-1/2 w-[900px] h-[900px] rounded-full"
+          className="absolute -top-40 left-1/2 -translate-x-1/2 w-[900px] h-[900px] rounded-full max-w-full"
           style={{
             background: 'radial-gradient(circle, hsl(0 0% 100% / 0.04) 0%, transparent 70%)',
           }}

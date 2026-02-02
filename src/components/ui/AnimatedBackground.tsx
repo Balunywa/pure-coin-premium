@@ -17,7 +17,7 @@ export const AnimatedBackground = () => {
       
       {/* Animated gradient orbs - monochrome */}
       <motion.div
-        className="absolute -top-[40%] -left-[20%] w-[80%] h-[80%] rounded-full"
+        className="absolute -top-[40%] -left-[20%] w-[80%] h-[80%] rounded-full max-w-full"
         style={{
           background: 'radial-gradient(circle, hsl(0 0% 100% / 0.05) 0%, transparent 70%)',
         }}
@@ -32,7 +32,7 @@ export const AnimatedBackground = () => {
       />
       
       <motion.div
-        className="absolute -bottom-[40%] -right-[20%] w-[80%] h-[80%] rounded-full"
+        className="absolute -bottom-[40%] -right-[20%] w-[80%] h-[80%] rounded-full max-w-full"
         style={{
           background: 'radial-gradient(circle, hsl(0 0% 90% / 0.04) 0%, transparent 70%)',
         }}
