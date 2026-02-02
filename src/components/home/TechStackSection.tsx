@@ -41,7 +41,7 @@ export const TechStackSection = () => {
 
       <div className="section-container relative z-10">
         <FadeIn className="text-center mb-20">
-          <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-4 text-label">Technology</p>
+          <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-4 text-label opacity-70">Technology</p>
           <h2 className="gradient-text mb-6">Built on the best.</h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-[1.7]">
             The tools that power billion-user platforms. Optimized for performance and scale.

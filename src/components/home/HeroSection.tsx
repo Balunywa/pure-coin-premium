@@ -58,7 +58,7 @@ export const HeroSection = () => {
               <Button 
                 asChild 
                 size="lg" 
-                className="text-base px-8 h-12 rounded-full bg-foreground text-background hover:bg-foreground/90 group button-shine"
+                className="text-base px-8 h-12 rounded-full bg-foreground text-background hover:bg-foreground/90 group button-shine shadow-lg hover:shadow-xl transition-shadow"
               >
                 <Link to="/products" className="flex items-center gap-2">
                   Explore our work
@@ -71,7 +71,7 @@ export const HeroSection = () => {
                 asChild 
                 variant="outline" 
                 size="lg"
-                className="text-base px-8 h-12 rounded-full border-border/50 hover:bg-card hover:border-border"
+                className="text-base px-8 h-12 rounded-full border-border/50 hover:bg-card hover:border-foreground/20 transition-colors"
               >
                 <Link to="/contact">Get in touch</Link>
               </Button>

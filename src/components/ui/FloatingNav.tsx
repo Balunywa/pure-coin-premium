@@ -6,6 +6,8 @@ export const FloatingNav = () => {
   const [showScroll, setShowScroll] = useState(false);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     const handleScroll = () => {
       setShowScroll(window.scrollY > 400);
     };
@@ -15,6 +17,7 @@ export const FloatingNav = () => {
   }, []);
 
   const scrollToTop = () => {
+    if (typeof window === 'undefined') return;
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 

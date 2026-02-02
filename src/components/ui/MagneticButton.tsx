@@ -20,9 +20,11 @@ export const MagneticButton = ({
   const y = useSpring(0, { stiffness: 300, damping: 30 });
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!ref.current) return;
+    if (!ref.current || !isHovered) return;
     
     const rect = ref.current.getBoundingClientRect();
+    if (!rect || rect.width === 0 || rect.height === 0) return;
+    
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
     
@@ -39,11 +41,15 @@ export const MagneticButton = ({
     y.set(0);
   };
 
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
   return (
     <motion.div
       ref={ref}
       onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
+      onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       style={{ x, y }}
       className={className}

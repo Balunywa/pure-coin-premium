@@ -48,7 +48,7 @@ export const BentoGrid = () => {
 
       <div className="section-container relative z-10">
         <FadeIn className="text-center mb-20">
-          <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-4 text-label">
+          <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-4 text-label opacity-70">
             Infrastructure
           </p>
           <h2 className="gradient-text mb-6">Built for scale.</h2>

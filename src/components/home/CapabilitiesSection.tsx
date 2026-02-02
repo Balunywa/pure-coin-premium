@@ -49,7 +49,7 @@ export const CapabilitiesSection = () => {
 
       <div className="section-container relative z-10">
         <FadeIn className="text-center mb-20">
-          <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-4 text-label">What we deliver</p>
+          <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-4 text-label opacity-70">What we deliver</p>
           <h2 className="gradient-text mb-6">Enterprise-grade.</h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-[1.7]">
             The infrastructure, velocity, and precision you'd expect from a Fortune 100 team.

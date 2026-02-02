@@ -19,13 +19,26 @@ export const Navbar = () => {
       setIsScrolled(window.scrollY > 20);
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [location.pathname]);
+
+  useEffect(() => {
+    // Lock body scroll when mobile menu is open
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMobileMenuOpen]);
 
   return (
     <motion.header
@@ -54,13 +67,20 @@ export const Navbar = () => {
               <Link
                 key={link.path}
                 to={link.path}
-                className={`px-4 py-2 text-sm font-medium transition-colors rounded-lg hover:bg-card ${
+                className={`px-4 py-2 text-sm font-medium transition-all rounded-lg relative ${
                   location.pathname === link.path 
-                    ? 'text-foreground' 
-                    : 'text-muted-foreground hover:text-foreground'
+                    ? 'text-foreground bg-card/50' 
+                    : 'text-muted-foreground hover:text-foreground hover:bg-card/30'
                 }`}
               >
                 {link.name}
+                {location.pathname === link.path && (
+                  <motion.div
+                    layoutId="activeNav"
+                    className="absolute inset-0 bg-card/50 rounded-lg -z-10"
+                    transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                  />
+                )}
               </Link>
             ))}
           </div>

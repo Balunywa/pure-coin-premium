@@ -55,7 +55,7 @@ export const StorySection = () => {
       <div className="section-container relative z-10">
         <div className="max-w-5xl mx-auto">
           <FadeIn className="text-center mb-12">
-            <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-4 text-label">How we work</p>
+            <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-4 text-label opacity-70">How we work</p>
             <h2 className="gradient-text">Precision at scale.</h2>
             <p className="text-muted-foreground text-lg mt-6 max-w-2xl mx-auto leading-[1.7]">
               We architect systems, design with intent, and ship products that perform from day one.

@@ -18,28 +18,36 @@ export const CustomCursor = () => {
       setIsVisible(true);
     };
 
-    const handleMouseEnter = (e: MouseEvent) => {
+    const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       if (target.tagName === 'BUTTON' || 
           target.tagName === 'A' || 
           target.closest('button') || 
           target.closest('a')) {
         setIsHovering(true);
+      } else {
+        setIsHovering(false);
       }
     };
 
-    const handleMouseLeave = () => {
-      setIsHovering(false);
+    const handleMouseOut = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.tagName === 'BUTTON' || 
+          target.tagName === 'A' || 
+          target.closest('button') || 
+          target.closest('a')) {
+        setIsHovering(false);
+      }
     };
 
     window.addEventListener('mousemove', moveCursor);
-    document.addEventListener('mouseenter', handleMouseEnter, true);
-    document.addEventListener('mouseleave', handleMouseLeave, true);
+    document.addEventListener('mouseover', handleMouseOver, true);
+    document.addEventListener('mouseout', handleMouseOut, true);
 
     return () => {
       window.removeEventListener('mousemove', moveCursor);
-      document.removeEventListener('mouseenter', handleMouseEnter, true);
-      document.removeEventListener('mouseleave', handleMouseLeave, true);
+      document.removeEventListener('mouseover', handleMouseOver, true);
+      document.removeEventListener('mouseout', handleMouseOut, true);
     };
   }, [cursorX, cursorY]);
 

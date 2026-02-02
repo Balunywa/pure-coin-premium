@@ -26,7 +26,7 @@ export const ProductsSection = () => {
       <div className="section-container relative z-10">
         <div className="max-w-4xl mx-auto">
           <FadeIn className="text-center mb-20">
-            <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-4 text-label">Portfolio</p>
+            <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-4 text-label opacity-70">Portfolio</p>
             <h2 className="gradient-text">Proven at scale.</h2>
             <p className="text-muted-foreground mt-6 max-w-xl mx-auto leading-[1.7]">
               Real products. Thousands of daily users. Built, launched, and scaled.
@@ -54,8 +54,8 @@ export const ProductsSection = () => {
                   />
                   
                   {/* Shimmer effect */}
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-                    <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/5 to-transparent" />
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-30 transition-opacity duration-700">
+                    <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
                   </div>
                   
                   <div className="relative">

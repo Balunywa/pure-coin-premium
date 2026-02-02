@@ -110,6 +110,30 @@
     }
   }
 
+  /* Focus visible for accessibility */
+  *:focus-visible {
+    outline: 2px solid hsl(var(--foreground));
+    outline-offset: 4px;
+    border-radius: 0.25rem;
+  }
+
+  button:focus-visible,
+  a:focus-visible {
+    outline: 2px solid hsl(var(--foreground));
+    outline-offset: 4px;
+  }
+
+  /* Respect user's motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
   /* Premium Typography - Unique letter style */
   h1 {
     @apply text-4xl sm:text-5xl md:text-6xl lg:text-[5rem] xl:text-[5.5rem] font-medium tracking-[-0.055em] leading-[1.05];
@@ -181,6 +205,16 @@
   /* Wider container for special sections */
   .section-container-wide {
     @apply max-w-7xl mx-auto px-6 md:px-8 lg:px-12;
+  }
+
+  /* Section transitions */
+  section {
+    will-change: opacity;
+  }
+
+  /* Optimize images and media */
+  img, video {
+    content-visibility: auto;
   }
 
   /* Glass card */
