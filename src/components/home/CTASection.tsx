@@ -1,44 +1,26 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { ScrollReveal } from '@/components/ui/ScrollReveal';
 
 export const CTASection = () => {
   return (
-    <section className="py-24 md:py-32 bg-muted">
+    <section className="py-32 md:py-40 border-t border-border">
       <div className="section-container">
-        <div className="max-w-3xl mx-auto text-center">
-          <ScrollReveal>
-            <h2 className="mb-6">Ready to get started?</h2>
-          </ScrollReveal>
-          <ScrollReveal delay={100}>
-            <p className="text-lg text-muted-foreground mb-10">
-              Talk to our team about how Pure Coin can help you build, 
-              scale, and secure your technology infrastructure.
-            </p>
-          </ScrollReveal>
-          <ScrollReveal delay={200}>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
-                asChild 
-                size="lg" 
-                className="text-base px-8 h-14 rounded-lg group"
-              >
-                <Link to="/contact">
-                  Contact sales
-                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </Button>
-              <Button 
-                asChild 
-                variant="outline" 
-                size="lg"
-                className="text-base px-8 h-14 rounded-lg"
-              >
-                <Link to="/solutions">View solutions</Link>
-              </Button>
-            </div>
-          </ScrollReveal>
+        <div className="max-w-2xl mx-auto text-center">
+          <h2 className="mb-6 fade-in">
+            Let's build something.
+          </h2>
+          <p className="text-muted-foreground text-lg mb-10 fade-in stagger-1">
+            Have an idea? We'd love to hear it.
+          </p>
+          <div className="fade-in stagger-2">
+            <Button 
+              asChild 
+              size="lg" 
+              className="text-base px-10 h-14 rounded-full"
+            >
+              <Link to="/contact">Start a conversation</Link>
+            </Button>
+          </div>
         </div>
       </div>
     </section>
