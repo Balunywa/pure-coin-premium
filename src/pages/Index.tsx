@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, Code, Lightbulb, Layers, ChevronRight, ExternalLink } from 'lucide-react';
+import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
@@ -7,111 +7,176 @@ import { ScrollReveal } from '@/components/ui/ScrollReveal';
 const Index = () => {
   return (
     <PageLayout>
-      {/* Hero Section */}
-      <section className="bg-primary min-h-[90vh] flex items-center">
-        <div className="section-container py-20 md:py-32">
-          <div className="max-w-4xl">
-            <ScrollReveal>
-              <h1 className="text-primary-foreground mb-6">
-                We build products
-                <br />
-                that people love.
-              </h1>
-            </ScrollReveal>
+      {/* Hero Section - Apple-style minimal impact */}
+      <section className="min-h-[100vh] flex items-center justify-center relative overflow-hidden">
+        <div className="section-container text-center py-32">
+          <ScrollReveal>
+            <p className="text-primary font-medium text-sm tracking-wide uppercase mb-6">
+              Pure Coin
+            </p>
+          </ScrollReveal>
+          <ScrollReveal delay={100}>
+            <h1 className="mb-8 max-w-4xl mx-auto">
+              We craft products
+              <br />
+              <span className="text-muted-foreground">people love.</span>
+            </h1>
+          </ScrollReveal>
+          <ScrollReveal delay={200}>
+            <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-12 font-normal">
+              A product studio building digital experiences that matter.
+              Based in Kampala. Shipping globally.
+            </p>
+          </ScrollReveal>
+          <ScrollReveal delay={300}>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button 
+                asChild 
+                size="lg" 
+                className="text-base px-8 h-14 rounded-full group"
+              >
+                <Link to="/crewvopay">
+                  See our work
+                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </Button>
+              <Button 
+                asChild 
+                variant="outline" 
+                size="lg"
+                className="text-base px-8 h-14 rounded-full"
+              >
+                <Link to="/contact">Get in touch</Link>
+              </Button>
+            </div>
+          </ScrollReveal>
+        </div>
+        
+        {/* Subtle gradient orb */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-gradient-to-r from-primary/5 to-transparent blur-3xl pointer-events-none" />
+      </section>
+
+      {/* Featured Product - CrewvoPay */}
+      <section className="py-32 md:py-40 bg-foreground text-background">
+        <div className="section-container">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+            <div>
+              <ScrollReveal>
+                <p className="text-primary font-medium text-sm tracking-wide uppercase mb-6">
+                  Featured Product
+                </p>
+              </ScrollReveal>
+              <ScrollReveal delay={100}>
+                <h2 className="text-background mb-6">
+                  CrewvoPay
+                </h2>
+              </ScrollReveal>
+              <ScrollReveal delay={150}>
+                <p className="text-xl text-background/70 mb-8 leading-relaxed">
+                  A mobile payment platform built for Uganda.
+                  Send money instantly. Track every shilling.
+                  Powered by mobile money.
+                </p>
+              </ScrollReveal>
+              <ScrollReveal delay={200}>
+                <div className="flex flex-wrap gap-3 mb-10">
+                  <span className="px-4 py-2 bg-background/10 rounded-full text-sm text-background/80">
+                    iOS & Android
+                  </span>
+                  <span className="px-4 py-2 bg-background/10 rounded-full text-sm text-background/80">
+                    P2P Transfers
+                  </span>
+                  <span className="px-4 py-2 bg-background/10 rounded-full text-sm text-background/80">
+                    Mobile Money
+                  </span>
+                </div>
+              </ScrollReveal>
+              <ScrollReveal delay={250}>
+                <a 
+                  href="https://crewvopay.com" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-primary font-medium hover:gap-3 transition-all group"
+                >
+                  Visit crewvopay.com
+                  <ArrowUpRight className="w-5 h-5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                </a>
+              </ScrollReveal>
+            </div>
+
             <ScrollReveal delay={100}>
-              <p className="text-xl md:text-2xl text-primary-foreground/80 max-w-2xl mb-10">
-                Pure Coin is a product studio crafting digital experiences 
-                that solve real problems. From concept to launch, we ship.
-              </p>
-            </ScrollReveal>
-            <ScrollReveal delay={200}>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Button 
-                  asChild 
-                  size="lg" 
-                  className="bg-foreground text-background hover:bg-foreground/90 text-base px-8 group"
-                >
-                  <Link to="/company">
-                    What we do
-                    <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                  </Link>
-                </Button>
-                <Button 
-                  asChild 
-                  variant="outline" 
-                  size="lg"
-                  className="border-foreground text-foreground hover:bg-foreground/10 text-base px-8"
-                >
-                  <Link to="/contact">Work with us</Link>
-                </Button>
+              <div className="relative">
+                {/* Phone mockup - iOS style */}
+                <div className="relative mx-auto w-[280px]">
+                  <div className="bg-background/10 backdrop-blur-xl rounded-[3rem] p-3 border border-background/20">
+                    <div className="bg-background rounded-[2.5rem] aspect-[9/19] flex flex-col items-center justify-center overflow-hidden">
+                      {/* Screen content */}
+                      <div className="w-full h-full bg-gradient-to-b from-primary/10 to-background flex flex-col items-center justify-center p-8">
+                        <div className="w-20 h-20 rounded-3xl bg-primary flex items-center justify-center mb-6 shadow-lg">
+                          <span className="text-primary-foreground font-bold text-3xl">C</span>
+                        </div>
+                        <p className="font-semibold text-foreground text-lg">CrewvoPay</p>
+                        <p className="text-muted-foreground text-sm mt-1">Move money fast</p>
+                      </div>
+                    </div>
+                  </div>
+                  {/* Reflection effect */}
+                  <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-[200px] h-[100px] bg-gradient-to-t from-transparent via-background/5 to-transparent blur-2xl" />
+                </div>
               </div>
             </ScrollReveal>
           </div>
         </div>
       </section>
 
-      {/* What We Believe */}
-      <section className="py-24 md:py-32">
+      {/* What We Do - Clean grid */}
+      <section className="py-32 md:py-40">
         <div className="section-container">
           <ScrollReveal>
-            <div className="max-w-3xl">
-              <p className="text-primary font-semibold mb-4">Our philosophy</p>
-              <h2 className="mb-6">Great products aren't built by accident.</h2>
-              <p className="text-lg md:text-xl text-muted-foreground">
-                They're crafted through obsessive attention to detail, relentless iteration, 
-                and a deep understanding of the people who use them. We sweat the pixels 
-                so users don't have to think twice.
+            <div className="text-center max-w-3xl mx-auto mb-20">
+              <p className="text-primary font-medium text-sm tracking-wide uppercase mb-6">
+                What we do
               </p>
-            </div>
-          </ScrollReveal>
-        </div>
-      </section>
-
-      {/* What We Do */}
-      <section className="py-24 md:py-32 bg-muted">
-        <div className="section-container">
-          <ScrollReveal>
-            <div className="text-center max-w-3xl mx-auto mb-16">
-              <h2 className="mb-6">What we're good at.</h2>
+              <h2>Build. Launch. Scale.</h2>
             </div>
           </ScrollReveal>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <ScrollReveal>
-              <div className="bg-background border border-border rounded-3xl p-8 h-full hover:shadow-lg transition-shadow">
-                <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-6">
-                  <Code className="w-7 h-7 text-primary" />
+              <div className="group p-8 rounded-3xl border border-border bg-card hover-lift cursor-default h-full">
+                <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
+                  <span className="text-2xl">⚡</span>
                 </div>
-                <h3 className="mb-3">Product Engineering</h3>
-                <p className="text-muted-foreground">
-                  Full-stack development from mobile apps to cloud infrastructure. 
-                  We build things that scale.
+                <h3 className="mb-4">Engineering</h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  Full-stack development. Mobile apps. Cloud infrastructure. 
+                  We build things that work and scale.
                 </p>
               </div>
             </ScrollReveal>
 
             <ScrollReveal delay={100}>
-              <div className="bg-background border border-border rounded-3xl p-8 h-full hover:shadow-lg transition-shadow">
-                <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-6">
-                  <Lightbulb className="w-7 h-7 text-primary" />
+              <div className="group p-8 rounded-3xl border border-border bg-card hover-lift cursor-default h-full">
+                <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
+                  <span className="text-2xl">◎</span>
                 </div>
-                <h3 className="mb-3">Product Strategy</h3>
-                <p className="text-muted-foreground">
-                  From market research to go-to-market. We help figure out 
-                  what to build and why it matters.
+                <h3 className="mb-4">Design</h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  Interfaces that feel right. Experiences that stick. 
+                  Design that serves the user, always.
                 </p>
               </div>
             </ScrollReveal>
 
             <ScrollReveal delay={200}>
-              <div className="bg-background border border-border rounded-3xl p-8 h-full hover:shadow-lg transition-shadow">
-                <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-6">
-                  <Layers className="w-7 h-7 text-primary" />
+              <div className="group p-8 rounded-3xl border border-border bg-card hover-lift cursor-default h-full">
+                <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
+                  <span className="text-2xl">◆</span>
                 </div>
-                <h3 className="mb-3">Product Design</h3>
-                <p className="text-muted-foreground">
-                  Interfaces that feel intuitive. Experiences that stick. 
-                  Design that serves the user first.
+                <h3 className="mb-4">Strategy</h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  From idea to market. We help figure out what to build 
+                  and why it matters.
                 </p>
               </div>
             </ScrollReveal>
@@ -119,115 +184,50 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Featured Product - CrewvoPay */}
-      <section className="py-24 md:py-32">
+      {/* Philosophy - Minimal statement */}
+      <section className="py-32 md:py-40 bg-muted">
         <div className="section-container">
           <ScrollReveal>
-            <p className="text-primary font-semibold mb-4">Our Products</p>
+            <div className="max-w-4xl mx-auto text-center">
+              <h2 className="mb-8 leading-tight">
+                Great products don't happen by accident.
+              </h2>
+              <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed">
+                They're crafted through obsessive attention to detail,
+                relentless iteration, and a deep understanding of the 
+                people who use them.
+              </p>
+            </div>
           </ScrollReveal>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center mt-8">
-            <ScrollReveal>
-              <div>
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-12 h-12 rounded-2xl bg-primary flex items-center justify-center">
-                    <span className="text-primary-foreground font-bold text-lg">C</span>
-                  </div>
-                  <h2 className="text-3xl md:text-4xl font-bold">CrewvoPay</h2>
-                </div>
-                <p className="text-lg text-muted-foreground mb-6">
-                  A mobile-first payment platform built for Uganda's growing digital economy. 
-                  Send, receive, and hold money—powered by the mobile money networks people already use.
-                </p>
-                <div className="flex flex-wrap gap-3 mb-8">
-                  <span className="px-4 py-2 bg-muted rounded-full text-sm font-medium">Mobile Payments</span>
-                  <span className="px-4 py-2 bg-muted rounded-full text-sm font-medium">P2P Transfers</span>
-                  <span className="px-4 py-2 bg-muted rounded-full text-sm font-medium">Virtual Wallets</span>
-                </div>
-                <a 
-                  href="https://crewvopay.com" 
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center text-primary font-semibold hover:gap-3 gap-2 transition-all"
-                >
-                  Visit crewvopay.com
-                  <ExternalLink className="w-5 h-5" />
-                </a>
-              </div>
-            </ScrollReveal>
-
-            <ScrollReveal delay={100}>
-              <div className="bg-gradient-to-br from-primary/20 to-primary/5 rounded-3xl p-8 aspect-square flex items-center justify-center">
-                <div className="w-48 h-96 bg-foreground rounded-[2.5rem] p-2 shadow-2xl">
-                  <div className="w-full h-full bg-background rounded-[2rem] flex flex-col items-center justify-center">
-                    <div className="w-16 h-16 rounded-2xl bg-primary mb-4 flex items-center justify-center">
-                      <span className="text-primary-foreground font-bold text-2xl">C</span>
-                    </div>
-                    <p className="text-sm font-medium text-foreground">CrewvoPay</p>
-                    <p className="text-xs text-muted-foreground mt-1">Live on iOS & Android</p>
-                  </div>
-                </div>
-              </div>
-            </ScrollReveal>
-          </div>
         </div>
       </section>
 
-      {/* More Products Coming */}
-      <section className="py-24 md:py-32 bg-muted">
+      {/* Coming Soon */}
+      <section className="py-32 md:py-40">
         <div className="section-container">
           <ScrollReveal>
-            <div className="text-center max-w-2xl mx-auto">
+            <div className="text-center max-w-2xl mx-auto mb-16">
+              <p className="text-primary font-medium text-sm tracking-wide uppercase mb-6">
+                Coming soon
+              </p>
               <h2 className="mb-6">More in the lab.</h2>
-              <p className="text-lg text-muted-foreground mb-10">
-                We're always working on what's next. New products. New ideas. 
-                Same commitment to quality.
-              </p>
-              <div className="flex flex-wrap justify-center gap-4">
-                <div className="px-6 py-4 bg-background border border-border rounded-2xl">
-                  <p className="text-sm text-muted-foreground">Coming 2025</p>
-                  <p className="font-semibold">Project Atlas</p>
-                </div>
-                <div className="px-6 py-4 bg-background border border-border rounded-2xl">
-                  <p className="text-sm text-muted-foreground">In Development</p>
-                  <p className="font-semibold">Project Horizon</p>
-                </div>
-              </div>
-            </div>
-          </ScrollReveal>
-        </div>
-      </section>
-
-      {/* Trust Section */}
-      <section className="py-24 md:py-32 bg-foreground text-background">
-        <div className="section-container">
-          <ScrollReveal>
-            <div className="text-center max-w-3xl mx-auto">
-              <h2 className="text-background mb-6">Built in Kampala. Shipping globally.</h2>
-              <p className="text-lg md:text-xl text-background/70 mb-12">
-                Pure Coin is a Ugandan product company with global ambitions. 
-                We're proving that world-class products can come from anywhere.
+              <p className="text-lg text-muted-foreground">
+                We're always working on what's next.
               </p>
             </div>
           </ScrollReveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
             <ScrollReveal>
-              <div className="text-center">
-                <p className="text-2xl font-bold text-background mb-2">Craft over speed</p>
-                <p className="text-background/60">Quality is the priority</p>
+              <div className="p-8 rounded-3xl border border-border bg-card text-center hover-lift">
+                <p className="text-xs text-muted-foreground uppercase tracking-wide mb-2">2025</p>
+                <p className="text-xl font-semibold">Project Atlas</p>
               </div>
             </ScrollReveal>
             <ScrollReveal delay={100}>
-              <div className="text-center">
-                <p className="text-2xl font-bold text-background mb-2">Users first</p>
-                <p className="text-background/60">Everything we build serves them</p>
-              </div>
-            </ScrollReveal>
-            <ScrollReveal delay={200}>
-              <div className="text-center">
-                <p className="text-2xl font-bold text-background mb-2">Ship it</p>
-                <p className="text-background/60">Ideas mean nothing unbuilt</p>
+              <div className="p-8 rounded-3xl border border-border bg-card text-center hover-lift">
+                <p className="text-xs text-muted-foreground uppercase tracking-wide mb-2">In development</p>
+                <p className="text-xl font-semibold">Project Horizon</p>
               </div>
             </ScrollReveal>
           </div>
@@ -235,28 +235,29 @@ const Index = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 md:py-32">
+      <section className="py-32 md:py-40 bg-foreground text-background">
         <div className="section-container text-center">
           <ScrollReveal>
-            <h2 className="mb-6">Got an idea worth building?</h2>
+            <h2 className="text-background mb-6">
+              Let's build something great.
+            </h2>
           </ScrollReveal>
           <ScrollReveal delay={100}>
-            <p className="text-lg text-muted-foreground mb-10 max-w-xl mx-auto">
+            <p className="text-xl text-background/60 mb-12 max-w-xl mx-auto">
               We're always interested in ambitious projects and talented people.
             </p>
           </ScrollReveal>
           <ScrollReveal delay={200}>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild size="lg" className="text-base px-8 group">
-                <Link to="/contact">
-                  Let's talk
-                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="text-base px-8">
-                <Link to="/company">About us</Link>
-              </Button>
-            </div>
+            <Button 
+              asChild 
+              size="lg" 
+              className="bg-background text-foreground hover:bg-background/90 text-base px-8 h-14 rounded-full group"
+            >
+              <Link to="/contact">
+                Get in touch
+                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </Button>
           </ScrollReveal>
         </div>
       </section>

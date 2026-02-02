@@ -3,82 +3,81 @@
 @tailwind utilities;
 
 /* Pure Coin Design System
-   Bold, confident, inspired by top mobile product companies
-   Colors in HSL format
+   iOS-inspired premium aesthetic
+   Clean, confident, Apple-level polish
 */
 
 @layer base {
   :root {
-    /* Core palette - crisp white base with bold accent */
-    --background: 0 0% 100%; /* Pure white */
-    --foreground: 150 10% 8%; /* Near black with warmth */
+    /* Core palette - Pure Apple-inspired */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 0%;
 
-    /* Card surfaces */
-    --card: 150 5% 97%;
-    --card-foreground: 150 10% 8%;
+    /* Card surfaces - subtle warmth */
+    --card: 0 0% 98%;
+    --card-foreground: 0 0% 0%;
 
     /* Popover */
     --popover: 0 0% 100%;
-    --popover-foreground: 150 10% 8%;
+    --popover-foreground: 0 0% 0%;
 
-    /* Primary - bold lime green inspired by Wise */
-    --primary: 82 77% 55%; /* Vibrant lime */
-    --primary-foreground: 150 10% 8%;
+    /* Primary - Deep electric blue */
+    --primary: 221 83% 53%;
+    --primary-foreground: 0 0% 100%;
 
-    /* Secondary - soft warm gray */
-    --secondary: 150 5% 94%;
-    --secondary-foreground: 150 10% 20%;
+    /* Secondary - Soft gray */
+    --secondary: 240 5% 96%;
+    --secondary-foreground: 0 0% 20%;
 
-    /* Muted */
-    --muted: 150 5% 92%;
-    --muted-foreground: 150 5% 45%;
+    /* Muted - Subtle gray */
+    --muted: 240 5% 96%;
+    --muted-foreground: 0 0% 45%;
 
-    /* Accent - same as primary */
-    --accent: 82 77% 55%;
-    --accent-foreground: 150 10% 8%;
+    /* Accent - matches primary */
+    --accent: 221 83% 53%;
+    --accent-foreground: 0 0% 100%;
 
     /* Destructive */
-    --destructive: 0 72% 51%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
     /* Border and input */
-    --border: 150 5% 88%;
-    --input: 150 5% 88%;
-    --ring: 82 77% 55%;
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 221 83% 53%;
 
-    /* Border radius */
-    --radius: 1rem;
+    /* Border radius - iOS-like */
+    --radius: 0.875rem;
 
     /* Sidebar */
     --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 150 10% 8%;
-    --sidebar-primary: 82 77% 55%;
-    --sidebar-primary-foreground: 150 10% 8%;
-    --sidebar-accent: 150 5% 94%;
-    --sidebar-accent-foreground: 150 10% 8%;
-    --sidebar-border: 150 5% 88%;
-    --sidebar-ring: 82 77% 55%;
+    --sidebar-foreground: 0 0% 0%;
+    --sidebar-primary: 221 83% 53%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 5% 96%;
+    --sidebar-accent-foreground: 0 0% 0%;
+    --sidebar-border: 0 0% 90%;
+    --sidebar-ring: 221 83% 53%;
   }
 
-  /* Dark mode */
   .dark {
-    --background: 150 10% 6%;
+    --background: 0 0% 0%;
     --foreground: 0 0% 98%;
-    --card: 150 8% 10%;
+    --card: 0 0% 6%;
     --card-foreground: 0 0% 98%;
-    --popover: 150 8% 10%;
+    --popover: 0 0% 6%;
     --popover-foreground: 0 0% 98%;
-    --primary: 82 77% 55%;
-    --primary-foreground: 150 10% 8%;
-    --secondary: 150 5% 15%;
+    --primary: 221 83% 53%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 12%;
     --secondary-foreground: 0 0% 85%;
-    --muted: 150 5% 18%;
+    --muted: 0 0% 15%;
     --muted-foreground: 0 0% 60%;
-    --accent: 82 77% 55%;
-    --accent-foreground: 150 10% 8%;
-    --border: 150 5% 20%;
-    --input: 150 5% 20%;
-    --ring: 82 77% 55%;
+    --accent: 221 83% 53%;
+    --accent-foreground: 0 0% 100%;
+    --border: 0 0% 18%;
+    --input: 0 0% 18%;
+    --ring: 221 83% 53%;
   }
 }
 
@@ -94,20 +93,21 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans;
+    @apply bg-background text-foreground;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
   }
 
-  /* Typography scale */
+  /* Apple-like Typography */
   h1 {
-    @apply text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.05];
+    @apply text-5xl md:text-6xl lg:text-[5rem] font-semibold tracking-[-0.03em] leading-[1.05];
   }
 
   h2 {
-    @apply text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.1];
+    @apply text-3xl md:text-4xl lg:text-5xl font-semibold tracking-[-0.02em] leading-[1.1];
   }
 
   h3 {
-    @apply text-xl md:text-2xl font-semibold tracking-tight leading-[1.2];
+    @apply text-xl md:text-2xl font-semibold tracking-[-0.01em] leading-[1.2];
   }
 
   p {
@@ -116,29 +116,35 @@
 }
 
 @layer components {
-  /* Bold card effect */
-  .bold-card {
-    @apply bg-card border border-border rounded-2xl shadow-sm;
-  }
-
-  /* Primary gradient background */
-  .gradient-primary {
-    background: linear-gradient(135deg, hsl(82 77% 55%) 0%, hsl(82 77% 45%) 100%);
-  }
-
   /* Section container */
   .section-container {
-    @apply max-w-7xl mx-auto px-6 md:px-8 lg:px-12;
+    @apply max-w-6xl mx-auto px-6 md:px-8;
+  }
+
+  /* iOS-like card */
+  .ios-card {
+    @apply bg-card rounded-2xl border border-border/50;
+  }
+
+  /* Glass effect */
+  .glass {
+    @apply bg-background/80 backdrop-blur-xl;
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(180deg, hsl(var(--foreground)) 0%, hsl(var(--muted-foreground)) 100%);
   }
 
   /* Fade animations */
   .fade-in {
-    animation: fadeIn 0.6s ease-out forwards;
+    animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     opacity: 0;
   }
 
   .fade-in-up {
-    animation: fadeInUp 0.6s ease-out forwards;
+    animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     opacity: 0;
   }
 
@@ -150,13 +156,6 @@
   .stagger-5 { animation-delay: 0.5s; }
 }
 
-@layer utilities {
-  /* Text gradient */
-  .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-foreground to-muted-foreground;
-  }
-}
-
 /* Keyframe animations */
 @keyframes fadeIn {
   from { opacity: 0; }
@@ -166,7 +165,7 @@
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(24px);
+    transform: translateY(32px);
   }
   to {
     opacity: 1;
@@ -177,7 +176,7 @@
 @keyframes slideUp {
   from {
     opacity: 0;
-    transform: translateY(40px);
+    transform: translateY(48px);
   }
   to {
     opacity: 1;
@@ -186,5 +185,16 @@
 }
 
 .slide-up {
-  animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: slideUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Smooth hover transitions */
+@layer utilities {
+  .hover-lift {
+    @apply transition-all duration-300 ease-out;
+  }
+  
+  .hover-lift:hover {
+    transform: translateY(-4px);
+  }
 }

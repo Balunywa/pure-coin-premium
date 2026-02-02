@@ -20,12 +20,11 @@ const Contact = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
     toast({
       title: 'Message sent',
-      description: "We'll get back to you within 24 hours.",
+      description: "We'll get back to you soon.",
     });
 
     setFormData({ name: '', email: '', message: '' });
@@ -42,30 +41,36 @@ const Contact = () => {
   return (
     <PageLayout>
       {/* Hero */}
-      <section className="pt-32 pb-20 md:pt-40 md:pb-32">
-        <div className="section-container">
-          <div className="max-w-2xl">
-            <ScrollReveal>
-              <h1 className="mb-6">Let's talk.</h1>
-            </ScrollReveal>
-            <ScrollReveal delay={100}>
-              <p className="text-xl md:text-2xl text-muted-foreground">
-                Questions about CrewvoPay? Want to partner? Just want to say hi? We're here.
-              </p>
-            </ScrollReveal>
-          </div>
+      <section className="min-h-[60vh] flex items-center justify-center">
+        <div className="section-container text-center py-32">
+          <ScrollReveal>
+            <p className="text-primary font-medium text-sm tracking-wide uppercase mb-6">
+              Contact
+            </p>
+          </ScrollReveal>
+          <ScrollReveal delay={100}>
+            <h1 className="mb-8 max-w-3xl mx-auto">
+              Let's talk.
+            </h1>
+          </ScrollReveal>
+          <ScrollReveal delay={200}>
+            <p className="text-xl md:text-2xl text-muted-foreground max-w-xl mx-auto font-normal">
+              Questions, partnerships, or just saying hi.
+              We're here.
+            </p>
+          </ScrollReveal>
         </div>
       </section>
 
       {/* Contact Content */}
-      <section className="pb-24 md:pb-32">
+      <section className="pb-32 md:pb-40">
         <div className="section-container">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
             {/* Form */}
             <ScrollReveal>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium mb-2">
+                  <label htmlFor="name" className="block text-sm font-medium mb-3">
                     Name
                   </label>
                   <Input
@@ -76,12 +81,12 @@ const Contact = () => {
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="h-12"
+                    className="h-14 rounded-xl"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium mb-2">
+                  <label htmlFor="email" className="block text-sm font-medium mb-3">
                     Email
                   </label>
                   <Input
@@ -92,12 +97,12 @@ const Contact = () => {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="h-12"
+                    className="h-14 rounded-xl"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium mb-2">
+                  <label htmlFor="message" className="block text-sm font-medium mb-3">
                     Message
                   </label>
                   <Textarea
@@ -108,7 +113,7 @@ const Contact = () => {
                     onChange={handleChange}
                     required
                     rows={6}
-                    className="resize-none"
+                    className="resize-none rounded-xl"
                   />
                 </div>
 
@@ -116,7 +121,7 @@ const Contact = () => {
                   type="submit" 
                   size="lg" 
                   disabled={isSubmitting}
-                  className="w-full sm:w-auto text-base px-8 group"
+                  className="w-full sm:w-auto text-base px-8 h-14 rounded-full group"
                 >
                   {isSubmitting ? 'Sending...' : 'Send message'}
                   {!isSubmitting && (
@@ -127,52 +132,49 @@ const Contact = () => {
             </ScrollReveal>
 
             {/* Contact Info */}
-            <div>
+            <div className="space-y-6">
               <ScrollReveal delay={100}>
-                <div className="bg-muted rounded-3xl p-8 mb-8">
-                  <h3 className="mb-6">Other ways to reach us</h3>
-                  <div className="space-y-6">
-                    <div className="flex items-start gap-4">
-                      <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-                        <Mail className="w-5 h-5 text-primary" />
-                      </div>
-                      <div>
-                        <p className="font-medium mb-1">Email</p>
-                        <a 
-                          href="mailto:hello@purecoin.ug" 
-                          className="text-muted-foreground hover:text-foreground transition-colors"
-                        >
-                          hello@purecoin.ug
-                        </a>
-                      </div>
+                <div className="p-8 rounded-3xl bg-muted">
+                  <div className="flex items-start gap-4 mb-6">
+                    <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <Mail className="w-5 h-5 text-primary" />
                     </div>
+                    <div>
+                      <p className="font-medium mb-1">Email</p>
+                      <a 
+                        href="mailto:hello@purecoin.ug" 
+                        className="text-muted-foreground hover:text-foreground transition-colors"
+                      >
+                        hello@purecoin.ug
+                      </a>
+                    </div>
+                  </div>
 
-                    <div className="flex items-start gap-4">
-                      <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-                        <MapPin className="w-5 h-5 text-primary" />
-                      </div>
-                      <div>
-                        <p className="font-medium mb-1">Location</p>
-                        <p className="text-muted-foreground">
-                          Kampala, Uganda
-                        </p>
-                      </div>
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <MapPin className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                      <p className="font-medium mb-1">Location</p>
+                      <p className="text-muted-foreground">
+                        Kampala, Uganda
+                      </p>
                     </div>
                   </div>
                 </div>
               </ScrollReveal>
 
               <ScrollReveal delay={200}>
-                <div className="bg-foreground text-background rounded-3xl p-8">
-                  <h3 className="text-background mb-4">For CrewvoPay support</h3>
-                  <p className="text-background/70 mb-4">
-                    If you're a CrewvoPay user and need help with your account or a transaction:
+                <div className="p-8 rounded-3xl bg-foreground text-background">
+                  <h3 className="text-background mb-3">CrewvoPay support</h3>
+                  <p className="text-background/60 mb-4">
+                    Need help with your account or a transaction?
                   </p>
                   <a 
-                    href="mailto:support@crewvopay.ug"
+                    href="mailto:support@crewvopay.com"
                     className="text-primary font-medium hover:underline"
                   >
-                    support@crewvopay.ug
+                    support@crewvopay.com
                   </a>
                 </div>
               </ScrollReveal>
