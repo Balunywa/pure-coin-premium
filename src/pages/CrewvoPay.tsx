@@ -67,8 +67,8 @@ const CrewvoPay = () => {
           </ScrollReveal>
           <ScrollReveal delay={200}>
             <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-12 font-normal">
-              Send money to anyone in Uganda. Track your balance. 
-              Move funds seamlessly. All in one app.
+              Send money instantly. Track every transaction. 
+              A payment experience designed for real life.
             </p>
           </ScrollReveal>
           <ScrollReveal delay={300}>
@@ -240,7 +240,7 @@ const CrewvoPay = () => {
           </ScrollReveal>
           <ScrollReveal delay={100}>
             <p className="text-lg text-muted-foreground mb-12 max-w-xl mx-auto">
-              Join the future of money movement in Uganda.
+              Experience the future of mobile payments.
             </p>
           </ScrollReveal>
           <ScrollReveal delay={200}>
