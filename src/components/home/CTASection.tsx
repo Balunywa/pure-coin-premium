@@ -16,11 +16,10 @@ export const CTASection = () => {
             background: 'radial-gradient(circle, hsl(0 0% 100% / 0.04) 0%, transparent 70%)',
           }}
           animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.5, 0.3],
+            opacity: [0.3, 0.45, 0.3],
           }}
           transition={{
-            duration: 6,
+            duration: 8,
             repeat: Infinity,
             ease: 'easeInOut',
           }}

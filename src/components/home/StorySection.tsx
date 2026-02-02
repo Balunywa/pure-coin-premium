@@ -1,4 +1,4 @@
-import { motion, useMotionValue, useSpring, useScroll, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useRef } from 'react';
 import { FadeIn } from '@/components/ui/AnimatedText';
 import { Star, Wand2, Gem } from 'lucide-react';
@@ -35,55 +35,22 @@ const principles = [
 
 export const StorySection = () => {
   const sectionRef = useRef<HTMLDivElement | null>(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start end', 'end start'],
-  });
-  const parallaxY = useTransform(scrollYProgress, [0, 1], [-40, 40]);
-
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const glowX = useSpring(mouseX, { stiffness: 120, damping: 20 });
-  const glowY = useSpring(mouseY, { stiffness: 120, damping: 20 });
-
-  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
-    const rect = event.currentTarget.getBoundingClientRect();
-    mouseX.set(event.clientX - rect.left);
-    mouseY.set(event.clientY - rect.top);
-  };
 
   return (
     <section
       ref={sectionRef}
-      onMouseMove={handleMouseMove}
       className="py-32 md:py-48 relative overflow-hidden"
     >
       {/* Moving linework background */}
       <div className="absolute inset-0 pointer-events-none">
-        <motion.div style={{ y: parallaxY }} className="absolute inset-0 bg-grid opacity-20" />
-        <motion.div style={{ y: parallaxY }} className="absolute inset-0 bg-lines animate-lines" />
-        <motion.div
+        <div className="absolute inset-0 bg-grid opacity-20" />
+        <div
           className="absolute -top-40 left-1/2 -translate-x-1/2 w-[900px] h-[900px] rounded-full"
           style={{
-            y: parallaxY,
             background: 'radial-gradient(circle, hsl(0 0% 100% / 0.04) 0%, transparent 70%)',
           }}
         />
       </div>
-
-      {/* Cursor glow */}
-      <motion.div
-        className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2"
-        style={{
-          left: glowX,
-          top: glowY,
-          width: 320,
-          height: 320,
-          background: 'radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 65%)',
-          filter: 'blur(8px)',
-          opacity: 0.6,
-        }}
-      />
 
       <div className="section-container relative z-10">
         <div className="max-w-5xl mx-auto">

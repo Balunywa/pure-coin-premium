@@ -64,7 +64,7 @@ export const BentoGrid = () => {
               <FadeIn key={feature.title} delay={index * 0.05}>
                 <motion.div
                   className={`${feature.span} p-8 lux-card group cursor-default`}
-                  whileHover={{ scale: 1.01, y: -2 }}
+                  whileHover={{ y: -2 }}
                   transition={{
                     type: 'spring',
                     stiffness: 400,

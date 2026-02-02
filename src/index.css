@@ -93,12 +93,15 @@
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
   }
 
   body {
     @apply bg-background text-foreground dark;
     font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
     cursor: none;
+    overflow-x: hidden;
+    position: relative;
   }
 
   @media (max-width: 768px) {
@@ -282,7 +285,7 @@
     background-size: 32px 32px;
   }
 
-  /* Animated linework background */
+/* Animated linework background - reduced motion */
   .bg-lines {
     background-image:
       linear-gradient(90deg, hsl(var(--border) / 0.25) 1px, transparent 1px),
@@ -434,7 +437,7 @@
     radial-gradient(40% 40% at 60% 90%, hsl(0 0% 90% / 0.025) 0%, transparent 60%);
 }
 
-/* Premium card treatment - Black Glass ISO 18 with 3D depth */
+/* Premium card treatment - Black Glass ISO 18 */
 .lux-card {
   position: relative;
   border-radius: 1.5rem;
@@ -451,8 +454,6 @@
     0 8px 32px rgba(0, 0, 0, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.05),
     inset 0 -1px 0 rgba(0, 0, 0, 0.25);
-  transform-style: preserve-3d;
-  perspective: 1000px;
 }
 
 .lux-card:hover {
@@ -467,16 +468,7 @@
     0 0 80px rgba(255, 255, 255, 0.03),
     inset 0 1px 0 rgba(255, 255, 255, 0.08),
     inset 0 -1px 0 rgba(0, 0, 0, 0.3);
-  transform: translateY(-2px) scale(1.005);
-}
-
-/* 3D card tilt on hover */
-.lux-card-3d {
-  transition: transform 0.2s ease-out;
-}
-
-.lux-card-3d:hover {
-  transform: rotateX(2deg) rotateY(-2deg) translateZ(10px);
+  transform: translateY(-2px);
 }
 
 .lux-card::before {

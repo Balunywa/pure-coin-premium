@@ -54,7 +54,7 @@ export const HeroSection = () => {
             transition={{ duration: 0.8, delay: 0.3, ease: [0.25, 0.4, 0.25, 1] }}
             className="flex flex-col sm:flex-row gap-4 justify-center"
           >
-            <MagneticButton strength={0.15}>
+            <MagneticButton strength={0.08}>
               <Button 
                 asChild 
                 size="lg" 
@@ -66,7 +66,7 @@ export const HeroSection = () => {
                 </Link>
               </Button>
             </MagneticButton>
-            <MagneticButton strength={0.12}>
+            <MagneticButton strength={0.06}>
               <Button 
                 asChild 
                 variant="outline" 

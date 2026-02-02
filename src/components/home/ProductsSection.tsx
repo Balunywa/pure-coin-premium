@@ -41,7 +41,7 @@ export const ProductsSection = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group lux-card block p-10 md:p-12 transition-all duration-500 elevation-2 hover:elevation-4"
-                  whileHover={{ scale: 1.01, y: -4 }}
+                  whileHover={{ y: -4 }}
                   transition={{ 
                     type: 'spring',
                     stiffness: 400,

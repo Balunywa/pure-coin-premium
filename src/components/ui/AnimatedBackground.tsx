@@ -22,11 +22,10 @@ export const AnimatedBackground = () => {
           background: 'radial-gradient(circle, hsl(0 0% 100% / 0.05) 0%, transparent 70%)',
         }}
         animate={{
-          scale: [1, 1.12, 1],
-          opacity: [0.25, 0.45, 0.25],
+          opacity: [0.25, 0.4, 0.25],
         }}
         transition={{
-          duration: 10,
+          duration: 12,
           repeat: Infinity,
           ease: 'easeInOut',
         }}
@@ -38,11 +37,10 @@ export const AnimatedBackground = () => {
           background: 'radial-gradient(circle, hsl(0 0% 90% / 0.04) 0%, transparent 70%)',
         }}
         animate={{
-          scale: [1, 1.18, 1],
-          opacity: [0.18, 0.38, 0.18],
+          opacity: [0.18, 0.32, 0.18],
         }}
         transition={{
-          duration: 12,
+          duration: 14,
           repeat: Infinity,
           ease: 'easeInOut',
           delay: 1,

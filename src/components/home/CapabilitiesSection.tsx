@@ -63,7 +63,7 @@ export const CapabilitiesSection = () => {
               <FadeIn key={capability.title} delay={index * 0.05}>
                 <motion.div
                   className="group relative p-8 rounded-3xl border border-border/40 bg-card/20 backdrop-blur-sm overflow-hidden cursor-default"
-                  whileHover={{ scale: 1.02, y: -4 }}
+                  whileHover={{ y: -2 }}
                   transition={{
                     type: 'spring',
                     stiffness: 400,
