@@ -1,170 +1,171 @@
-import { useState } from 'react';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
-import { GlassCard } from '@/components/ui/GlassCard';
-import { cn } from '@/lib/utils';
-
-const tabs = ['Privacy Policy', 'Terms of Service'];
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const Legal = () => {
-  const [activeTab, setActiveTab] = useState(0);
-
   return (
     <PageLayout>
       {/* Hero */}
       <section className="pt-32 pb-12 md:pt-40 md:pb-16">
         <div className="section-container">
           <ScrollReveal>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight leading-[1.1] mb-6">
-              Legal
-            </h1>
-          </ScrollReveal>
-          <ScrollReveal delay={100}>
-            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl">
-              Transparency and trust are core to how we operate.
+            <h1 className="mb-6">Legal</h1>
+            <p className="text-xl text-muted-foreground max-w-2xl">
+              The fine print. We keep it straightforward.
             </p>
           </ScrollReveal>
         </div>
       </section>
 
-      {/* Tabs */}
-      <section className="pb-20 md:pb-32">
+      {/* Content */}
+      <section className="pb-24 md:pb-32">
         <div className="section-container">
           <ScrollReveal>
-            <div className="flex gap-2 mb-8">
-              {tabs.map((tab, index) => (
-                <button
-                  key={tab}
-                  onClick={() => setActiveTab(index)}
-                  className={cn(
-                    'px-4 py-2 rounded-lg text-sm font-medium transition-all',
-                    activeTab === index
-                      ? 'bg-primary text-primary-foreground'
-                      : 'bg-secondary/50 text-muted-foreground hover:text-foreground hover:bg-secondary'
-                  )}
+            <Tabs defaultValue="privacy" className="w-full">
+              <TabsList className="w-full sm:w-auto mb-8 h-auto p-1 bg-muted rounded-xl">
+                <TabsTrigger 
+                  value="privacy" 
+                  className="rounded-lg px-6 py-3 data-[state=active]:bg-background"
                 >
-                  {tab}
-                </button>
-              ))}
-            </div>
-          </ScrollReveal>
+                  Privacy Policy
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="terms"
+                  className="rounded-lg px-6 py-3 data-[state=active]:bg-background"
+                >
+                  Terms of Service
+                </TabsTrigger>
+              </TabsList>
 
-          <ScrollReveal delay={100}>
-            <GlassCard className="prose prose-invert max-w-none">
-              {activeTab === 0 ? (
-                <div className="space-y-6">
-                  <h2 className="text-2xl font-semibold mb-4">Privacy Policy</h2>
-                  <p className="text-muted-foreground">Last updated: February 2026</p>
+              <TabsContent value="privacy" className="mt-0">
+                <div className="bg-card border border-border rounded-3xl p-8 md:p-12">
+                  <div className="prose prose-lg max-w-none">
+                    <p className="text-sm text-muted-foreground mb-8">
+                      Last updated: January 2025
+                    </p>
 
-                  <div className="space-y-6 text-muted-foreground">
-                    <div>
-                      <h3 className="text-lg font-medium text-foreground mb-2">1. Information We Collect</h3>
-                      <p>We collect information you provide directly to us, including your name, email address, phone number, and mobile money account details when you create an account or use our services.</p>
-                    </div>
+                    <h2 className="text-2xl font-bold mt-0 mb-4">Privacy Policy</h2>
+                    <p className="text-muted-foreground mb-6">
+                      Pure Coin Innovations Ltd ("we", "our", "us") respects your privacy. This policy explains how we collect, use, and protect your information when you use CrewvoPay.
+                    </p>
 
-                    <div>
-                      <h3 className="text-lg font-medium text-foreground mb-2">2. How We Use Your Information</h3>
-                      <p>We use the information we collect to provide, maintain, and improve our services, process transactions, send you technical notices and support messages, and respond to your comments and questions.</p>
-                    </div>
+                    <h3 className="text-xl font-semibold mt-8 mb-4">Information We Collect</h3>
+                    <p className="text-muted-foreground mb-4">We collect information you provide directly:</p>
+                    <ul className="list-disc pl-6 text-muted-foreground space-y-2 mb-6">
+                      <li>Phone number and name for account creation</li>
+                      <li>Transaction data when you send or receive money</li>
+                      <li>Device information for security purposes</li>
+                      <li>Support correspondence when you contact us</li>
+                    </ul>
 
-                    <div>
-                      <h3 className="text-lg font-medium text-foreground mb-2">3. Information Sharing</h3>
-                      <p>We do not sell, trade, or otherwise transfer your personal information to third parties except as described in this policy. We may share information with service providers who assist us in operating our platform.</p>
-                    </div>
+                    <h3 className="text-xl font-semibold mt-8 mb-4">How We Use Your Information</h3>
+                    <ul className="list-disc pl-6 text-muted-foreground space-y-2 mb-6">
+                      <li>To provide and improve our services</li>
+                      <li>To process transactions you initiate</li>
+                      <li>To communicate with you about your account</li>
+                      <li>To detect and prevent fraud</li>
+                      <li>To comply with legal requirements</li>
+                    </ul>
 
-                    <div>
-                      <h3 className="text-lg font-medium text-foreground mb-2">4. Data Security</h3>
-                      <p>We implement appropriate technical and organizational measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction.</p>
-                    </div>
+                    <h3 className="text-xl font-semibold mt-8 mb-4">Data Security</h3>
+                    <p className="text-muted-foreground mb-6">
+                      We use industry-standard encryption to protect your data. All transactions are secured with TLS encryption. We never store your mobile money PIN.
+                    </p>
 
-                    <div>
-                      <h3 className="text-lg font-medium text-foreground mb-2">5. Your Rights</h3>
-                      <p>You have the right to access, update, or delete your personal information. You may also opt out of receiving promotional communications from us.</p>
-                    </div>
+                    <h3 className="text-xl font-semibold mt-8 mb-4">Your Rights</h3>
+                    <p className="text-muted-foreground mb-6">
+                      You can request access to your data, correction of inaccuracies, or deletion of your account at any time. Contact us at privacy@purecoin.ug.
+                    </p>
 
-                    <div>
-                      <h3 className="text-lg font-medium text-foreground mb-2">6. Contact Us</h3>
-                      <p>If you have questions about this Privacy Policy, please contact us at <a href="mailto:privacy@purecoin.ug" className="text-primary hover:opacity-80">privacy@purecoin.ug</a></p>
-                    </div>
+                    <h3 className="text-xl font-semibold mt-8 mb-4">Contact</h3>
+                    <p className="text-muted-foreground">
+                      Questions about privacy? Email us at{' '}
+                      <a href="mailto:privacy@purecoin.ug" className="text-primary hover:underline">
+                        privacy@purecoin.ug
+                      </a>
+                    </p>
                   </div>
                 </div>
-              ) : (
-                <div className="space-y-6">
-                  <h2 className="text-2xl font-semibold mb-4">Terms of Service</h2>
-                  <p className="text-muted-foreground">Last updated: February 2026</p>
+              </TabsContent>
 
-                  <div className="space-y-6 text-muted-foreground">
-                    <div>
-                      <h3 className="text-lg font-medium text-foreground mb-2">1. Acceptance of Terms</h3>
-                      <p>By accessing or using CrewvoPay services, you agree to be bound by these Terms of Service. If you do not agree to these terms, you may not use our services.</p>
-                    </div>
+              <TabsContent value="terms" className="mt-0">
+                <div className="bg-card border border-border rounded-3xl p-8 md:p-12">
+                  <div className="prose prose-lg max-w-none">
+                    <p className="text-sm text-muted-foreground mb-8">
+                      Last updated: January 2025
+                    </p>
 
-                    <div>
-                      <h3 className="text-lg font-medium text-foreground mb-2">2. Eligibility</h3>
-                      <p>You must be at least 18 years old and have a valid mobile money account in Uganda to use our services. By using CrewvoPay, you represent that you meet these requirements.</p>
-                    </div>
+                    <h2 className="text-2xl font-bold mt-0 mb-4">Terms of Service</h2>
+                    <p className="text-muted-foreground mb-6">
+                      These terms govern your use of CrewvoPay, operated by Pure Coin Innovations Ltd. By using our service, you agree to these terms.
+                    </p>
 
-                    <div>
-                      <h3 className="text-lg font-medium text-foreground mb-2">3. Account Responsibilities</h3>
-                      <p>You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account. Notify us immediately of any unauthorized use.</p>
-                    </div>
+                    <h3 className="text-xl font-semibold mt-8 mb-4">Eligibility</h3>
+                    <p className="text-muted-foreground mb-6">
+                      You must be at least 18 years old and a resident of Uganda to use CrewvoPay. You must have a valid mobile money account.
+                    </p>
 
-                    <div>
-                      <h3 className="text-lg font-medium text-foreground mb-2">4. Prohibited Activities</h3>
-                      <p>You may not use our services for any illegal purposes, to transmit harmful content, or to engage in fraudulent activities. We reserve the right to suspend accounts that violate these terms.</p>
-                    </div>
+                    <h3 className="text-xl font-semibold mt-8 mb-4">Account Responsibility</h3>
+                    <p className="text-muted-foreground mb-6">
+                      You are responsible for maintaining the security of your account. Keep your credentials private. Report unauthorized access immediately.
+                    </p>
 
-                    <div>
-                      <h3 className="text-lg font-medium text-foreground mb-2">5. Limitation of Liability</h3>
-                      <p>Pure Coin shall not be liable for any indirect, incidental, or consequential damages arising from your use of our services. Our total liability shall not exceed the amount of fees paid by you in the preceding 12 months.</p>
-                    </div>
+                    <h3 className="text-xl font-semibold mt-8 mb-4">Acceptable Use</h3>
+                    <p className="text-muted-foreground mb-4">You agree not to:</p>
+                    <ul className="list-disc pl-6 text-muted-foreground space-y-2 mb-6">
+                      <li>Use the service for illegal purposes</li>
+                      <li>Attempt to circumvent security measures</li>
+                      <li>Interfere with other users' accounts</li>
+                      <li>Submit false or misleading information</li>
+                    </ul>
 
-                    <div>
-                      <h3 className="text-lg font-medium text-foreground mb-2">6. Changes to Terms</h3>
-                      <p>We may update these terms from time to time. We will notify you of any material changes by posting the new terms on our platform and updating the "Last updated" date.</p>
-                    </div>
+                    <h3 className="text-xl font-semibold mt-8 mb-4">Fees</h3>
+                    <p className="text-muted-foreground mb-6">
+                      Fees are displayed before you confirm each transaction. We may update fees with reasonable notice. Current fees are always visible in the app.
+                    </p>
 
-                    <div>
-                      <h3 className="text-lg font-medium text-foreground mb-2">7. Contact</h3>
-                      <p>For questions about these Terms, contact us at <a href="mailto:legal@purecoin.ug" className="text-primary hover:opacity-80">legal@purecoin.ug</a></p>
-                    </div>
+                    <h3 className="text-xl font-semibold mt-8 mb-4">Disputes</h3>
+                    <p className="text-muted-foreground mb-6">
+                      If you believe a transaction was processed incorrectly, contact us within 30 days. We'll investigate and respond within 10 business days.
+                    </p>
+
+                    <h3 className="text-xl font-semibold mt-8 mb-4">Limitation of Liability</h3>
+                    <p className="text-muted-foreground mb-6">
+                      We're not liable for losses caused by factors outside our control, including mobile network outages or unauthorized account access due to your negligence.
+                    </p>
+
+                    <h3 className="text-xl font-semibold mt-8 mb-4">Contact</h3>
+                    <p className="text-muted-foreground">
+                      Legal questions? Email{' '}
+                      <a href="mailto:legal@purecoin.ug" className="text-primary hover:underline">
+                        legal@purecoin.ug
+                      </a>
+                    </p>
                   </div>
                 </div>
-              )}
-            </GlassCard>
+              </TabsContent>
+            </Tabs>
           </ScrollReveal>
         </div>
       </section>
 
-      {/* Support Section */}
-      <section className="py-20 md:py-32 border-t border-border/30">
+      {/* Support CTA */}
+      <section className="pb-24 md:pb-32">
         <div className="section-container">
-          <div className="max-w-xl">
-            <ScrollReveal>
-              <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-6">
-                Need help?
-              </h2>
-            </ScrollReveal>
-            <ScrollReveal delay={100}>
-              <p className="text-lg text-muted-foreground mb-6">
-                If you have questions about our policies or need assistance with your account, our support team is here to help.
+          <ScrollReveal>
+            <div className="bg-muted rounded-3xl p-8 md:p-12 text-center">
+              <h2 className="text-2xl md:text-3xl font-bold mb-4">Still have questions?</h2>
+              <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
+                Our support team is happy to clarify anything about our policies.
               </p>
-              <div className="space-y-2">
-                <p className="text-foreground">
-                  <span className="text-muted-foreground">Email: </span>
-                  <a href="mailto:support@purecoin.ug" className="text-primary hover:opacity-80 transition-opacity">
-                    support@purecoin.ug
-                  </a>
-                </p>
-                <p className="text-foreground">
-                  <span className="text-muted-foreground">Phone: </span>
-                  <a href="tel:+256700000000" className="text-primary hover:opacity-80 transition-opacity">
-                    +256 700 000 000
-                  </a>
-                </p>
-              </div>
-            </ScrollReveal>
-          </div>
+              <a 
+                href="mailto:support@purecoin.ug"
+                className="text-primary font-semibold hover:underline"
+              >
+                support@purecoin.ug
+              </a>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
     </PageLayout>
