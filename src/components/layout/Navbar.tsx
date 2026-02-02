@@ -52,7 +52,7 @@ export const Navbar = () => {
             to="/"
             className="text-lg font-semibold tracking-tight text-foreground hover:opacity-70 transition-opacity"
           >
-            Pure Coin
+            Pure Coin Innovations
           </Link>
 
           {/* Desktop Navigation */}
