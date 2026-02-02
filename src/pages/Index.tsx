@@ -59,40 +59,36 @@ const Index = () => {
       </section>
 
       {/* Featured Product - CrewvoPay */}
-      <section className="py-32 md:py-40 relative overflow-hidden">
+      <section className="py-32 md:py-40 bg-foreground text-background relative overflow-hidden">
         <div className="section-container relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
             <div>
               <ScrollReveal>
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/20 border border-primary/30 mb-6">
-                  <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/20 mb-6">
                   <span className="text-primary font-medium text-xs uppercase tracking-wider">Flagship Product</span>
                 </div>
               </ScrollReveal>
               <ScrollReveal delay={100}>
-                <h2 className="mb-6">
+                <h2 className="text-background mb-6">
                   CrewvoPay
                 </h2>
               </ScrollReveal>
               <ScrollReveal delay={150}>
-                <p className="text-xl text-muted-foreground mb-6 leading-relaxed">
-                  The way money should move. Send to friends. Request what you're owed. 
-                  Split bills. Collect from groups. All with your personal QR code.
+                <p className="text-xl text-background/70 mb-8 leading-relaxed">
+                  Instant money transfers. Seamless mobile payments.
+                  Built for speed, designed for everyone.
                 </p>
               </ScrollReveal>
               <ScrollReveal delay={200}>
                 <div className="flex flex-wrap gap-2 mb-10">
-                  <span className="px-4 py-2 bg-card backdrop-blur rounded-full text-sm text-muted-foreground border border-border">
-                    QR Payments
+                  <span className="px-4 py-2 bg-background/10 backdrop-blur rounded-full text-sm text-background/90 border border-background/10">
+                    iOS & Android
                   </span>
-                  <span className="px-4 py-2 bg-card backdrop-blur rounded-full text-sm text-muted-foreground border border-border">
-                    @tag Transfers
+                  <span className="px-4 py-2 bg-background/10 backdrop-blur rounded-full text-sm text-background/90 border border-background/10">
+                    Instant P2P
                   </span>
-                  <span className="px-4 py-2 bg-card backdrop-blur rounded-full text-sm text-muted-foreground border border-border">
-                    Group Pools
-                  </span>
-                  <span className="px-4 py-2 bg-card backdrop-blur rounded-full text-sm text-muted-foreground border border-border">
-                    Bill Splitting
+                  <span className="px-4 py-2 bg-background/10 backdrop-blur rounded-full text-sm text-background/90 border border-background/10">
+                    Mobile Money
                   </span>
                 </div>
               </ScrollReveal>
@@ -112,19 +108,19 @@ const Index = () => {
             <ScrollReveal delay={100}>
               <div className="relative">
                 {/* Premium iPhone mockup */}
-                <div className="relative mx-auto w-[280px] float">
+                <div className="relative mx-auto w-[280px]">
                   {/* Outer glow */}
-                  <div className="absolute inset-0 bg-gradient-to-b from-primary/30 to-primary/5 rounded-[3rem] blur-2xl scale-110 pulse-glow" />
+                  <div className="absolute inset-0 bg-gradient-to-b from-primary/20 to-primary/5 rounded-[3rem] blur-2xl scale-110" />
                   
-                  <div className="relative bg-gradient-to-b from-card to-card/50 backdrop-blur-xl rounded-[3rem] p-3 border border-border shadow-2xl hover-glow transition-all duration-500">
+                  <div className="relative bg-gradient-to-b from-background/15 to-background/5 backdrop-blur-xl rounded-[3rem] p-3 border border-background/20 shadow-2xl">
                     <div className="bg-background rounded-[2.5rem] aspect-[9/19] flex flex-col items-center justify-center overflow-hidden">
                       {/* Screen content */}
-                      <div className="w-full h-full bg-gradient-to-b from-primary/5 via-background to-background flex flex-col items-center justify-center p-8">
+                      <div className="w-full h-full bg-gradient-to-b from-primary/10 via-background to-background flex flex-col items-center justify-center p-8">
                         <div className="w-20 h-20 rounded-[1.75rem] bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center mb-6 shadow-xl shadow-primary/30">
                           <span className="text-primary-foreground font-bold text-3xl">C</span>
                         </div>
                         <p className="font-semibold text-foreground text-lg">CrewvoPay</p>
-                        <p className="text-muted-foreground text-sm mt-1">Scan. Pay. Done.</p>
+                        <p className="text-muted-foreground text-sm mt-1">Move money fast</p>
                       </div>
                     </div>
                   </div>
@@ -203,7 +199,7 @@ const Index = () => {
       </section>
 
       {/* Philosophy - Impactful statement */}
-      <section className="py-32 md:py-40 bg-card relative overflow-hidden">
+      <section className="py-32 md:py-40 bg-muted relative overflow-hidden">
         <div className="section-container relative z-10">
           <ScrollReveal>
             <div className="max-w-4xl mx-auto text-center">
@@ -264,15 +260,15 @@ const Index = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-32 md:py-40 bg-card border-t border-border">
+      <section className="py-32 md:py-40 bg-foreground text-background">
         <div className="section-container text-center">
           <ScrollReveal>
-            <h2 className="mb-6">
+            <h2 className="text-background mb-6">
               Let's build something great.
             </h2>
           </ScrollReveal>
           <ScrollReveal delay={100}>
-            <p className="text-xl text-muted-foreground mb-12 max-w-xl mx-auto">
+            <p className="text-xl text-background/60 mb-12 max-w-xl mx-auto">
               We're always interested in ambitious projects and talented people.
             </p>
           </ScrollReveal>
@@ -280,7 +276,7 @@ const Index = () => {
             <Button 
               asChild 
               size="lg" 
-              className="text-base px-8 h-14 rounded-full group hover-glow"
+              className="bg-background text-foreground hover:bg-background/90 text-base px-8 h-14 rounded-full group"
             >
               <Link to="/contact">
                 Get in touch
