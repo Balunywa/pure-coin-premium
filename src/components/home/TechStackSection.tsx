@@ -33,7 +33,7 @@ const technologies = [
 
 export const TechStackSection = () => {
   return (
-    <section className="py-32 md:py-40 relative overflow-hidden">
+    <section className="py-32 md:py-48 relative overflow-hidden">
       {/* Background accent */}
       <div className="absolute inset-0">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-gradient-radial from-primary/5 to-transparent blur-3xl" />
@@ -42,9 +42,9 @@ export const TechStackSection = () => {
       <div className="section-container relative z-10">
         <FadeIn className="text-center mb-20">
           <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-4 text-label">Technology</p>
-          <h2 className="gradient-text mb-6">Industry standard. Executed flawlessly.</h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            We use the tools that power billion-user platforms—optimized for performance, security, and scale.
+          <h2 className="gradient-text mb-6">Built on the best.</h2>
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-[1.7]">
+            The tools that power billion-user platforms. Optimized for performance and scale.
           </p>
         </FadeIn>
 

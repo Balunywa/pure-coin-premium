@@ -109,21 +109,21 @@
 
   /* Premium Typography - Unique letter style */
   h1 {
-    @apply text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium tracking-[-0.055em] leading-[1.05];
+    @apply text-4xl sm:text-5xl md:text-6xl lg:text-[5rem] xl:text-[5.5rem] font-medium tracking-[-0.055em] leading-[1.05];
     letter-spacing: -0.055em;
     font-feature-settings: 'ss01' on, 'ss02' on, 'cv01' on, 'cv05' on;
     font-variant-numeric: lining-nums;
   }
 
   h2 {
-    @apply text-3xl md:text-4xl lg:text-5xl font-medium tracking-[-0.045em] leading-[1.1];
+    @apply text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-medium tracking-[-0.045em] leading-[1.08];
     letter-spacing: -0.045em;
     font-feature-settings: 'ss01' on, 'cv01' on;
     font-variant-numeric: lining-nums;
   }
 
   h3 {
-    @apply text-xl md:text-2xl font-medium tracking-[-0.03em] leading-[1.18];
+    @apply text-xl md:text-2xl lg:text-3xl font-medium tracking-[-0.03em] leading-[1.18];
     letter-spacing: -0.03em;
     font-feature-settings: 'ss01' on;
   }
@@ -146,7 +146,7 @@
   /* Mono text for technical feel */
   .text-mono {
     font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
-    font-size: 0.875rem;
+    font-size: 0.8125rem;
     letter-spacing: -0.02em;
     font-feature-settings: 'zero' on, 'ss01' on;
   }

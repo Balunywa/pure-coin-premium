@@ -6,7 +6,7 @@ import { ArrowRight, Sparkles } from 'lucide-react';
 
 export const CTASection = () => {
   return (
-    <section className="py-32 md:py-40 relative overflow-hidden">
+    <section className="py-40 md:py-56 relative overflow-hidden">
       {/* Background effects */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-t from-card/50 to-transparent" />
@@ -43,14 +43,13 @@ export const CTASection = () => {
 
           <FadeIn delay={0.1}>
             <h2 className="mb-6">
-              <span className="gradient-text">Ready to build?</span>
+              <span className="gradient-text">Let's build.</span>
             </h2>
           </FadeIn>
 
           <FadeIn delay={0.2}>
-            <p className="text-muted-foreground text-lg md:text-xl mb-12 leading-relaxed max-w-2xl mx-auto">
-              Tell us what you're building. We'll architect the system, design the experience,
-              and deliver a product that performs.
+            <p className="text-muted-foreground text-lg md:text-xl mb-12 leading-[1.7] max-w-2xl mx-auto">
+              Tell us what you're building. We'll architect it, design it, and ship it.
             </p>
           </FadeIn>
 

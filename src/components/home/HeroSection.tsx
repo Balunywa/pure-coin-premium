@@ -10,7 +10,7 @@ export const HeroSection = () => {
     <section className="min-h-[100svh] flex items-center justify-center relative overflow-hidden film-grain">
       <AnimatedBackground />
       
-      <div className="section-container py-32 relative z-10">
+      <div className="section-container py-32 md:py-40 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
           {/* Badge */}
           <motion.div
@@ -21,7 +21,7 @@ export const HeroSection = () => {
           >
             <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border/50 bg-card/50 backdrop-blur-sm text-sm text-muted-foreground">
               <span className="w-2 h-2 rounded-full bg-foreground animate-pulse" />
-              Engineering excellence
+              Built different
             </span>
           </motion.div>
 
@@ -33,7 +33,7 @@ export const HeroSection = () => {
             className="mb-6"
           >
             <span className="gradient-text block">Software that</span>
-            <span className="text-foreground block">defines the standard.</span>
+            <span className="text-foreground block">sets the standard.</span>
           </motion.h1>
           
           {/* Subheadline with gradient */}
@@ -43,8 +43,8 @@ export const HeroSection = () => {
             transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.4, 0.25, 1] }}
             className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-12 leading-relaxed"
           >
-            We engineer products at the intersection of design and performance.
-            <span className="text-foreground/70"> No compromises.</span>
+            We engineer products at the intersection of
+            <span className="text-foreground"> design and performance.</span>
           </motion.p>
           
           {/* CTAs */}
@@ -83,14 +83,14 @@ export const HeroSection = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.5, ease: [0.25, 0.4, 0.25, 1] }}
-            className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4 text-sm text-muted-foreground"
+            className="mt-16 flex flex-col sm:flex-row items-center justify-center gap-4 text-sm text-muted-foreground"
           >
-            <span className="uppercase tracking-[0.2em] text-xs">Proven across</span>
+            <span className="uppercase tracking-[0.25em] text-xs text-label">Trusted in</span>
             <div className="flex items-center gap-3">
-              {['Payments', 'Health', 'Enterprise'].map((label) => (
+              {['Fintech', 'Healthcare', 'Enterprise'].map((label) => (
                 <span
                   key={label}
-                  className="px-3 py-1 rounded-full border border-border/50 bg-card/40 backdrop-blur-sm text-mono"
+                  className="px-3 py-1.5 rounded-full border border-border/50 bg-card/40 backdrop-blur-sm text-xs text-mono"
                 >
                   {label}
                 </span>

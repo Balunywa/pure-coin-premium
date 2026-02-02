@@ -6,31 +6,31 @@ import { Star, Wand2, Gem } from 'lucide-react';
 const storySteps = [
   {
     title: 'Discovery',
-    description: 'We frame the vision, define the problem, and align on measurable outcomes.',
+    description: 'Define the vision. Align on outcomes. Map the technical architecture.',
     icon: Star,
   },
   {
     title: 'Design',
-    description: 'We design a premium experience, iterate quickly, and refine the details that matter.',
+    description: 'Craft the system. Refine every interaction. Build the foundation.',
     icon: Wand2,
   },
   {
     title: 'Delivery',
-    description: 'We build with precision, launch confidently, and improve with real user signals.',
+    description: 'Ship with confidence. Monitor performance. Iterate with data.',
     icon: Gem,
   },
 ];
 
 const metrics = [
-  { label: 'Years in product', value: '10+' },
-  { label: 'Products shipped', value: '25+' },
-  { label: 'Avg. launch time', value: '10–14 wks' },
+  { label: 'Engineering years', value: '12+' },
+  { label: 'Products launched', value: '30+' },
+  { label: 'Time to market', value: '8–12 wks' },
 ];
 
 const principles = [
-  'Systematic design language',
-  'Performance-first engineering',
-  'Human‑centered motion',
+  'Design systems',
+  'Performance-first',
+  'Production-ready',
 ];
 
 export const StorySection = () => {
@@ -56,7 +56,7 @@ export const StorySection = () => {
     <section
       ref={sectionRef}
       onMouseMove={handleMouseMove}
-      className="py-32 md:py-40 relative overflow-hidden"
+      className="py-32 md:py-48 relative overflow-hidden"
     >
       {/* Moving linework background */}
       <div className="absolute inset-0 pointer-events-none">
@@ -88,11 +88,10 @@ export const StorySection = () => {
       <div className="section-container relative z-10">
         <div className="max-w-5xl mx-auto">
           <FadeIn className="text-center mb-12">
-            <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-4 text-label">Methodology</p>
-            <h2 className="gradient-text">Precision. Speed. Scale.</h2>
-            <p className="text-muted-foreground text-lg mt-6 max-w-2xl mx-auto">
-              We don't iterate endlessly. We architect systems, design with intent,
-              and ship products that perform from day one.
+            <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-4 text-label">How we work</p>
+            <h2 className="gradient-text">Precision at scale.</h2>
+            <p className="text-muted-foreground text-lg mt-6 max-w-2xl mx-auto leading-[1.7]">
+              We architect systems, design with intent, and ship products that perform from day one.
             </p>
           </FadeIn>
 

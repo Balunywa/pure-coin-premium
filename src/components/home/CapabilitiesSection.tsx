@@ -6,53 +6,53 @@ const capabilities = [
   {
     icon: Brain,
     title: 'Product Strategy',
-    description: 'Vision definition, market positioning, roadmap planning, and outcome mapping.',
+    description: 'Vision definition. Market positioning. Roadmap planning. Outcome mapping.',
     gradient: 'from-violet-500/10 via-purple-500/5 to-transparent',
   },
   {
     icon: Palette,
     title: 'Design Systems',
-    description: 'Component libraries, design tokens, accessibility standards, and brand consistency.',
+    description: 'Component libraries. Design tokens. Accessibility standards. Brand consistency.',
     gradient: 'from-blue-500/10 via-cyan-500/5 to-transparent',
   },
   {
     icon: Code2,
     title: 'Engineering',
-    description: 'Modern frameworks, cloud infrastructure, CI/CD pipelines, and performance optimization.',
+    description: 'Modern frameworks. Cloud infrastructure. CI/CD pipelines. Performance optimization.',
     gradient: 'from-emerald-500/10 via-green-500/5 to-transparent',
   },
   {
     icon: Zap,
     title: 'Performance',
-    description: 'Sub-second load times, edge caching, optimized bundles, and real user monitoring.',
+    description: 'Sub-second loads. Edge caching. Optimized bundles. Real user monitoring.',
     gradient: 'from-amber-500/10 via-yellow-500/5 to-transparent',
   },
   {
     icon: Shield,
     title: 'Security',
-    description: 'SOC 2 compliance, penetration testing, data encryption, and vulnerability management.',
+    description: 'SOC 2 compliance. Penetration testing. Data encryption. Vulnerability management.',
     gradient: 'from-red-500/10 via-pink-500/5 to-transparent',
   },
   {
     icon: Globe,
     title: 'Scale',
-    description: 'Multi-region deployment, auto-scaling, distributed systems, and 99.99% uptime.',
+    description: 'Multi-region deployment. Auto-scaling. Distributed systems. 99.99% uptime.',
     gradient: 'from-indigo-500/10 via-purple-500/5 to-transparent',
   },
 ];
 
 export const CapabilitiesSection = () => {
   return (
-    <section className="py-32 md:py-40 relative overflow-hidden">
+    <section className="py-32 md:py-48 relative overflow-hidden">
       {/* Subtle grid background */}
       <div className="absolute inset-0 bg-grid opacity-[0.02]" />
 
       <div className="section-container relative z-10">
         <FadeIn className="text-center mb-20">
-          <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-4 text-label">Core capabilities</p>
-          <h2 className="gradient-text mb-6">Built to compete.</h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            The same infrastructure, velocity, and precision you'd expect from a Fortune 100 engineering team.
+          <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-4 text-label">What we deliver</p>
+          <h2 className="gradient-text mb-6">Enterprise-grade.</h2>
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-[1.7]">
+            The infrastructure, velocity, and precision you'd expect from a Fortune 100 team.
           </p>
         </FadeIn>
 

@@ -19,17 +19,17 @@ const products = [
 
 export const ProductsSection = () => {
   return (
-    <section className="py-32 md:py-40 relative">
+    <section className="py-32 md:py-48 relative">
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-card/30 to-transparent pointer-events-none" />
       
       <div className="section-container relative z-10">
         <div className="max-w-4xl mx-auto">
           <FadeIn className="text-center mb-20">
-            <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-4 text-label">Case studies</p>
-            <h2 className="gradient-text">Real products. Real impact.</h2>
-            <p className="text-muted-foreground mt-6 max-w-xl mx-auto">
-              From zero to thousands of daily active users. Built, launched, and scaled.
+            <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-4 text-label">Portfolio</p>
+            <h2 className="gradient-text">Proven at scale.</h2>
+            <p className="text-muted-foreground mt-6 max-w-xl mx-auto leading-[1.7]">
+              Real products. Thousands of daily users. Built, launched, and scaled.
             </p>
           </FadeIn>
 

@@ -43,7 +43,7 @@ const features = [
 
 export const BentoGrid = () => {
   return (
-    <section className="py-32 md:py-40 relative overflow-hidden">
+    <section className="py-32 md:py-48 relative overflow-hidden">
       <div className="absolute inset-0 bg-grid opacity-[0.015]" />
 
       <div className="section-container relative z-10">
@@ -51,9 +51,9 @@ export const BentoGrid = () => {
           <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-4 text-label">
             Infrastructure
           </p>
-          <h2 className="gradient-text mb-6">Enterprise architecture.</h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            The same infrastructure powering Fortune 500 companies—now available for your product.
+          <h2 className="gradient-text mb-6">Built for scale.</h2>
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-[1.7]">
+            The same architecture powering Fortune 500 companies.
           </p>
         </FadeIn>
 

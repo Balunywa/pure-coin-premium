@@ -21,11 +21,11 @@ export const Footer = () => {
         <div className="grid grid-cols-2 md:grid-cols-3 gap-12 mb-16">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
-            <Link to="/" className="text-lg font-medium tracking-tight text-foreground">
+            <Link to="/" className="text-lg font-medium tracking-tight text-foreground hover:opacity-70 transition-opacity">
               Pure Coin
             </Link>
-            <p className="text-muted-foreground text-sm mt-4 max-w-xs">
-              We build software.
+            <p className="text-muted-foreground text-sm mt-4 max-w-xs leading-[1.7]">
+              Engineering excellence.<br />Software that sets the standard.
             </p>
           </div>
 
