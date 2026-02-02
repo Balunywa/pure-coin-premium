@@ -1,8 +1,10 @@
-import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { PageLayout } from '@/components/layout/PageLayout';
-import { ScrollReveal } from '@/components/ui/ScrollReveal';
+import { FadeIn } from '@/components/ui/AnimatedText';
+import { AnimatedBackground } from '@/components/ui/AnimatedBackground';
 
 const products = [
   {
@@ -13,6 +15,7 @@ const products = [
     status: 'Live',
     href: 'https://crewvopay.com',
     features: ['Instant P2P transfers', 'Mobile money integration', 'iOS & Android', 'Bank-level security'],
+    gradient: 'from-blue-500/20 via-purple-500/10 to-transparent',
   },
   {
     name: 'CrewvoApp',
@@ -22,6 +25,7 @@ const products = [
     status: 'Live',
     href: 'https://crewvoapp.com',
     features: ['AI rep counting', 'Crew battles', 'Global leaderboards', 'Form analysis'],
+    gradient: 'from-purple-500/20 via-pink-500/10 to-transparent',
   },
 ];
 
@@ -29,104 +33,134 @@ const Products = () => {
   return (
     <PageLayout>
       {/* Hero */}
-      <section className="py-24 md:py-32 bg-gradient-to-b from-muted/30 to-background">
-        <div className="section-container">
+      <section className="py-32 md:py-40 relative overflow-hidden">
+        <AnimatedBackground />
+        
+        <div className="section-container relative z-10">
           <div className="max-w-3xl">
-            <ScrollReveal>
-              <p className="text-sm font-medium text-primary uppercase tracking-wider mb-4">
+            <FadeIn>
+              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border/50 bg-card/50 backdrop-blur-sm text-sm text-muted-foreground mb-6">
+                <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
                 Products
-              </p>
-            </ScrollReveal>
-            <ScrollReveal delay={100}>
+              </span>
+            </FadeIn>
+            <FadeIn delay={0.1}>
               <h1 className="mb-6">
-                Software products
+                <span className="gradient-text">Software products</span>
                 <br />
                 <span className="text-muted-foreground">built to scale.</span>
               </h1>
-            </ScrollReveal>
-            <ScrollReveal delay={200}>
-              <p className="text-xl text-muted-foreground">
+            </FadeIn>
+            <FadeIn delay={0.2}>
+              <p className="text-xl text-muted-foreground max-w-xl">
                 Our portfolio of software products, designed and built in-house 
                 with a focus on user experience and technical excellence.
               </p>
-            </ScrollReveal>
+            </FadeIn>
           </div>
         </div>
       </section>
 
       {/* Products */}
-      <section className="py-24 md:py-32">
+      <section className="py-16 md:py-24">
         <div className="section-container">
-          <div className="space-y-16">
+          <div className="space-y-8">
             {products.map((product, index) => (
-              <ScrollReveal key={product.name} delay={index * 100}>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center p-8 md:p-12 rounded-3xl border border-border bg-card">
-                  <div>
-                    <div className="flex items-center gap-3 mb-4">
-                      <span className="px-3 py-1 rounded-full text-xs font-medium bg-muted text-muted-foreground">
-                        {product.category}
-                      </span>
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                        product.status === 'Live' 
-                          ? 'bg-green-500/10 text-green-600' 
-                          : 'bg-muted text-muted-foreground'
-                      }`}>
-                        {product.status}
-                      </span>
-                    </div>
-                    <h2 className="mb-2">{product.name}</h2>
-                    <p className="text-xl text-primary font-medium mb-4">{product.tagline}</p>
-                    <p className="text-muted-foreground mb-8 leading-relaxed">
-                      {product.description}
-                    </p>
-                    {product.href && (
-                      <a
-                        href={product.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 text-primary font-medium hover:gap-3 transition-all group"
-                      >
-                        Visit {product.name.toLowerCase()}.com
-                        <ArrowUpRight className="w-5 h-5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                      </a>
-                    )}
-                  </div>
-                  <div>
-                    <div className="grid grid-cols-2 gap-4">
-                      {product.features.map((feature) => (
-                        <div 
-                          key={feature}
-                          className="p-4 rounded-xl bg-muted/50 border border-border"
-                        >
-                          <p className="text-sm font-medium">{feature}</p>
+              <FadeIn key={product.name} delay={index * 0.1}>
+                <motion.div
+                  className="relative group rounded-3xl border border-border/50 bg-card/30 backdrop-blur-sm overflow-hidden"
+                  whileHover={{ scale: 1.005 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {/* Background gradient */}
+                  <div className={`absolute inset-0 bg-gradient-to-br ${product.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+                  
+                  <div className="relative p-8 md:p-12">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                      <div>
+                        <div className="flex items-center gap-3 mb-6">
+                          <span className="px-3 py-1 rounded-full text-xs font-medium bg-card border border-border/50 text-muted-foreground">
+                            {product.category}
+                          </span>
+                          <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                            product.status === 'Live' 
+                              ? 'bg-green-500/10 border border-green-500/20 text-green-400' 
+                              : 'bg-card border border-border/50 text-muted-foreground'
+                          }`}>
+                            <span className="flex items-center gap-1.5">
+                              <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+                              {product.status}
+                            </span>
+                          </span>
                         </div>
-                      ))}
+                        <h2 className="mb-3 text-foreground">{product.name}</h2>
+                        <p className="text-xl text-primary font-medium mb-4">{product.tagline}</p>
+                        <p className="text-muted-foreground mb-8 leading-relaxed">
+                          {product.description}
+                        </p>
+                        {product.href && (
+                          <motion.a
+                            href={product.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 text-foreground font-medium group/link"
+                            whileHover={{ x: 4 }}
+                          >
+                            Visit {product.name.toLowerCase()}.com
+                            <ArrowUpRight className="w-5 h-5 text-primary group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
+                          </motion.a>
+                        )}
+                      </div>
+                      <div>
+                        <div className="grid grid-cols-2 gap-3">
+                          {product.features.map((feature, i) => (
+                            <motion.div 
+                              key={feature}
+                              className="p-4 rounded-xl bg-card/50 border border-border/50 backdrop-blur-sm"
+                              initial={{ opacity: 0, y: 10 }}
+                              whileInView={{ opacity: 1, y: 0 }}
+                              viewport={{ once: true }}
+                              transition={{ delay: 0.3 + i * 0.1 }}
+                            >
+                              <p className="text-sm font-medium text-foreground">{feature}</p>
+                            </motion.div>
+                          ))}
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </ScrollReveal>
+                </motion.div>
+              </FadeIn>
             ))}
           </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="py-24 md:py-32 bg-muted">
-        <div className="section-container text-center">
-          <ScrollReveal>
-            <h2 className="mb-6">Building something new?</h2>
-          </ScrollReveal>
-          <ScrollReveal delay={100}>
+      <section className="py-32 md:py-40 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-t from-card/50 to-transparent" />
+        
+        <div className="section-container relative z-10 text-center">
+          <FadeIn>
+            <h2 className="mb-6">
+              <span className="gradient-text">Building something new?</span>
+            </h2>
+          </FadeIn>
+          <FadeIn delay={0.1}>
             <p className="text-muted-foreground text-lg mb-10 max-w-xl mx-auto">
               Partner with us to build your next software product. 
               From concept to launch, we've got you covered.
             </p>
-          </ScrollReveal>
-          <ScrollReveal delay={200}>
-            <Button asChild size="lg" className="text-base px-8 h-14 rounded-lg">
+          </FadeIn>
+          <FadeIn delay={0.2}>
+            <Button 
+              asChild 
+              size="lg" 
+              className="text-base px-8 h-12 rounded-full bg-foreground text-background hover:bg-foreground/90"
+            >
               <Link to="/contact">Get in touch</Link>
             </Button>
-          </ScrollReveal>
+          </FadeIn>
         </div>
       </section>
     </PageLayout>
