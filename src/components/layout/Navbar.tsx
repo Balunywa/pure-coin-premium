@@ -4,7 +4,6 @@ import { Menu, X, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const navLinks = [
-  { name: 'Solutions', path: '/solutions' },
   { name: 'Products', path: '/products' },
   { name: 'Contact', path: '/contact' },
 ];
