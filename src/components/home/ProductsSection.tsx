@@ -11,8 +11,8 @@ const products = [
   },
   {
     name: 'CrewvoApp',
-    category: 'Platform',
-    description: 'All-in-one platform for teams and communities. Collaboration made simple.',
+    category: 'Fitness',
+    description: 'Social fitness app that turns daily activity into competition. Track, battle, and win together.',
     href: 'https://crewvoapp.com',
     status: 'Live',
   },

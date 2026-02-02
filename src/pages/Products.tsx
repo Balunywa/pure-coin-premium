@@ -16,12 +16,12 @@ const products = [
   },
   {
     name: 'CrewvoApp',
-    tagline: 'Collaboration made simple.',
-    description: 'An all-in-one platform for teams and communities to connect, collaborate, and get things done together.',
-    category: 'Platform',
+    tagline: "Don't just train. Compete.",
+    description: 'The #1 social fitness app that turns your daily activity into social currency. Track everything with AI-powered rep counting, battle in Crew vs Crew competitions, and climb global leaderboards.',
+    category: 'Fitness',
     status: 'Live',
     href: 'https://crewvoapp.com',
-    features: ['Team collaboration', 'Community tools', 'Cross-platform', 'Real-time sync'],
+    features: ['AI rep counting', 'Crew battles', 'Global leaderboards', 'Form analysis'],
   },
 ];
 
