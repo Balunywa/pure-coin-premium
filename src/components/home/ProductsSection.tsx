@@ -10,18 +10,11 @@ const products = [
     status: 'Live',
   },
   {
-    name: 'Atlas',
-    category: 'Enterprise',
-    description: 'Enterprise resource management platform for large-scale operations.',
-    href: '#',
-    status: 'Coming 2025',
-  },
-  {
-    name: 'Horizon',
-    category: 'Consumer',
-    description: 'Next-generation consumer platform. Details coming soon.',
-    href: '#',
-    status: 'In Development',
+    name: 'CrewvoApp',
+    category: 'Platform',
+    description: 'All-in-one platform for teams and communities. Collaboration made simple.',
+    href: 'https://crewvoapp.com',
+    status: 'Live',
   },
 ];
 

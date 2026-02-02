@@ -9,8 +9,7 @@ const footerLinks = {
   ],
   products: [
     { name: 'CrewvoPay', href: '/products' },
-    { name: 'Atlas', href: '/products' },
-    { name: 'Horizon', href: '/products' },
+    { name: 'CrewvoApp', href: '/products' },
   ],
   company: [
     { name: 'Contact', href: '/contact' },
