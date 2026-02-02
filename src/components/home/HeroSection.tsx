@@ -19,8 +19,8 @@ export const HeroSection = () => {
             className="mb-8"
           >
             <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border/50 bg-card/50 backdrop-blur-sm text-sm text-muted-foreground">
-              <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-              Building the future
+              <span className="w-2 h-2 rounded-full bg-foreground animate-pulse" />
+              Engineering excellence
             </span>
           </motion.div>
 
@@ -31,7 +31,8 @@ export const HeroSection = () => {
             transition={{ duration: 0.8, delay: 0.1, ease: [0.25, 0.4, 0.25, 1] }}
             className="mb-6"
           >
-            <span className="gradient-text">We build software</span>
+            <span className="gradient-text block">Software that</span>
+            <span className="text-foreground block">defines the standard.</span>
           </motion.h1>
           
           {/* Subheadline with gradient */}
@@ -41,9 +42,8 @@ export const HeroSection = () => {
             transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.4, 0.25, 1] }}
             className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-12 leading-relaxed"
           >
-            Beautiful products. Thoughtful engineering.
-            <br />
-            <span className="text-foreground/80">Nothing more. Nothing less.</span>
+            We engineer products at the intersection of design and performance.
+            <span className="text-foreground/70"> No compromises.</span>
           </motion.p>
           
           {/* CTAs */}
@@ -56,10 +56,10 @@ export const HeroSection = () => {
             <Button 
               asChild 
               size="lg" 
-              className="text-base px-8 h-12 rounded-full bg-foreground text-background hover:bg-foreground/90 group"
+              className="text-base px-8 h-12 rounded-full bg-foreground text-background hover:bg-foreground/90 group button-shine"
             >
               <Link to="/products" className="flex items-center gap-2">
-                See our work
+                Explore our work
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
             </Button>
@@ -71,6 +71,26 @@ export const HeroSection = () => {
             >
               <Link to="/contact">Get in touch</Link>
             </Button>
+          </motion.div>
+
+          {/* Trust row */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.5, ease: [0.25, 0.4, 0.25, 1] }}
+            className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4 text-sm text-muted-foreground"
+          >
+            <span className="uppercase tracking-[0.2em] text-xs">Proven across</span>
+            <div className="flex items-center gap-3">
+              {['Payments', 'Health', 'Enterprise'].map((label) => (
+                <span
+                  key={label}
+                  className="px-3 py-1 rounded-full border border-border/50 bg-card/40 backdrop-blur-sm text-mono"
+                >
+                  {label}
+                </span>
+              ))}
+            </div>
           </motion.div>
         </div>
 

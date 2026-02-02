@@ -70,7 +70,7 @@ export const Navbar = () => {
             <Button 
               asChild 
               size="sm" 
-              className="rounded-full px-6 bg-foreground text-background hover:bg-foreground/90"
+              className="rounded-full px-6 bg-foreground text-background hover:bg-foreground/90 button-shine"
             >
               <Link to="/contact">Contact sales</Link>
             </Button>
@@ -128,7 +128,7 @@ export const Navbar = () => {
               <div className="pt-4">
                 <Button 
                   asChild 
-                  className="w-full rounded-full bg-foreground text-background hover:bg-foreground/90"
+                  className="w-full rounded-full bg-foreground text-background hover:bg-foreground/90 button-shine"
                 >
                   <Link to="/contact">Contact sales</Link>
                 </Button>

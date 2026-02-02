@@ -3,24 +3,30 @@ import { motion } from 'framer-motion';
 export const AnimatedBackground = () => {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {/* Aurora mesh */}
+      <div className="absolute inset-0 bg-aurora opacity-40 animate-aurora" />
+
       {/* Grid pattern */}
       <div className="absolute inset-0 bg-grid opacity-30" />
+
+      {/* Dot texture */}
+      <div className="absolute inset-0 bg-dots opacity-20" />
       
       {/* Radial gradient from top */}
       <div className="absolute inset-0 radial-overlay" />
       
-      {/* Animated gradient orbs */}
+      {/* Animated gradient orbs - monochrome */}
       <motion.div
         className="absolute -top-[40%] -left-[20%] w-[80%] h-[80%] rounded-full"
         style={{
-          background: 'radial-gradient(circle, hsl(250 89% 65% / 0.15) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, hsl(0 0% 100% / 0.05) 0%, transparent 70%)',
         }}
         animate={{
-          scale: [1, 1.1, 1],
-          opacity: [0.3, 0.5, 0.3],
+          scale: [1, 1.12, 1],
+          opacity: [0.25, 0.45, 0.25],
         }}
         transition={{
-          duration: 8,
+          duration: 10,
           repeat: Infinity,
           ease: 'easeInOut',
         }}
@@ -29,14 +35,14 @@ export const AnimatedBackground = () => {
       <motion.div
         className="absolute -bottom-[40%] -right-[20%] w-[80%] h-[80%] rounded-full"
         style={{
-          background: 'radial-gradient(circle, hsl(280 87% 60% / 0.1) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, hsl(0 0% 90% / 0.04) 0%, transparent 70%)',
         }}
         animate={{
-          scale: [1, 1.15, 1],
-          opacity: [0.2, 0.4, 0.2],
+          scale: [1, 1.18, 1],
+          opacity: [0.18, 0.38, 0.18],
         }}
         transition={{
-          duration: 10,
+          duration: 12,
           repeat: Infinity,
           ease: 'easeInOut',
           delay: 1,
