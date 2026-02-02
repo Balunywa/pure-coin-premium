@@ -1,23 +1,26 @@
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { FadeIn } from '@/components/ui/AnimatedText';
+import { useState } from 'react';
 
 const products = [
   {
     name: 'CrewvoPay',
     description: 'Mobile payments, simplified.',
     href: 'https://crewvopay.com',
-    gradient: 'from-blue-500/20 to-purple-500/20',
+    accentColor: 'hsl(0 0% 100% / 0.08)',
   },
   {
     name: 'CrewvoApp',
     description: 'Social fitness for competitors.',
     href: 'https://crewvoapp.com',
-    gradient: 'from-purple-500/20 to-pink-500/20',
+    accentColor: 'hsl(0 0% 100% / 0.08)',
   },
 ];
 
 export const ProductsSection = () => {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
   return (
     <section className="py-32 md:py-48 relative">
       {/* Background gradient */}
@@ -34,13 +37,18 @@ export const ProductsSection = () => {
           </FadeIn>
 
           <div className="space-y-6">
-            {products.map((product, index) => (
+            {products.map((product, index) => {
+              const isHovered = hoveredIndex === index;
+              
+              return (
               <FadeIn key={product.name} delay={index * 0.1}>
                 <motion.a
                   href={product.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group lux-card block p-10 md:p-12 transition-all duration-500 elevation-2 hover:elevation-4"
+                  className="group lux-card block p-10 md:p-12 transition-all duration-500 elevation-2 hover:elevation-4 overflow-hidden"
+                  onMouseEnter={() => setHoveredIndex(index)}
+                  onMouseLeave={() => setHoveredIndex(null)}
                   whileHover={{ y: -4 }}
                   transition={{ 
                     type: 'spring',
@@ -48,15 +56,39 @@ export const ProductsSection = () => {
                     damping: 25,
                   }}
                 >
-                  {/* Hover gradient */}
+                  {/* Vercel-style animated grid background */}
                   <motion.div
-                    className={`absolute inset-0 bg-gradient-to-r ${product.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
-                  />
-                  
-                  {/* Shimmer effect */}
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-30 transition-opacity duration-700">
-                    <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-                  </div>
+                    className="absolute inset-0 pointer-events-none"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: isHovered ? 1 : 0 }}
+                    transition={{ duration: 0.4, ease: 'easeOut' }}
+                  >
+                    <div 
+                      className="absolute inset-0"
+                      style={{
+                        backgroundImage: `
+                          linear-gradient(to right, ${product.accentColor} 1px, transparent 1px),
+                          linear-gradient(to bottom, ${product.accentColor} 1px, transparent 1px)
+                        `,
+                        backgroundSize: '64px 64px',
+                      }}
+                    />
+                    <motion.div
+                      className="absolute inset-0"
+                      style={{
+                        background: `radial-gradient(circle at 50% 50%, ${product.accentColor}, transparent 60%)`,
+                      }}
+                      animate={{
+                        scale: isHovered ? [1, 1.2, 1] : 1,
+                        opacity: isHovered ? [0.3, 0.5, 0.3] : 0,
+                      }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: 'easeInOut',
+                      }}
+                    />
+                  </motion.div>
                   
                   <div className="relative">
                     <div className="flex items-start justify-between mb-6">
@@ -105,7 +137,7 @@ export const ProductsSection = () => {
                   </div>
                 </motion.a>
               </FadeIn>
-            ))}
+            );})}
           </div>
         </div>
       </div>

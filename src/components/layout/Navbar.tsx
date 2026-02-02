@@ -56,9 +56,18 @@ export const Navbar = () => {
           {/* Logo */}
           <Link
             to="/"
-            className="text-lg font-medium tracking-tight text-foreground hover:opacity-70 transition-opacity"
+            className="text-lg font-semibold tracking-[-0.03em] text-foreground hover:opacity-70 transition-opacity relative group"
+            style={{
+              fontFeatureSettings: "'ss01' on, 'cv05' on, 'cv11' on",
+              letterSpacing: '-0.03em',
+            }}
           >
-            Pure Coin
+            <span className="relative">
+              Pure Coin
+              <span className="absolute inset-0 bg-gradient-to-r from-foreground via-foreground/90 to-foreground bg-clip-text text-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundSize: '200% 100%' }}>
+                Pure Coin
+              </span>
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
