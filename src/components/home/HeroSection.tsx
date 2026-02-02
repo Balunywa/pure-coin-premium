@@ -2,11 +2,12 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { AnimatedBackground } from '@/components/ui/AnimatedBackground';
+import { MagneticButton } from '@/components/ui/MagneticButton';
 import { ArrowRight } from 'lucide-react';
 
 export const HeroSection = () => {
   return (
-    <section className="min-h-[100svh] flex items-center justify-center relative overflow-hidden">
+    <section className="min-h-[100svh] flex items-center justify-center relative overflow-hidden film-grain">
       <AnimatedBackground />
       
       <div className="section-container py-32 relative z-10">
@@ -53,24 +54,28 @@ export const HeroSection = () => {
             transition={{ duration: 0.8, delay: 0.3, ease: [0.25, 0.4, 0.25, 1] }}
             className="flex flex-col sm:flex-row gap-4 justify-center"
           >
-            <Button 
-              asChild 
-              size="lg" 
-              className="text-base px-8 h-12 rounded-full bg-foreground text-background hover:bg-foreground/90 group button-shine"
-            >
-              <Link to="/products" className="flex items-center gap-2">
-                Explore our work
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </Button>
-            <Button 
-              asChild 
-              variant="outline" 
-              size="lg"
-              className="text-base px-8 h-12 rounded-full border-border/50 hover:bg-card hover:border-border"
-            >
-              <Link to="/contact">Get in touch</Link>
-            </Button>
+            <MagneticButton strength={0.15}>
+              <Button 
+                asChild 
+                size="lg" 
+                className="text-base px-8 h-12 rounded-full bg-foreground text-background hover:bg-foreground/90 group button-shine"
+              >
+                <Link to="/products" className="flex items-center gap-2">
+                  Explore our work
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </Button>
+            </MagneticButton>
+            <MagneticButton strength={0.12}>
+              <Button 
+                asChild 
+                variant="outline" 
+                size="lg"
+                className="text-base px-8 h-12 rounded-full border-border/50 hover:bg-card hover:border-border"
+              >
+                <Link to="/contact">Get in touch</Link>
+              </Button>
+            </MagneticButton>
           </motion.div>
 
           {/* Trust row */}

@@ -97,7 +97,13 @@ export const StorySection = () => {
           </FadeIn>
 
           <FadeIn delay={0.1} className="mb-16">
-            <div className="lux-card px-6 py-5 md:px-8">
+            <motion.div 
+              className="lux-card px-6 py-5 md:px-8"
+              initial={{ scale: 0.9, opacity: 0 }}
+              whileInView={{ scale: 1, opacity: 1 }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{ duration: 0.6, ease: [0.25, 0.4, 0.25, 1] }}
+            >
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
                 {metrics.map((metric) => (
                   <div key={metric.label} className="py-2">
@@ -106,22 +112,28 @@ export const StorySection = () => {
                       {metric.label}
                     </p>
                   </div>
-                ))}
-              </div>
-            </div>
+                ))}              </div>
+            </motion.div>
           </FadeIn>
 
           <FadeIn delay={0.15} className="mb-16">
             <div className="flex flex-col md:flex-row items-center justify-center gap-4 text-sm text-muted-foreground">
               {principles.map((principle, index) => (
-                <div key={principle} className="flex items-center gap-4">
+                <motion.div 
+                  key={principle} 
+                  className="flex items-center gap-4"
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1, duration: 0.5 }}
+                >
                   <span className="px-4 py-2 rounded-full border border-border/50 bg-card/40">
                     {principle}
                   </span>
                   {index < principles.length - 1 && (
                     <span className="hidden md:inline-block w-10 h-px bg-border/50" />
                   )}
-                </div>
+                </motion.div>
               ))}
             </div>
           </FadeIn>
