@@ -8,13 +8,15 @@ const products = [
     name: 'CrewvoPay',
     description: 'Mobile payments, simplified.',
     href: 'https://crewvopay.com',
-    accentColor: 'hsl(0 0% 100% / 0.08)',
+    gridColor: 'rgba(59, 130, 246, 0.15)', // Blue
+    borderGlow: 'rgba(59, 130, 246, 0.3)',
   },
   {
     name: 'CrewvoApp',
     description: 'Social fitness for competitors.',
     href: 'https://crewvoapp.com',
-    accentColor: 'hsl(0 0% 100% / 0.08)',
+    gridColor: 'rgba(16, 185, 129, 0.15)', // Emerald
+    borderGlow: 'rgba(16, 185, 129, 0.3)',
   },
 ];
 
@@ -47,8 +49,17 @@ export const ProductsSection = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group lux-card block p-10 md:p-12 transition-all duration-500 elevation-2 hover:elevation-4 overflow-hidden"
-                  onMouseEnter={() => setHoveredIndex(index)}
-                  onMouseLeave={() => setHoveredIndex(null)}
+                  style={{
+                    transition: 'border-color 0.3s ease',
+                  }}
+                  onMouseEnter={(e) => {
+                    setHoveredIndex(index);
+                    e.currentTarget.style.borderColor = product.borderGlow;
+                  }}
+                  onMouseLeave={(e) => {
+                    setHoveredIndex(null);
+                    e.currentTarget.style.borderColor = 'hsl(var(--border) / 0.5)';
+                  }}
                   whileHover={{ y: -4 }}
                   transition={{ 
                     type: 'spring',
@@ -56,39 +67,25 @@ export const ProductsSection = () => {
                     damping: 25,
                   }}
                 >
-                  {/* Vercel-style animated grid background */}
-                  <motion.div
-                    className="absolute inset-0 pointer-events-none"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: isHovered ? 1 : 0 }}
-                    transition={{ duration: 0.4, ease: 'easeOut' }}
-                  >
-                    <div 
-                      className="absolute inset-0"
-                      style={{
-                        backgroundImage: `
-                          linear-gradient(to right, ${product.accentColor} 1px, transparent 1px),
-                          linear-gradient(to bottom, ${product.accentColor} 1px, transparent 1px)
-                        `,
-                        backgroundSize: '64px 64px',
-                      }}
-                    />
-                    <motion.div
-                      className="absolute inset-0"
-                      style={{
-                        background: `radial-gradient(circle at 50% 50%, ${product.accentColor}, transparent 60%)`,
-                      }}
-                      animate={{
-                        scale: isHovered ? [1, 1.2, 1] : 1,
-                        opacity: isHovered ? [0.3, 0.5, 0.3] : 0,
-                      }}
-                      transition={{
-                        duration: 2,
-                        repeat: Infinity,
-                        ease: 'easeInOut',
-                      }}
-                    />
-                  </motion.div>
+                  {/* Static visible grid - always on */}
+                  <div 
+                    className="absolute inset-0 pointer-events-none opacity-100"
+                    style={{
+                      backgroundImage: `
+                        linear-gradient(to right, ${product.gridColor} 1px, transparent 1px),
+                        linear-gradient(to bottom, ${product.gridColor} 1px, transparent 1px)
+                      `,
+                      backgroundSize: '48px 48px',
+                    }}
+                  />
+                  
+                  {/* Subtle radial glow on hover */}
+                  <div 
+                    className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                    style={{
+                      background: `radial-gradient(circle at 50% 50%, ${product.gridColor}, transparent 70%)`,
+                    }}
+                  />
                   
                   <div className="relative">
                     <div className="flex items-start justify-between mb-6">
