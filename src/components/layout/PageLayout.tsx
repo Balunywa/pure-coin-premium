@@ -3,7 +3,6 @@ import { Navbar } from './Navbar';
 import { Footer } from './Footer';
 import { ScrollProgress } from '@/components/ui/ScrollProgress';
 import { FloatingNav } from '@/components/ui/FloatingNav';
-import { CustomCursor } from '@/components/ui/CustomCursor';
 
 interface PageLayoutProps {
   children: ReactNode;
@@ -12,7 +11,6 @@ interface PageLayoutProps {
 export const PageLayout = ({ children }: PageLayoutProps) => {
   return (
     <div className="min-h-screen flex flex-col overflow-x-hidden">
-      <CustomCursor />
       <ScrollProgress />
       <FloatingNav />
       <Navbar />

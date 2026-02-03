@@ -15,7 +15,8 @@ const products = [
     status: 'Live',
     href: 'https://crewvopay.com',
     features: ['Instant P2P transfers', 'Mobile money integration', 'iOS & Android', 'Bank-level security'],
-    gradient: 'from-blue-500/20 via-purple-500/10 to-transparent',
+    gridColor: 'rgba(59, 130, 246, 0.15)', // Blue
+    borderGlow: 'rgba(59, 130, 246, 0.3)',
   },
   {
     name: 'CrewvoApp',
@@ -25,7 +26,8 @@ const products = [
     status: 'Live',
     href: 'https://crewvoapp.com',
     features: ['AI rep counting', 'Crew battles', 'Global leaderboards', 'Form analysis'],
-    gradient: 'from-purple-500/20 via-pink-500/10 to-transparent',
+    gridColor: 'rgba(16, 185, 129, 0.15)', // Emerald
+    borderGlow: 'rgba(16, 185, 129, 0.3)',
   },
 ];
 
@@ -69,11 +71,37 @@ const Products = () => {
               <FadeIn key={product.name} delay={index * 0.1}>
                 <motion.div
                   className="relative group rounded-3xl border border-border/50 bg-card/30 backdrop-blur-sm overflow-hidden"
+                  style={{
+                    transition: 'border-color 0.3s ease',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = product.borderGlow;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = 'hsl(var(--border) / 0.5)';
+                  }}
                   whileHover={{ scale: 1.005 }}
                   transition={{ duration: 0.3 }}
                 >
-                  {/* Background gradient */}
-                  <div className={`absolute inset-0 bg-gradient-to-br ${product.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+                  {/* Static visible grid - always on */}
+                  <div 
+                    className="absolute inset-0 pointer-events-none opacity-100"
+                    style={{
+                      backgroundImage: `
+                        linear-gradient(to right, ${product.gridColor} 1px, transparent 1px),
+                        linear-gradient(to bottom, ${product.gridColor} 1px, transparent 1px)
+                      `,
+                      backgroundSize: '48px 48px',
+                    }}
+                  />
+                  
+                  {/* Subtle radial glow on hover */}
+                  <div 
+                    className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                    style={{
+                      background: `radial-gradient(circle at 50% 50%, ${product.gridColor}, transparent 70%)`,
+                    }}
+                  />
                   
                   <div className="relative p-8 md:p-12">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
