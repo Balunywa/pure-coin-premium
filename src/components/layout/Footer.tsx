@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import '@fontsource/space-grotesk/500.css';
+import logo from '@/assets/logo-3d.png';
 
 const footerLinks = {
   products: [
@@ -21,8 +23,14 @@ export const Footer = () => {
         <div className="grid grid-cols-2 md:grid-cols-3 gap-12 mb-16">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
-            <Link to="/" className="text-lg font-medium tracking-tight text-foreground hover:opacity-70 transition-opacity">
-              Pure Coin
+            <Link to="/" className="flex items-center gap-2.5 text-foreground hover:opacity-80 transition-opacity">
+              <img src={logo} alt="Pure Coin" className="w-7 h-7" />
+              <span 
+                className="text-lg font-semibold tracking-[-0.02em]"
+                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+              >
+                Pure Coin
+              </span>
             </Link>
             <p className="text-muted-foreground text-sm mt-4 max-w-xs leading-[1.7]">
               Engineering excellence.<br />Software that sets the standard.
