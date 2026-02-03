@@ -1,199 +1,238 @@
+import React from 'react';
 import { motion } from 'framer-motion';
-import { FadeIn } from '@/components/ui/AnimatedText';
+import { Code2, Globe, Cpu } from 'lucide-react';
 
+// --- Configuration ---
 const technologies = [
   {
-    category: 'Frontend',
-    color: 'rgba(59, 130, 246, 0.3)', // Blue
+    id: 'frontend',
+    category: 'Interface Layer',
+    icon: Code2,
+    color: '#3B82F6', // Blue
+    freq: '3.4 Ghz',
     stack: ['React', 'Next.js', 'TypeScript', 'Tailwind'],
   },
   {
-    category: 'Backend',
-    color: 'rgba(16, 185, 129, 0.3)', // Emerald
+    id: 'backend',
+    category: 'Computation Layer',
+    icon: Cpu,
+    color: '#10B981', // Emerald
+    freq: '800ms',
     stack: ['Node.js', 'Python', 'GraphQL', 'PostgreSQL'],
   },
   {
-    category: 'Infrastructure',
-    color: 'rgba(139, 92, 246, 0.3)', // Violet
+    id: 'infra',
+    category: 'Global Network',
+    icon: Globe,
+    color: '#8B5CF6', // Violet
+    freq: '99.99%',
     stack: ['Azure', 'Docker', 'Kubernetes', 'Terraform'],
   },
 ];
 
-// Data packet positions flowing through the system
-const dataFlowPaths = [
-  { from: 0, to: 1, delay: 0 },
-  { from: 1, to: 2, delay: 0.8 },
-  { from: 0, to: 1, delay: 1.6 },
-  { from: 1, to: 2, delay: 2.4 },
-];
+// --- 1. The Living Grid (The "Matrix" Background) ---
+const ActiveGrid = ({ color }: { color: string }) => {
+  const horizontalLines = Array.from({ length: 6 }).map((_, i) => i * 20 + 10);
+  const verticalLines = Array.from({ length: 8 }).map((_, i) => i * 20 + 10);
 
-export const TechStackSection = () => {
   return (
-    <section className="py-32 md:py-48 relative overflow-hidden">
-      {/* Background accent */}
-      <div className="absolute inset-0">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-gradient-radial from-primary/5 to-transparent blur-3xl" />
-      </div>
+    <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
+      <svg className="absolute inset-0 w-full h-full" width="100%" height="100%">
+        <defs>
+          <pattern id={`grid-${color}`} width="20" height="20" patternUnits="userSpaceOnUse">
+            <path d="M 20 0 L 0 0 0 20" fill="none" stroke={color} strokeWidth="0.5" strokeOpacity="0.3" />
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill={`url(#grid-${color})`} />
+      </svg>
 
-      <div className="section-container relative z-10">
-        <FadeIn className="text-center mb-20">
-          <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-4 text-label opacity-70">Technology</p>
-          <h2 className="gradient-text mb-6">Built on the best.</h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-[1.7]">
-            The tools that power billion-user platforms. Optimized for performance and scale.
-          </p>
-        </FadeIn>
+      {horizontalLines.map((y, i) => (
+        <motion.div
+          key={`h-${i}`}
+          className="absolute h-[1px] w-8 bg-white shadow-[0_0_5px_white]"
+          style={{ top: `${y}%`, left: '-10%', backgroundColor: color }}
+          animate={{ left: ['-10%', '110%'] }}
+          transition={{
+            duration: Math.random() * 2 + 2,
+            repeat: Infinity,
+            ease: "linear",
+            delay: Math.random() * 5,
+            repeatDelay: Math.random() * 3
+          }}
+        />
+      ))}
 
-        <div className="max-w-4xl mx-auto">
-          {/* Architecture Diagram */}
-          <div className="relative">
-            {/* Connection lines between layers */}
-            <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 0 }}>
-              {/* Frontend to Backend connections */}
-              <motion.line
-                x1="50%" y1="33%" x2="50%" y2="50%"
-                stroke="rgba(255,255,255,0.1)"
-                strokeWidth="2"
-                strokeDasharray="4 4"
-                initial={{ pathLength: 0 }}
-                animate={{ pathLength: 1 }}
-                transition={{ duration: 1, delay: 0.5 }}
+      {verticalLines.map((x, i) => (
+        <motion.div
+          key={`v-${i}`}
+          className="absolute w-[1px] h-8 bg-white shadow-[0_0_5px_white]"
+          style={{ left: `${x}%`, top: '-10%', backgroundColor: color }}
+          animate={{ top: ['-10%', '110%'] }}
+          transition={{
+            duration: Math.random() * 2 + 2,
+            repeat: Infinity,
+            ease: "linear",
+            delay: Math.random() * 5,
+            repeatDelay: Math.random() * 3
+          }}
+        />
+      ))}
+    </div>
+  );
+};
+
+// --- 2. The High-Fidelity Card ---
+const CircuitCard = ({ tech, index }: { tech: typeof technologies[0], index: number }) => {
+  const Icon = tech.icon;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ duration: 0.6, delay: index * 0.2 }}
+      className="relative z-10 group"
+    >
+      <div 
+        className="absolute -inset-[1px] rounded-xl bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition duration-500 blur-sm"
+        style={{ backgroundImage: `linear-gradient(to right, transparent, ${tech.color}, transparent)` }}
+      />
+      
+      <div className="relative bg-[#0A0A0A] border border-white/5 rounded-xl overflow-hidden h-full">
+        <ActiveGrid color={tech.color} />
+        
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -skew-x-12"
+          animate={{ x: ['-100%', '200%'] }}
+          transition={{ duration: 3, repeat: Infinity, repeatDelay: 1, ease: "easeInOut" }}
+        />
+
+        <div className="relative p-6 flex items-center justify-between gap-6 backdrop-blur-[1px]">
+          <div className="flex items-center gap-5">
+            <div className="relative w-14 h-14 flex items-center justify-center rounded-lg bg-white/5 border border-white/10 group-hover:border-white/20 transition-colors">
+              <Icon className="w-7 h-7 text-white/90" />
+              <motion.div 
+                className="absolute inset-0 border-t border-r border-transparent rounded-lg"
+                style={{ borderTopColor: tech.color, borderRightColor: tech.color }}
+                animate={{ rotate: 360 }}
+                transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
               />
-              {/* Backend to Infrastructure connections */}
-              <motion.line
-                x1="50%" y1="66%" x2="50%" y2="83%"
-                stroke="rgba(255,255,255,0.1)"
-                strokeWidth="2"
-                strokeDasharray="4 4"
-                initial={{ pathLength: 0 }}
-                animate={{ pathLength: 1 }}
-                transition={{ duration: 1, delay: 0.7 }}
-              />
-            </svg>
+            </div>
 
-            {/* Animated data packets flowing through system */}
-            {dataFlowPaths.map((path, idx) => (
-              <motion.div
-                key={idx}
-                className="absolute left-1/2 w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.6)]"
-                style={{
-                  top: `${33 + (path.from * 16.5)}%`,
-                  x: '-50%',
-                }}
-                animate={{
-                  top: `${33 + (path.to * 16.5)}%`,
-                  opacity: [0, 1, 1, 0],
-                }}
-                transition={{
-                  duration: 1.2,
-                  delay: path.delay,
-                  repeat: Infinity,
-                  repeatDelay: 1.6,
-                  ease: 'easeInOut',
-                }}
-              />
-            ))}
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <h3 className="text-lg font-bold text-white tracking-tight">{tech.category}</h3>
+                <span className="px-1.5 py-0.5 rounded text-[9px] font-mono bg-white/5 text-white/50 border border-white/5">
+                  {tech.freq}
+                </span>
+              </div>
+              <div className="flex gap-2 text-sm text-white/40">
+                {tech.stack.join(' • ')}
+              </div>
+            </div>
+          </div>
 
-            {/* Technology layers */}
-            <div className="space-y-8 relative z-10">
-              {technologies.map((tech, index) => (
-                <FadeIn key={tech.category} delay={index * 0.15}>
-                  <motion.div
-                    className="relative group"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.15 }}
-                  >
-                    <div className="lux-card p-8 relative overflow-hidden">
-                      {/* Colored grid pattern for each layer */}
-                      <div 
-                        className="absolute inset-0 pointer-events-none opacity-100"
-                        style={{
-                          backgroundImage: `
-                            linear-gradient(to right, ${tech.color} 1px, transparent 1px),
-                            linear-gradient(to bottom, ${tech.color} 1px, transparent 1px)
-                          `,
-                          backgroundSize: '40px 40px',
-                        }}
-                      />
-                      
-                      {/* Pulse effect on hover */}
-                      <motion.div
-                        className="absolute inset-0 pointer-events-none"
-                        style={{
-                          background: `radial-gradient(circle at 50% 50%, ${tech.color}, transparent 70%)`,
-                        }}
-                        animate={{
-                          opacity: [0, 0.3, 0],
-                        }}
-                        transition={{
-                          duration: 3,
-                          repeat: Infinity,
-                          delay: index * 0.5,
-                        }}
-                      />
-
-                      <div className="relative z-10">
-                        <div className="flex items-center justify-between mb-6">
-                          <div>
-                            <div className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-2 opacity-70">
-                              Layer {index + 1}
-                            </div>
-                            <h3 className="text-2xl font-medium text-foreground">
-                              {tech.category}
-                            </h3>
-                          </div>
-                          {/* Status indicator */}
-                          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-500/10 border border-green-500/20">
-                            <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                            <span className="text-xs font-medium text-green-400">Active</span>
-                          </div>
-                        </div>
-                        
-                        {/* Tech stack pills */}
-                        <div className="flex flex-wrap gap-2">
-                          {tech.stack.map((item, i) => (
-                            <motion.div
-                              key={item}
-                              className="px-3 py-1.5 rounded-lg bg-card/50 border border-border/50 backdrop-blur-sm text-sm"
-                              initial={{ opacity: 0, scale: 0.8 }}
-                              whileInView={{ opacity: 1, scale: 1 }}
-                              viewport={{ once: true }}
-                              transition={{ delay: index * 0.15 + i * 0.05 }}
-                              whileHover={{ scale: 1.05, borderColor: tech.color }}
-                            >
-                              {item}
-                            </motion.div>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Connection node */}
-                    {index < technologies.length - 1 && (
-                      <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-foreground/30 border-2 border-background shadow-lg z-20" />
-                    )}
-                  </motion.div>
-                </FadeIn>
+          <div className="hidden md:flex flex-col items-end gap-1">
+            <div className="flex gap-1 h-3 items-end">
+              {[1, 2, 3].map((bar) => (
+                <motion.div
+                  key={bar}
+                  className="w-1 bg-white/20 rounded-sm"
+                  animate={{ height: ['20%', '100%', '20%'] }}
+                  transition={{
+                    duration: 0.8,
+                    repeat: Infinity,
+                    delay: bar * 0.1,
+                    ease: "easeInOut"
+                  }}
+                  style={{ backgroundColor: tech.color }}
+                />
               ))}
             </div>
+            <span className="text-[10px] text-white/30 uppercase tracking-widest font-mono">
+              Live
+            </span>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+// --- 3. The "Heavy" Data Cable ---
+const DataCable = ({ color }: { color: string }) => {
+  return (
+    <div className="relative w-full h-16 flex justify-center overflow-hidden">
+      <div className="w-[2px] h-full bg-white/5 relative">
+        <motion.div
+          className="absolute top-0 w-full bg-gradient-to-b from-transparent via-white to-transparent"
+          style={{ 
+            height: '60%', 
+            opacity: 0.8,
+            boxShadow: `0 0 20px 2px ${color}`
+          }}
+          animate={{ top: ['-100%', '200%'] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: "circIn" }}
+        />
+        <motion.div
+          className="absolute top-0 w-full bg-white/50"
+          style={{ height: '20%' }}
+          animate={{ top: ['-100%', '200%'] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: "linear", delay: 0.5 }}
+        />
+      </div>
+    </div>
+  );
+};
+
+// --- Main Component ---
+export const TechStackSection = () => {
+  return (
+    <section className="min-h-screen bg-[#020202] py-32 flex items-center justify-center relative overflow-hidden">
+      
+      <div className="absolute inset-0 pointer-events-none">
+         <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-blue-600/5 rounded-full blur-[120px]" />
+         <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-purple-600/5 rounded-full blur-[120px]" />
+      </div>
+
+      <div className="max-w-3xl w-full mx-auto px-6 relative z-10">
+        
+        <div className="text-center mb-20">
+          <motion.div 
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            className="inline-block mb-4 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-md"
+          >
+            <span className="text-xs font-mono text-white/60 tracking-widest uppercase">
+              System Architecture v2.0
+            </span>
+          </motion.div>
+          <h2 className="text-5xl font-bold text-white mb-6 tracking-tight">
+            The Neural Grid.
+          </h2>
+          <p className="text-white/40 max-w-lg mx-auto text-lg">
+            A fully reactive, event-driven infrastructure that thinks before it acts.
+          </p>
+        </div>
+
+        <div className="flex flex-col">
+          <DataCable color={technologies[0].color} />
+          
+          {technologies.map((tech, index) => (
+            <React.Fragment key={tech.id}>
+              <CircuitCard tech={tech} index={index} />
+              
+              {index < technologies.length - 1 && (
+                <DataCable color={technologies[index + 1].color} />
+              )}
+            </React.Fragment>
+          ))}
+          
+          <div className="relative w-full h-16 flex justify-center">
+            <div className="w-[2px] h-full bg-gradient-to-b from-white/5 to-transparent" />
           </div>
         </div>
 
-        {/* Additional info */}
-        <FadeIn delay={0.6} className="mt-16 text-center">
-          <div className="inline-flex items-center gap-6 text-xs uppercase tracking-[0.25em] text-muted-foreground">
-            <span className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
-              Real-time data flow
-            </span>
-            <span className="w-px h-4 bg-border/50" />
-            <span>99.99% Uptime</span>
-            <span className="w-px h-4 bg-border/50" />
-            <span>SOC 2 Certified</span>
-          </div>
-        </FadeIn>
       </div>
     </section>
   );
