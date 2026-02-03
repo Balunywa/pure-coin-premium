@@ -3,6 +3,9 @@ import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
+import '@fontsource/space-grotesk/500.css';
+import '@fontsource/space-grotesk/600.css';
+import logo from '@/assets/logo.png';
 
 const navLinks = [
   { name: 'Products', path: '/products' },
@@ -56,17 +59,16 @@ export const Navbar = () => {
           {/* Logo */}
           <Link
             to="/"
-            className="text-lg font-semibold tracking-[-0.03em] text-foreground hover:opacity-70 transition-opacity relative group"
-            style={{
-              fontFeatureSettings: "'ss01' on, 'cv05' on, 'cv11' on",
-              letterSpacing: '-0.03em',
-            }}
+            className="flex items-center gap-2.5 text-foreground hover:opacity-80 transition-opacity relative group"
           >
-            <span className="relative">
+            <img src={logo} alt="Pure Coin" className="w-7 h-7" />
+            <span 
+              className="text-lg font-semibold tracking-[-0.02em]"
+              style={{
+                fontFamily: "'Space Grotesk', sans-serif",
+              }}
+            >
               Pure Coin
-              <span className="absolute inset-0 bg-gradient-to-r from-foreground via-foreground/90 to-foreground bg-clip-text text-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundSize: '200% 100%' }}>
-                Pure Coin
-              </span>
             </span>
           </Link>
 
