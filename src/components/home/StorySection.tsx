@@ -8,16 +8,19 @@ const storySteps = [
     title: 'Discovery',
     description: 'Define the vision. Align on outcomes. Map the technical architecture.',
     icon: Star,
+    gridColor: 'rgba(139, 92, 246, 0.12)', // Violet
   },
   {
     title: 'Design',
     description: 'Craft the system. Refine every interaction. Build the foundation.',
     icon: Wand2,
+    gridColor: 'rgba(59, 130, 246, 0.12)', // Blue
   },
   {
     title: 'Delivery',
     description: 'Ship with confidence. Monitor performance. Iterate with data.',
     icon: Gem,
+    gridColor: 'rgba(16, 185, 129, 0.12)', // Emerald
   },
 ];
 
@@ -143,16 +146,29 @@ export const StorySection = () => {
                   >
                     <div className={`grid md:grid-cols-2 gap-6 items-center ${isLeft ? '' : 'md:text-right'}`}>
                       <div className={`${isLeft ? 'md:pr-12' : 'md:order-2 md:pl-12'}`}>
-                        <div className="lux-card p-8">
-                          <div className={`flex items-center gap-4 ${isLeft ? '' : 'md:justify-end'}`}>
-                            <div className="w-12 h-12 rounded-2xl bg-foreground/5 border border-foreground/10 flex items-center justify-center">
-                              <Icon className="w-6 h-6 text-foreground/80" />
+                        <div className="lux-card p-8 relative overflow-hidden">
+                          {/* Subtle grid pattern */}
+                          <div 
+                            className="absolute inset-0 pointer-events-none opacity-100"
+                            style={{
+                              backgroundImage: `
+                                linear-gradient(to right, ${step.gridColor} 1px, transparent 1px),
+                                linear-gradient(to bottom, ${step.gridColor} 1px, transparent 1px)
+                              `,
+                              backgroundSize: '40px 40px',
+                            }}
+                          />
+                          <div className="relative z-10">
+                            <div className={`flex items-center gap-4 ${isLeft ? '' : 'md:justify-end'}`}>
+                              <div className="w-12 h-12 rounded-2xl bg-foreground/5 border border-foreground/10 flex items-center justify-center">
+                                <Icon className="w-6 h-6 text-foreground/80" />
+                              </div>
+                              <h3 className="text-2xl">{step.title}</h3>
                             </div>
-                            <h3 className="text-2xl">{step.title}</h3>
+                            <p className="text-muted-foreground mt-4">
+                              {step.description}
+                            </p>
                           </div>
-                          <p className="text-muted-foreground mt-4">
-                            {step.description}
-                          </p>
                         </div>
                       </div>
                       <div className="hidden md:block">
