@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import '@fontsource/space-grotesk/500.css';
 import '@fontsource/space-grotesk/600.css';
-import logo from '@/assets/logo.png';
+import logo from '@/assets/logo-3d.png';
 
 const navLinks = [
   { name: 'Products', path: '/products' },
