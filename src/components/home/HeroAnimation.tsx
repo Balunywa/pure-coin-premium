@@ -48,15 +48,7 @@ const Card3D = ({
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={handleMouseLeave}
         style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
-        animate={{
-          y: [0, -6 - depth * 2, 0],
-          z: isHovered ? 20 : 0,
-        }}
-        transition={{
-          y: { duration: 4 + delay, repeat: Infinity, ease: 'easeInOut' },
-          z: { duration: 0.3 },
-        }}
-        whileHover={{ scale: 1.08 }}
+        whileHover={{ scale: 1.05 }}
         className="cursor-pointer"
       >
         {children}
@@ -80,53 +72,20 @@ const Card3D = ({
 };
 
 export const HeroAnimation = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  // Parallax transforms for different depth layers
-  const bgX = useSpring(useTransform(mouseX, [-0.5, 0.5], [15, -15]), { stiffness: 100, damping: 30 });
-  const bgY = useSpring(useTransform(mouseY, [-0.5, 0.5], [15, -15]), { stiffness: 100, damping: 30 });
-  const midX = useSpring(useTransform(mouseX, [-0.5, 0.5], [8, -8]), { stiffness: 100, damping: 30 });
-  const midY = useSpring(useTransform(mouseY, [-0.5, 0.5], [8, -8]), { stiffness: 100, damping: 30 });
-
-  const handleContainerMouseMove = useCallback((e: React.MouseEvent) => {
-    const rect = containerRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    mouseX.set((e.clientX - rect.left) / rect.width - 0.5);
-    mouseY.set((e.clientY - rect.top) / rect.height - 0.5);
-  }, [mouseX, mouseY]);
-
-  const handleContainerMouseLeave = () => {
-    mouseX.set(0);
-    mouseY.set(0);
-  };
-
   return (
     <div
-      ref={containerRef}
-      onMouseMove={handleContainerMouseMove}
-      onMouseLeave={handleContainerMouseLeave}
       className="relative w-full max-w-[460px] aspect-square mx-auto"
-      style={{ perspective: 1000 }}
     >
       {/* Ambient glow behind everything */}
-      <motion.div
+      <div
         className="absolute inset-[15%] rounded-full pointer-events-none z-0"
         style={{
           background: 'radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%)',
-          x: bgX,
-          y: bgY,
         }}
-        animate={{ scale: [1, 1.15, 1], opacity: [0.4, 0.7, 0.4] }}
-        transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
       />
 
-      {/* Central phone mockup - deepest parallax layer */}
-      <motion.div
-        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10"
-        style={{ x: midX, y: midY }}
-      >
+      {/* Central phone mockup */}
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
         <Card3D delay={0.3} depth={0}>
           <div className="w-[150px] bg-card/80 backdrop-blur-xl border border-border/50 rounded-2xl p-3 shadow-[0_20px_60px_rgba(0,0,0,0.6)]">
             <div className="w-14 h-1.5 bg-muted rounded-full mx-auto mb-2.5" />
@@ -165,10 +124,10 @@ export const HeroAnimation = () => {
             </div>
           </div>
         </Card3D>
-      </motion.div>
+      </div>
 
       {/* Code editor - top right, parallax layer 2 */}
-      <motion.div className="absolute right-[2%] top-[2%] z-20" style={{ x: bgX, y: bgY }}>
+      <div className="absolute right-[2%] top-[2%] z-20">
         <Card3D delay={0.6} depth={2}>
           <div className="bg-card/80 backdrop-blur-xl border border-border/50 rounded-xl p-3 w-[150px] shadow-[0_12px_40px_rgba(0,0,0,0.5)] relative overflow-hidden">
             <div className="flex items-center gap-1.5 mb-2.5">
@@ -216,25 +175,26 @@ export const HeroAnimation = () => {
             </div>
           </div>
         </Card3D>
-      </motion.div>
+      </div>
 
       {/* Design system - top left */}
-      <motion.div className="absolute left-[2%] top-[5%] z-20" style={{ x: bgX, y: bgY }}>
+      <div className="absolute left-[2%] top-[5%] z-20">
         <Card3D delay={0.9} depth={3}>
           <div className="bg-card/80 backdrop-blur-xl border border-border/50 rounded-xl p-3 w-[130px] shadow-[0_12px_40px_rgba(0,0,0,0.5)]">
             <div className="text-[8px] text-muted-foreground/60 uppercase tracking-widest mb-2">Design</div>
             <div className="grid grid-cols-3 gap-1.5">
               {[
-                { bg: 'bg-blue-500', glow: 'rgba(59,130,246,0.4)' },
-                { bg: 'bg-violet-500', glow: 'rgba(139,92,246,0.4)' },
-                { bg: 'bg-emerald-500', glow: 'rgba(16,185,129,0.4)' },
-                { bg: 'bg-amber-500', glow: 'rgba(245,158,11,0.4)' },
-                { bg: 'bg-rose-500', glow: 'rgba(244,63,94,0.4)' },
-                { bg: 'bg-cyan-500', glow: 'rgba(6,182,212,0.4)' },
+                { color: 'rgba(59,130,246,0.5)', glow: 'rgba(59,130,246,0.4)' },
+                { color: 'rgba(139,92,246,0.5)', glow: 'rgba(139,92,246,0.4)' },
+                { color: 'rgba(16,185,129,0.5)', glow: 'rgba(16,185,129,0.4)' },
+                { color: 'rgba(245,158,11,0.5)', glow: 'rgba(245,158,11,0.4)' },
+                { color: 'rgba(244,63,94,0.5)', glow: 'rgba(244,63,94,0.4)' },
+                { color: 'rgba(6,182,212,0.5)', glow: 'rgba(6,182,212,0.4)' },
               ].map((c, i) => (
                 <motion.div
                   key={i}
-                  className={`h-6 rounded-md ${c.bg}/40 cursor-pointer`}
+                  className="h-6 rounded-md cursor-pointer"
+                  style={{ backgroundColor: c.color }}
                   whileHover={{
                     scale: 1.3,
                     boxShadow: `0 0 16px ${c.glow}`,
@@ -253,10 +213,10 @@ export const HeroAnimation = () => {
             </div>
           </div>
         </Card3D>
-      </motion.div>
+      </div>
 
       {/* Performance - bottom right */}
-      <motion.div className="absolute right-[2%] bottom-[5%] z-20" style={{ x: bgX, y: bgY }}>
+      <div className="absolute right-[2%] bottom-[5%] z-20">
         <Card3D delay={1.2} depth={1}>
           <div className="bg-card/80 backdrop-blur-xl border border-border/50 rounded-xl p-3 w-[145px] shadow-[0_12px_40px_rgba(0,0,0,0.5)]">
             <div className="text-[8px] text-muted-foreground/60 uppercase tracking-widest mb-2">Performance</div>
@@ -291,10 +251,10 @@ export const HeroAnimation = () => {
             </div>
           </div>
         </Card3D>
-      </motion.div>
+      </div>
 
       {/* Deployment - bottom left */}
-      <motion.div className="absolute left-[2%] bottom-[8%] z-20" style={{ x: bgX, y: bgY }}>
+      <div className="absolute left-[2%] bottom-[8%] z-20">
         <Card3D delay={1.5} depth={2}>
           <div className="bg-card/80 backdrop-blur-xl border border-border/50 rounded-xl p-3 w-[135px] shadow-[0_12px_40px_rgba(0,0,0,0.5)]">
             <div className="text-[8px] text-muted-foreground/60 uppercase tracking-widest mb-2">Deploy</div>
@@ -350,7 +310,7 @@ export const HeroAnimation = () => {
             </div>
           </div>
         </Card3D>
-      </motion.div>
+      </div>
 
       {/* === DATA FLOW NETWORK === */}
       <svg
