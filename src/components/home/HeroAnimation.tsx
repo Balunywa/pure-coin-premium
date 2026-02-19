@@ -17,7 +17,7 @@ const FloatCard = ({ delay, children, y = 0 }: { delay: number; children: React.
 
 export const HeroAnimation = () => {
   return (
-    <div className="relative w-full aspect-square max-w-[520px] mx-auto">
+    <div className="relative w-full max-w-[420px] aspect-square mx-auto">
       {/* Central phone mockup */}
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
         <FloatCard delay={0.3}>
@@ -43,9 +43,9 @@ export const HeroAnimation = () => {
       </div>
 
       {/* Code editor - top right */}
-      <div className="absolute right-0 top-[5%] z-20">
+      <div className="absolute right-[2%] top-[2%] z-20">
         <FloatCard delay={0.6} y={-6}>
-          <div className="bg-[#0A0A0A] border border-white/10 rounded-xl p-3 w-[155px] shadow-[0_12px_40px_rgba(0,0,0,0.5)]">
+          <div className="bg-[#0A0A0A] border border-white/10 rounded-xl p-3 w-[145px] shadow-[0_12px_40px_rgba(0,0,0,0.5)]">
             <div className="flex items-center gap-1.5 mb-2">
               <div className="w-2 h-2 rounded-full bg-red-400/60" />
               <div className="w-2 h-2 rounded-full bg-yellow-400/60" />
@@ -64,7 +64,7 @@ export const HeroAnimation = () => {
       </div>
 
       {/* Design system - top left */}
-      <div className="absolute left-0 top-[10%] z-20">
+      <div className="absolute left-[2%] top-[5%] z-20">
         <FloatCard delay={0.9} y={-10}>
           <div className="bg-[#0A0A0A] border border-white/10 rounded-xl p-3 w-[125px] shadow-[0_12px_40px_rgba(0,0,0,0.5)]">
             <div className="text-[8px] text-white/30 uppercase tracking-widest mb-2">Design System</div>
@@ -84,9 +84,9 @@ export const HeroAnimation = () => {
       </div>
 
       {/* Performance - bottom right */}
-      <div className="absolute right-[5%] bottom-[8%] z-20">
+      <div className="absolute right-[2%] bottom-[5%] z-20">
         <FloatCard delay={1.2} y={-5}>
-          <div className="bg-[#0A0A0A] border border-white/10 rounded-xl p-3 w-[145px] shadow-[0_12px_40px_rgba(0,0,0,0.5)]">
+          <div className="bg-[#0A0A0A] border border-white/10 rounded-xl p-3 w-[140px] shadow-[0_12px_40px_rgba(0,0,0,0.5)]">
             <div className="text-[8px] text-white/30 uppercase tracking-widest mb-2">Performance</div>
             <div className="flex items-end gap-[3px] h-10">
               {[40, 65, 45, 80, 60, 90, 75, 95].map((h, i) => (
@@ -105,7 +105,7 @@ export const HeroAnimation = () => {
       </div>
 
       {/* Deployment - bottom left */}
-      <div className="absolute left-[3%] bottom-[12%] z-20">
+      <div className="absolute left-[2%] bottom-[8%] z-20">
         <FloatCard delay={1.5} y={-7}>
           <div className="bg-[#0A0A0A] border border-white/10 rounded-xl p-3 w-[130px] shadow-[0_12px_40px_rgba(0,0,0,0.5)]">
             <div className="text-[8px] text-white/30 uppercase tracking-widest mb-2">Deployment</div>
@@ -138,7 +138,7 @@ export const HeroAnimation = () => {
       </div>
 
       {/* Connection lines via SVG */}
-      <svg className="absolute inset-0 w-full h-full z-0" viewBox="0 0 520 520" fill="none">
+      <svg className="absolute inset-0 w-full h-full z-0" viewBox="0 0 420 420" fill="none">
         <defs>
           <linearGradient id="lg1" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="white" stopOpacity="0" />
@@ -146,18 +146,18 @@ export const HeroAnimation = () => {
             <stop offset="100%" stopColor="white" stopOpacity="0" />
           </linearGradient>
         </defs>
-        <motion.path d="M 130 110 Q 260 60 400 100" stroke="url(#lg1)" strokeWidth="1" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.5, delay: 1 }} />
-        <motion.path d="M 400 100 Q 450 260 400 420" stroke="url(#lg1)" strokeWidth="1" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.5, delay: 1.2 }} />
-        <motion.path d="M 400 420 Q 260 470 130 430" stroke="url(#lg1)" strokeWidth="1" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.5, delay: 1.4 }} />
-        <motion.path d="M 130 430 Q 70 260 130 110" stroke="url(#lg1)" strokeWidth="1" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.5, delay: 1.6 }} />
+        <motion.path d="M 100 80 Q 210 40 330 70" stroke="url(#lg1)" strokeWidth="1" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.5, delay: 1 }} />
+        <motion.path d="M 330 70 Q 370 210 330 350" stroke="url(#lg1)" strokeWidth="1" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.5, delay: 1.2 }} />
+        <motion.path d="M 330 350 Q 210 390 100 350" stroke="url(#lg1)" strokeWidth="1" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.5, delay: 1.4 }} />
+        <motion.path d="M 100 350 Q 50 210 100 80" stroke="url(#lg1)" strokeWidth="1" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.5, delay: 1.6 }} />
         {/* Lines to center */}
-        <motion.line x1="260" y1="200" x2="160" y2="130" stroke="url(#lg1)" strokeWidth="1" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, delay: 1.8 }} />
-        <motion.line x1="260" y1="200" x2="400" y2="120" stroke="url(#lg1)" strokeWidth="1" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, delay: 2 }} />
-        <motion.line x1="260" y1="320" x2="150" y2="420" stroke="url(#lg1)" strokeWidth="1" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, delay: 2.2 }} />
-        <motion.line x1="260" y1="320" x2="390" y2="410" stroke="url(#lg1)" strokeWidth="1" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, delay: 2.4 }} />
+        <motion.line x1="210" y1="170" x2="120" y2="100" stroke="url(#lg1)" strokeWidth="1" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, delay: 1.8 }} />
+        <motion.line x1="210" y1="170" x2="320" y2="90" stroke="url(#lg1)" strokeWidth="1" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, delay: 2 }} />
+        <motion.line x1="210" y1="260" x2="120" y2="340" stroke="url(#lg1)" strokeWidth="1" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, delay: 2.2 }} />
+        <motion.line x1="210" y1="260" x2="320" y2="340" stroke="url(#lg1)" strokeWidth="1" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, delay: 2.4 }} />
         
         {/* Pulsing nodes */}
-        {[[260, 200], [260, 320], [160, 130], [400, 120], [150, 420], [390, 410]].map(([cx, cy], i) => (
+        {[[210, 170], [210, 260], [120, 100], [320, 90], [120, 340], [320, 340]].map(([cx, cy], i) => (
           <motion.circle key={i} cx={cx} cy={cy} r="2.5" fill="white"
             animate={{ opacity: [0.15, 0.5, 0.15] }}
             transition={{ duration: 2, delay: 2 + i * 0.2, repeat: Infinity }} />
