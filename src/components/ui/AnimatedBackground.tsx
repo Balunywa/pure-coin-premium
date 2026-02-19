@@ -1,234 +1,162 @@
 import { useEffect, useRef } from 'react';
 
-interface Node {
+/**
+ * Premium ambient background inspired by Apple's spatial computing visuals.
+ * Uses layered, organic light meshes with extremely subtle movement.
+ * No gimmicks — just depth, light, and atmosphere.
+ */
+
+interface LightOrb {
   x: number;
   y: number;
-  vx: number;
-  vy: number;
+  targetX: number;
+  targetY: number;
   radius: number;
-  opacity: number;
-  pulseSpeed: number;
-  pulsePhase: number;
-}
-
-interface Circle {
-  x: number;
-  y: number;
-  radius: number;
-  rotation: number;
-  rotationSpeed: number;
-  opacity: number;
-}
-
-interface Line {
-  x1: number;
-  y1: number;
-  length: number;
-  angle: number;
+  hue: number;
+  saturation: number;
+  lightness: number;
+  alpha: number;
   speed: number;
-  opacity: number;
-  offset: number;
+  drift: number;
+  phase: number;
 }
 
 export const AnimatedBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const animationRef = useRef<number>(0);
+  const animRef = useRef<number>(0);
+  const orbsRef = useRef<LightOrb[]>([]);
+  const dpr = typeof window !== 'undefined' ? Math.min(window.devicePixelRatio, 2) : 1;
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { alpha: true });
     if (!ctx) return;
 
-    let w = 0, h = 0;
-    const nodes: Node[] = [];
-    const circles: Circle[] = [];
-    const lines: Line[] = [];
+    let w = 0;
+    let h = 0;
 
     const resize = () => {
-      w = canvas.width = canvas.offsetWidth * window.devicePixelRatio;
-      h = canvas.height = canvas.offsetHeight * window.devicePixelRatio;
-      ctx.scale(1, 1);
-      init();
+      const rect = canvas.getBoundingClientRect();
+      w = rect.width * dpr;
+      h = rect.height * dpr;
+      canvas.width = w;
+      canvas.height = h;
+      initOrbs();
     };
 
-    const init = () => {
-      nodes.length = 0;
-      circles.length = 0;
-      lines.length = 0;
+    const initOrbs = () => {
+      // 5-7 large, soft light orbs — like Apple's ambient mesh gradients
+      const count = 6;
+      orbsRef.current = [];
+      
+      const palette = [
+        { h: 220, s: 30, l: 12 },  // deep navy
+        { h: 240, s: 20, l: 8 },   // dark indigo
+        { h: 200, s: 15, l: 10 },  // steel blue
+        { h: 260, s: 12, l: 7 },   // deep purple hint
+        { h: 210, s: 25, l: 14 },  // muted blue
+        { h: 190, s: 10, l: 6 },   // near-black teal
+      ];
 
-      // Floating nodes
-      const nodeCount = Math.floor((w * h) / 25000);
-      for (let i = 0; i < nodeCount; i++) {
-        nodes.push({
+      for (let i = 0; i < count; i++) {
+        const color = palette[i % palette.length];
+        const orb: LightOrb = {
           x: Math.random() * w,
           y: Math.random() * h,
-          vx: (Math.random() - 0.5) * 0.4,
-          vy: (Math.random() - 0.5) * 0.4,
-          radius: Math.random() * 2.5 + 1,
-          opacity: Math.random() * 0.6 + 0.2,
-          pulseSpeed: Math.random() * 0.02 + 0.005,
-          pulsePhase: Math.random() * Math.PI * 2,
-        });
+          targetX: Math.random() * w,
+          targetY: Math.random() * h,
+          radius: Math.max(w, h) * (0.25 + Math.random() * 0.35),
+          hue: color.h,
+          saturation: color.s,
+          lightness: color.l,
+          alpha: 0.4 + Math.random() * 0.3,
+          speed: 0.0003 + Math.random() * 0.0004,
+          drift: 0.00015 + Math.random() * 0.0002,
+          phase: Math.random() * Math.PI * 2,
+        };
+        orbsRef.current.push(orb);
       }
+    };
 
-      // Orbiting circles
-      for (let i = 0; i < 4; i++) {
-        circles.push({
-          x: Math.random() * w,
-          y: Math.random() * h,
-          radius: Math.random() * 120 + 60,
-          rotation: Math.random() * Math.PI * 2,
-          rotationSpeed: (Math.random() - 0.5) * 0.003,
-          opacity: Math.random() * 0.15 + 0.05,
-        });
-      }
-
-      // Diagonal streaming lines
-      for (let i = 0; i < 12; i++) {
-        lines.push({
-          x1: Math.random() * w,
-          y1: Math.random() * h,
-          length: Math.random() * 300 + 100,
-          angle: -Math.PI / 6 + (Math.random() - 0.5) * 0.3,
-          speed: Math.random() * 1.5 + 0.5,
-          opacity: Math.random() * 0.25 + 0.05,
-          offset: Math.random() * 1000,
-        });
-      }
+    const easeTarget = (current: number, target: number, factor: number) => {
+      return current + (target - current) * factor;
     };
 
     const draw = (time: number) => {
-      ctx.clearRect(0, 0, w, h);
+      // Soft clear — full black base
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.fillStyle = 'hsl(0 0% 0%)';
+      ctx.fillRect(0, 0, w, h);
 
-      // Draw circles (orbital rings)
-      circles.forEach(c => {
-        c.rotation += c.rotationSpeed;
-        ctx.beginPath();
-        ctx.arc(c.x, c.y, c.radius, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(100, 160, 255, ${c.opacity})`;
-        ctx.lineWidth = 1;
-        ctx.stroke();
+      // Use screen blending for light accumulation
+      ctx.globalCompositeOperation = 'screen';
 
-        // Node on circle
-        const nx = c.x + Math.cos(c.rotation) * c.radius;
-        const ny = c.y + Math.sin(c.rotation) * c.radius;
-        ctx.beginPath();
-        ctx.arc(nx, ny, 3, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(150, 200, 255, ${c.opacity * 3})`;
-        ctx.fill();
+      orbsRef.current.forEach((orb) => {
+        // Ultra-slow organic drift
+        const t = time * orb.speed;
+        orb.targetX = (w * 0.5) + Math.sin(t + orb.phase) * w * 0.35;
+        orb.targetY = (h * 0.5) + Math.cos(t * 0.7 + orb.phase) * h * 0.3;
 
-        // Glow
+        orb.x = easeTarget(orb.x, orb.targetX, 0.003);
+        orb.y = easeTarget(orb.y, orb.targetY, 0.003);
+
+        // Breathing alpha
+        const breathe = Math.sin(time * orb.drift + orb.phase) * 0.08;
+        const currentAlpha = Math.max(0.05, orb.alpha + breathe);
+
+        // Radial gradient orb
+        const gradient = ctx.createRadialGradient(
+          orb.x, orb.y, 0,
+          orb.x, orb.y, orb.radius
+        );
+
+        const baseColor = `hsla(${orb.hue}, ${orb.saturation}%, ${orb.lightness}%`;
+
+        gradient.addColorStop(0, `${baseColor}, ${currentAlpha})`);
+        gradient.addColorStop(0.4, `${baseColor}, ${currentAlpha * 0.5})`);
+        gradient.addColorStop(0.7, `${baseColor}, ${currentAlpha * 0.15})`);
+        gradient.addColorStop(1, `${baseColor}, 0)`);
+
         ctx.beginPath();
-        ctx.arc(nx, ny, 8, 0, Math.PI * 2);
-        const g = ctx.createRadialGradient(nx, ny, 0, nx, ny, 8);
-        g.addColorStop(0, `rgba(100, 170, 255, ${c.opacity * 2})`);
-        g.addColorStop(1, 'transparent');
-        ctx.fillStyle = g;
+        ctx.arc(orb.x, orb.y, orb.radius, 0, Math.PI * 2);
+        ctx.fillStyle = gradient;
         ctx.fill();
       });
 
-      // Draw streaming lines
-      lines.forEach(l => {
-        l.x1 += Math.cos(l.angle) * l.speed;
-        l.y1 += Math.sin(l.angle) * l.speed;
+      // Add an extremely subtle top-center light wash — like a distant light source
+      ctx.globalCompositeOperation = 'screen';
+      const topLight = ctx.createRadialGradient(
+        w * 0.5, h * -0.1, 0,
+        w * 0.5, h * -0.1, h * 0.8
+      );
+      topLight.addColorStop(0, 'hsla(220, 20%, 18%, 0.25)');
+      topLight.addColorStop(0.5, 'hsla(220, 15%, 10%, 0.08)');
+      topLight.addColorStop(1, 'transparent');
+      ctx.fillStyle = topLight;
+      ctx.fillRect(0, 0, w, h);
 
-        if (l.x1 > w + 200 || l.y1 > h + 200 || l.x1 < -200 || l.y1 < -200) {
-          l.x1 = Math.random() * w;
-          l.y1 = -50;
-        }
+      ctx.globalCompositeOperation = 'source-over';
 
-        const x2 = l.x1 + Math.cos(l.angle) * l.length;
-        const y2 = l.y1 + Math.sin(l.angle) * l.length;
-
-        const grad = ctx.createLinearGradient(l.x1, l.y1, x2, y2);
-        grad.addColorStop(0, 'transparent');
-        grad.addColorStop(0.5, `rgba(80, 140, 255, ${l.opacity})`);
-        grad.addColorStop(1, 'transparent');
-        ctx.beginPath();
-        ctx.moveTo(l.x1, l.y1);
-        ctx.lineTo(x2, y2);
-        ctx.strokeStyle = grad;
-        ctx.lineWidth = 1;
-        ctx.stroke();
-      });
-
-      // Draw nodes and connections
-      const connectionDist = 150;
-      for (let i = 0; i < nodes.length; i++) {
-        const n = nodes[i];
-        n.x += n.vx;
-        n.y += n.vy;
-
-        if (n.x < 0 || n.x > w) n.vx *= -1;
-        if (n.y < 0 || n.y > h) n.vy *= -1;
-
-        const pulse = Math.sin(time * n.pulseSpeed + n.pulsePhase) * 0.3 + 0.7;
-        const alpha = n.opacity * pulse;
-
-        // Connections
-        for (let j = i + 1; j < nodes.length; j++) {
-          const m = nodes[j];
-          const dx = n.x - m.x;
-          const dy = n.y - m.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < connectionDist) {
-            const lineAlpha = (1 - dist / connectionDist) * 0.12;
-            ctx.beginPath();
-            ctx.moveTo(n.x, n.y);
-            ctx.lineTo(m.x, m.y);
-            ctx.strokeStyle = `rgba(100, 160, 255, ${lineAlpha})`;
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
-          }
-        }
-
-        // Node dot
-        ctx.beginPath();
-        ctx.arc(n.x, n.y, n.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(180, 210, 255, ${alpha})`;
-        ctx.fill();
-
-        // Glow
-        if (n.radius > 2) {
-          ctx.beginPath();
-          ctx.arc(n.x, n.y, n.radius * 4, 0, Math.PI * 2);
-          const glow = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.radius * 4);
-          glow.addColorStop(0, `rgba(80, 150, 255, ${alpha * 0.4})`);
-          glow.addColorStop(1, 'transparent');
-          ctx.fillStyle = glow;
-          ctx.fill();
-        }
-      }
-
-      animationRef.current = requestAnimationFrame(draw);
+      animRef.current = requestAnimationFrame(draw);
     };
 
     resize();
-    animationRef.current = requestAnimationFrame(draw);
+    animRef.current = requestAnimationFrame(draw);
     window.addEventListener('resize', resize);
 
     return () => {
-      cancelAnimationFrame(animationRef.current);
+      cancelAnimationFrame(animRef.current);
       window.removeEventListener('resize', resize);
     };
-  }, []);
+  }, [dpr]);
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full"
-        style={{ opacity: 0.6 }}
       />
-      {/* Radial fade overlay */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background: 'radial-gradient(ellipse 70% 50% at 50% 30%, transparent 0%, hsl(0 0% 0% / 0.7) 100%)',
-        }}
-      />
-      <div className="absolute inset-0 noise" />
     </div>
   );
 };
