@@ -352,68 +352,179 @@ export const HeroAnimation = () => {
         </Card3D>
       </motion.div>
 
-      {/* Connection lines via SVG - follows parallax */}
-      <motion.svg
-        className="absolute inset-0 w-full h-full z-0 pointer-events-none"
+      {/* === DATA FLOW NETWORK === */}
+      <svg
+        className="absolute inset-0 w-full h-full z-[5] pointer-events-none"
         viewBox="0 0 460 460"
         fill="none"
-        style={{ x: midX, y: midY }}
       >
         <defs>
-          <linearGradient id="lg1" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="white" stopOpacity="0" />
-            <stop offset="50%" stopColor="white" stopOpacity="0.15" />
-            <stop offset="100%" stopColor="white" stopOpacity="0" />
+          {/* Bright cyan-white gradient for lines */}
+          <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="rgba(6,182,212,0)" />
+            <stop offset="50%" stopColor="rgba(6,182,212,0.6)" />
+            <stop offset="100%" stopColor="rgba(6,182,212,0)" />
           </linearGradient>
-          <filter id="glow">
-            <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+          <linearGradient id="lineGrad2" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="rgba(139,92,246,0)" />
+            <stop offset="50%" stopColor="rgba(139,92,246,0.5)" />
+            <stop offset="100%" stopColor="rgba(139,92,246,0)" />
+          </linearGradient>
+          {/* Glow filters */}
+          <filter id="softGlow">
+            <feGaussianBlur stdDeviation="3" result="blur" />
             <feMerge>
-              <feMergeNode in="coloredBlur" />
+              <feMergeNode in="blur" />
+              <feMergeNode in="blur" />
               <feMergeNode in="SourceGraphic" />
             </feMerge>
           </filter>
+          <filter id="nodeGlow">
+            <feGaussianBlur stdDeviation="4" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="blur" />
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+          {/* Particle gradient */}
+          <radialGradient id="particleGrad">
+            <stop offset="0%" stopColor="white" stopOpacity="1" />
+            <stop offset="50%" stopColor="rgba(6,182,212,1)" />
+            <stop offset="100%" stopColor="rgba(6,182,212,0)" />
+          </radialGradient>
+          <radialGradient id="particleGrad2">
+            <stop offset="0%" stopColor="white" stopOpacity="1" />
+            <stop offset="50%" stopColor="rgba(139,92,246,1)" />
+            <stop offset="100%" stopColor="rgba(139,92,246,0)" />
+          </radialGradient>
         </defs>
-        {/* Outer ring */}
-        <motion.path d="M 110 90 Q 230 40 360 80" stroke="url(#lg1)" strokeWidth="1" filter="url(#glow)"
-          initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.5, delay: 1 }} />
-        <motion.path d="M 360 80 Q 400 230 360 380" stroke="url(#lg1)" strokeWidth="1" filter="url(#glow)"
-          initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.5, delay: 1.2 }} />
-        <motion.path d="M 360 380 Q 230 420 110 380" stroke="url(#lg1)" strokeWidth="1" filter="url(#glow)"
-          initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.5, delay: 1.4 }} />
-        <motion.path d="M 110 380 Q 60 230 110 90" stroke="url(#lg1)" strokeWidth="1" filter="url(#glow)"
-          initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.5, delay: 1.6 }} />
-        {/* Spokes to center */}
-        <motion.line x1="230" y1="190" x2="130" y2="110" stroke="url(#lg1)" strokeWidth="1"
-          initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, delay: 1.8 }} />
-        <motion.line x1="230" y1="190" x2="340" y2="100" stroke="url(#lg1)" strokeWidth="1"
-          initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, delay: 2 }} />
-        <motion.line x1="230" y1="280" x2="130" y2="370" stroke="url(#lg1)" strokeWidth="1"
-          initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, delay: 2.2 }} />
-        <motion.line x1="230" y1="280" x2="340" y2="370" stroke="url(#lg1)" strokeWidth="1"
-          initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, delay: 2.4 }} />
 
-        {/* Data flow particles along lines */}
+        {/* Outer connection ring — visible persistent lines */}
         {[
-          { path: 'M 230 190 L 130 110', delay: 3 },
-          { path: 'M 230 190 L 340 100', delay: 3.5 },
-          { path: 'M 230 280 L 130 370', delay: 4 },
-          { path: 'M 230 280 L 340 370', delay: 4.5 },
-        ].map((line, i) => (
-          <motion.circle key={`flow-${i}`} r="2" fill="white" filter="url(#glow)">
-            <animateMotion dur="3s" repeatCount="indefinite" begin={`${line.delay}s`} path={line.path} />
-            <animate attributeName="opacity" values="0;0.6;0" dur="3s" repeatCount="indefinite" begin={`${line.delay}s`} />
-          </motion.circle>
-        ))}
-
-        {/* Pulsing nodes with glow */}
-        {[[230, 190], [230, 280], [130, 110], [340, 100], [130, 370], [340, 370]].map(([cx, cy], i) => (
-          <g key={i}>
-            <motion.circle cx={cx} cy={cy} r="3" fill="white" filter="url(#glow)"
-              animate={{ opacity: [0.2, 0.7, 0.2], r: [2, 3.5, 2] }}
-              transition={{ duration: 2, delay: 2 + i * 0.2, repeat: Infinity }} />
+          { d: 'M 110 90 Q 230 40 360 80', delay: 0.8 },
+          { d: 'M 360 80 Q 400 230 360 380', delay: 1.0 },
+          { d: 'M 360 380 Q 230 420 110 380', delay: 1.2 },
+          { d: 'M 110 380 Q 60 230 110 90', delay: 1.4 },
+        ].map((seg, i) => (
+          <g key={`ring-${i}`}>
+            {/* Base dim line */}
+            <motion.path d={seg.d} stroke="rgba(6,182,212,0.12)" strokeWidth="1.5"
+              initial={{ pathLength: 0 }} animate={{ pathLength: 1 }}
+              transition={{ duration: 1.5, delay: seg.delay }} />
+            {/* Bright animated overlay */}
+            <motion.path d={seg.d} stroke="url(#lineGrad)" strokeWidth="2" filter="url(#softGlow)"
+              initial={{ pathLength: 0 }} animate={{ pathLength: 1 }}
+              transition={{ duration: 1.5, delay: seg.delay }} />
           </g>
         ))}
-      </motion.svg>
+
+        {/* Spokes: center ↔ corners — dual layer */}
+        {[
+          { x1: 230, y1: 210, x2: 130, y2: 110, delay: 1.6 },
+          { x1: 230, y1: 210, x2: 340, y2: 100, delay: 1.8 },
+          { x1: 230, y1: 260, x2: 130, y2: 370, delay: 2.0 },
+          { x1: 230, y1: 260, x2: 340, y2: 370, delay: 2.2 },
+        ].map((l, i) => (
+          <g key={`spoke-${i}`}>
+            <motion.line {...l} stroke="rgba(139,92,246,0.1)" strokeWidth="1.5"
+              initial={{ pathLength: 0 }} animate={{ pathLength: 1 }}
+              transition={{ duration: 1, delay: l.delay }} />
+            <motion.line {...l} stroke="url(#lineGrad2)" strokeWidth="1.5" filter="url(#softGlow)"
+              initial={{ pathLength: 0 }} animate={{ pathLength: 1 }}
+              transition={{ duration: 1, delay: l.delay }} />
+          </g>
+        ))}
+
+        {/* Cross connections for mesh feel */}
+        {[
+          { x1: 130, y1: 110, x2: 340, y2: 370, delay: 2.4 },
+          { x1: 340, y1: 100, x2: 130, y2: 370, delay: 2.6 },
+        ].map((l, i) => (
+          <g key={`cross-${i}`}>
+            <motion.line {...l} stroke="rgba(255,255,255,0.04)" strokeWidth="1" strokeDasharray="4 8"
+              initial={{ pathLength: 0 }} animate={{ pathLength: 1 }}
+              transition={{ duration: 2, delay: l.delay }} />
+          </g>
+        ))}
+
+        {/* === FLOWING DATA PARTICLES === */}
+        {/* Particles along outer ring */}
+        {[
+          { path: 'M 110 90 Q 230 40 360 80', dur: '2.5s', begin: '1.5s', color: 'cyan' },
+          { path: 'M 360 80 Q 400 230 360 380', dur: '3s', begin: '2s', color: 'cyan' },
+          { path: 'M 360 380 Q 230 420 110 380', dur: '2.5s', begin: '2.5s', color: 'cyan' },
+          { path: 'M 110 380 Q 60 230 110 90', dur: '3s', begin: '3s', color: 'cyan' },
+        ].map((p, i) => (
+          <g key={`ring-particle-${i}`}>
+            {/* Main particle */}
+            <circle r="3" fill="url(#particleGrad)" filter="url(#nodeGlow)">
+              <animateMotion dur={p.dur} repeatCount="indefinite" begin={p.begin} path={p.path} />
+              <animate attributeName="opacity" values="0;0.9;0.9;0" dur={p.dur} repeatCount="indefinite" begin={p.begin} />
+            </circle>
+            {/* Trailing particle */}
+            <circle r="2" fill="rgba(6,182,212,0.5)" filter="url(#softGlow)">
+              <animateMotion dur={p.dur} repeatCount="indefinite" begin={`${parseFloat(p.begin) + 0.15}s`} path={p.path} />
+              <animate attributeName="opacity" values="0;0.5;0.5;0" dur={p.dur} repeatCount="indefinite" begin={`${parseFloat(p.begin) + 0.15}s`} />
+            </circle>
+            {/* Second trailing */}
+            <circle r="1.5" fill="rgba(6,182,212,0.3)">
+              <animateMotion dur={p.dur} repeatCount="indefinite" begin={`${parseFloat(p.begin) + 0.3}s`} path={p.path} />
+              <animate attributeName="opacity" values="0;0.3;0.3;0" dur={p.dur} repeatCount="indefinite" begin={`${parseFloat(p.begin) + 0.3}s`} />
+            </circle>
+          </g>
+        ))}
+
+        {/* Particles along spokes — bidirectional */}
+        {[
+          { path: 'M 230 210 L 130 110', dur: '2s', begin: '2s' },
+          { path: 'M 130 110 L 230 210', dur: '2s', begin: '3s' },
+          { path: 'M 230 210 L 340 100', dur: '2s', begin: '2.5s' },
+          { path: 'M 340 100 L 230 210', dur: '2s', begin: '3.5s' },
+          { path: 'M 230 260 L 130 370', dur: '2s', begin: '2.8s' },
+          { path: 'M 130 370 L 230 260', dur: '2s', begin: '3.8s' },
+          { path: 'M 230 260 L 340 370', dur: '2s', begin: '3.2s' },
+          { path: 'M 340 370 L 230 260', dur: '2s', begin: '4.2s' },
+        ].map((p, i) => (
+          <g key={`spoke-particle-${i}`}>
+            <circle r="2.5" fill="url(#particleGrad2)" filter="url(#nodeGlow)">
+              <animateMotion dur={p.dur} repeatCount="indefinite" begin={p.begin} path={p.path} />
+              <animate attributeName="opacity" values="0;0.8;0.8;0" dur={p.dur} repeatCount="indefinite" begin={p.begin} />
+            </circle>
+            <circle r="1.5" fill="rgba(139,92,246,0.4)">
+              <animateMotion dur={p.dur} repeatCount="indefinite" begin={`${parseFloat(p.begin) + 0.1}s`} path={p.path} />
+              <animate attributeName="opacity" values="0;0.4;0.4;0" dur={p.dur} repeatCount="indefinite" begin={`${parseFloat(p.begin) + 0.1}s`} />
+            </circle>
+          </g>
+        ))}
+
+        {/* Junction nodes — pulsing with rings */}
+        {[
+          { cx: 230, cy: 210, color: 'rgba(6,182,212,', size: 4 },
+          { cx: 230, cy: 260, color: 'rgba(6,182,212,', size: 4 },
+          { cx: 130, cy: 110, color: 'rgba(139,92,246,', size: 3 },
+          { cx: 340, cy: 100, color: 'rgba(139,92,246,', size: 3 },
+          { cx: 130, cy: 370, color: 'rgba(139,92,246,', size: 3 },
+          { cx: 340, cy: 370, color: 'rgba(139,92,246,', size: 3 },
+        ].map((node, i) => (
+          <g key={`node-${i}`}>
+            {/* Outer pulse ring */}
+            <circle cx={node.cx} cy={node.cy} r={node.size * 3} fill="none" stroke={`${node.color}0.15)`} strokeWidth="1">
+              <animate attributeName="r" values={`${node.size};${node.size * 4};${node.size}`} dur="3s" repeatCount="indefinite" begin={`${i * 0.3}s`} />
+              <animate attributeName="opacity" values="0.3;0;0.3" dur="3s" repeatCount="indefinite" begin={`${i * 0.3}s`} />
+            </circle>
+            {/* Inner glow */}
+            <circle cx={node.cx} cy={node.cy} r={node.size} fill={`${node.color}0.6)`} filter="url(#nodeGlow)">
+              <animate attributeName="r" values={`${node.size * 0.7};${node.size};${node.size * 0.7}`} dur="2s" repeatCount="indefinite" begin={`${i * 0.2}s`} />
+            </circle>
+            {/* Core dot */}
+            <circle cx={node.cx} cy={node.cy} r="1.5" fill="white">
+              <animate attributeName="opacity" values="0.5;1;0.5" dur="1.5s" repeatCount="indefinite" begin={`${i * 0.15}s`} />
+            </circle>
+          </g>
+        ))}
+      </svg>
 
       {/* Floating particles with 3D depth */}
       {Array.from({ length: 10 }).map((_, i) => (
