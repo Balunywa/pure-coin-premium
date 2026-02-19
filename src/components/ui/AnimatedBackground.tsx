@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react';
 
 /**
- * Constellation network background with software-contextual elements.
- * Connected lines with code glyphs at nodes and data flowing along edges.
+ * Dynamic network topology background with mouse reactivity,
+ * layered depth, and intensified signal propagation.
  */
 
 interface Node {
@@ -11,19 +11,17 @@ interface Node {
   size: number;
   connections: number[];
   glow: number;
-  label: string; // software glyph
-  labelAlpha: number;
+  layer: number; // depth layer for parallax
 }
 
-interface DataPacket {
+interface Signal {
   from: number;
   to: number;
   progress: number;
   speed: number;
   alpha: number;
+  hue: number;
 }
-
-const SOFTWARE_GLYPHS = ['{...}', '</>', '( )', '[ ]', '0x', '#', 'fn', '=>',  '/**/', '::',  'async', 'api', 'db', 'auth'];
 
 export const AnimatedBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -38,7 +36,7 @@ export const AnimatedBackground = () => {
 
     let w = 0, h = 0;
     let nodes: Node[] = [];
-    let packets: DataPacket[] = [];
+    let signals: Signal[] = [];
     const dpr = Math.min(window.devicePixelRatio, 2);
 
     const onMouseMove = (e: MouseEvent) => {
@@ -60,31 +58,29 @@ export const AnimatedBackground = () => {
 
     const build = () => {
       nodes = [];
-      packets = [];
+      signals = [];
 
-      // Create a sparser constellation grid
-      const cols = Math.ceil(w / 180);
-      const rows = Math.ceil(h / 180);
+      const cols = Math.ceil(w / 120);
+      const rows = Math.ceil(h / 120);
       const spacingX = w / cols;
       const spacingY = h / rows;
 
       for (let r = 0; r < rows; r++) {
         for (let c = 0; c < cols; c++) {
-          if (Math.random() < 0.3) continue;
+          if (Math.random() < 0.35) continue;
           nodes.push({
-            x: spacingX * (c + 0.5) + (Math.random() - 0.5) * spacingX * 0.5,
-            y: spacingY * (r + 0.5) + (Math.random() - 0.5) * spacingY * 0.5,
-            size: 1.5 + Math.random() * 1.5,
+            x: spacingX * (c + 0.5) + (Math.random() - 0.5) * spacingX * 0.6,
+            y: spacingY * (r + 0.5) + (Math.random() - 0.5) * spacingY * 0.6,
+            size: 1.0 + Math.random() * 1.8,
             connections: [],
-            glow: Math.random() * Math.PI * 2,
-            label: SOFTWARE_GLYPHS[Math.floor(Math.random() * SOFTWARE_GLYPHS.length)],
-            labelAlpha: 0,
+            glow: Math.random(),
+            layer: Math.random() < 0.3 ? 0 : Math.random() < 0.6 ? 1 : 2,
           });
         }
       }
 
-      // Triangulate connections — connect nearby nodes to form constellation lines
-      const maxDist = Math.max(spacingX, spacingY) * 2.2;
+      // Connect nodes within proximity
+      const maxDist = Math.max(spacingX, spacingY) * 2.5;
       for (let i = 0; i < nodes.length; i++) {
         const distances: { idx: number; dist: number }[] = [];
         for (let j = 0; j < nodes.length; j++) {
@@ -95,7 +91,7 @@ export const AnimatedBackground = () => {
           if (dist < maxDist) distances.push({ idx: j, dist });
         }
         distances.sort((a, b) => a.dist - b.dist);
-        const count = Math.min(2 + Math.floor(Math.random() * 2), distances.length);
+        const count = Math.min(1 + Math.floor(Math.random() * 3), distances.length);
         for (let k = 0; k < count; k++) {
           const target = distances[k].idx;
           if (!nodes[i].connections.includes(target)) {
@@ -105,23 +101,25 @@ export const AnimatedBackground = () => {
       }
     };
 
-    const spawnPacket = () => {
+    const spawnSignal = () => {
       if (nodes.length === 0) return;
       const fromIdx = Math.floor(Math.random() * nodes.length);
       const node = nodes[fromIdx];
       if (node.connections.length === 0) return;
       const toIdx = node.connections[Math.floor(Math.random() * node.connections.length)];
-      packets.push({
+      const hues = [200, 220, 240, 260, 180]; // blue-cyan-purple spectrum
+      signals.push({
         from: fromIdx,
         to: toIdx,
         progress: 0,
-        speed: 0.003 + Math.random() * 0.005,
-        alpha: 0.6 + Math.random() * 0.4,
+        speed: 0.004 + Math.random() * 0.008,
+        alpha: 0.7 + Math.random() * 0.3,
+        hue: hues[Math.floor(Math.random() * hues.length)],
       });
     };
 
     let lastSpawn = 0;
-    const MOUSE_RADIUS = 220 * dpr;
+    const MOUSE_RADIUS = 200 * dpr;
 
     const draw = (time: number) => {
       ctx.clearRect(0, 0, w, h);
@@ -129,14 +127,15 @@ export const AnimatedBackground = () => {
       const mx = mouseRef.current.x;
       const my = mouseRef.current.y;
 
-      // Spawn data packets periodically
-      if (time - lastSpawn > 200) {
-        spawnPacket();
-        spawnPacket();
+      // Spawn more signals for dynamism
+      if (time - lastSpawn > 80) {
+        spawnSignal();
+        spawnSignal();
+        spawnSignal();
         lastSpawn = time;
       }
 
-      // --- Draw constellation lines (persistent connections) ---
+      // Draw edges with mouse-reactive brightness
       const drawn = new Set<string>();
       for (let i = 0; i < nodes.length; i++) {
         const n = nodes[i];
@@ -146,119 +145,105 @@ export const AnimatedBackground = () => {
           drawn.add(key);
           const m = nodes[j];
 
-          // Mouse proximity effect on lines
+          // Mouse proximity brightening
           const midX = (n.x + m.x) / 2;
           const midY = (n.y + m.y) / 2;
           const distToMouse = Math.sqrt((midX - mx) ** 2 + (midY - my) ** 2);
           const mouseInfluence = Math.max(0, 1 - distToMouse / MOUSE_RADIUS);
-
-          const baseAlpha = 0.06 + mouseInfluence * 0.15;
-          const lineWidth = 0.5 + mouseInfluence * 0.8;
-
-          // Gradient along the line for depth
-          const grad = ctx.createLinearGradient(n.x, n.y, m.x, m.y);
-          grad.addColorStop(0, `hsla(160, 60%, 60%, ${baseAlpha})`);
-          grad.addColorStop(0.5, `hsla(160, 50%, 50%, ${baseAlpha * 0.7})`);
-          grad.addColorStop(1, `hsla(160, 60%, 60%, ${baseAlpha})`);
+          const baseAlpha = 0.04 + mouseInfluence * 0.12;
 
           ctx.beginPath();
           ctx.moveTo(n.x, n.y);
           ctx.lineTo(m.x, m.y);
-          ctx.strokeStyle = grad;
-          ctx.lineWidth = lineWidth;
+          ctx.strokeStyle = `rgba(150, 200, 255, ${baseAlpha})`;
+          ctx.lineWidth = 0.5 + mouseInfluence * 1;
           ctx.stroke();
         }
       }
 
-      // --- Draw data packets flowing along lines ---
-      for (let p = packets.length - 1; p >= 0; p--) {
-        const pkt = packets[p];
-        pkt.progress += pkt.speed;
+      // Draw signals
+      for (let s = signals.length - 1; s >= 0; s--) {
+        const sig = signals[s];
+        sig.progress += sig.speed;
 
-        if (pkt.progress >= 1) {
-          // Chain to next node
-          const arrivedNode = nodes[pkt.to];
-          if (arrivedNode.connections.length > 0 && Math.random() < 0.4) {
+        if (sig.progress >= 1) {
+          const arrivedNode = nodes[sig.to];
+          if (arrivedNode.connections.length > 0 && Math.random() < 0.6) {
             const next = arrivedNode.connections[Math.floor(Math.random() * arrivedNode.connections.length)];
-            packets.push({
-              from: pkt.to,
+            signals.push({
+              from: sig.to,
               to: next,
               progress: 0,
-              speed: pkt.speed,
-              alpha: pkt.alpha * 0.8,
+              speed: sig.speed,
+              alpha: sig.alpha * 0.85,
+              hue: sig.hue + (Math.random() - 0.5) * 20,
             });
           }
-          packets.splice(p, 1);
+          signals.splice(s, 1);
           continue;
         }
 
-        const from = nodes[pkt.from];
-        const to = nodes[pkt.to];
-        const x = from.x + (to.x - from.x) * pkt.progress;
-        const y = from.y + (to.y - from.y) * pkt.progress;
+        const from = nodes[sig.from];
+        const to = nodes[sig.to];
+        const x = from.x + (to.x - from.x) * sig.progress;
+        const y = from.y + (to.y - from.y) * sig.progress;
 
-        // Small glowing packet (not a dot — a short dash along the line direction)
-        const dx = to.x - from.x;
-        const dy = to.y - from.y;
-        const len = Math.sqrt(dx * dx + dy * dy);
-        const nx = (dx / len) * 6;
-        const ny = (dy / len) * 6;
+        // Trail
+        const trailLen = 0.2;
+        const trailStart = Math.max(0, sig.progress - trailLen);
+        const tx1 = from.x + (to.x - from.x) * trailStart;
+        const ty1 = from.y + (to.y - from.y) * trailStart;
 
+        const grad = ctx.createLinearGradient(tx1, ty1, x, y);
+        grad.addColorStop(0, `hsla(${sig.hue}, 80%, 70%, 0)`);
+        grad.addColorStop(1, `hsla(${sig.hue}, 80%, 70%, ${sig.alpha * 0.4})`);
         ctx.beginPath();
-        ctx.moveTo(x - nx, y - ny);
-        ctx.lineTo(x + nx, y + ny);
-        ctx.strokeStyle = `hsla(160, 70%, 65%, ${pkt.alpha * 0.8})`;
+        ctx.moveTo(tx1, ty1);
+        ctx.lineTo(x, y);
+        ctx.strokeStyle = grad;
         ctx.lineWidth = 2;
-        ctx.lineCap = 'round';
         ctx.stroke();
 
-        // Subtle glow around packet
-        const g = ctx.createRadialGradient(x, y, 0, x, y, 12);
-        g.addColorStop(0, `hsla(160, 70%, 60%, ${pkt.alpha * 0.2})`);
+        // Signal head
+        ctx.beginPath();
+        ctx.arc(x, y, 2.5, 0, Math.PI * 2);
+        ctx.fillStyle = `hsla(${sig.hue}, 80%, 80%, ${sig.alpha * 0.9})`;
+        ctx.fill();
+
+        // Glow
+        const g = ctx.createRadialGradient(x, y, 0, x, y, 16);
+        g.addColorStop(0, `hsla(${sig.hue}, 80%, 70%, ${sig.alpha * 0.3})`);
         g.addColorStop(1, 'transparent');
         ctx.fillStyle = g;
         ctx.beginPath();
-        ctx.arc(x, y, 12, 0, Math.PI * 2);
+        ctx.arc(x, y, 16, 0, Math.PI * 2);
         ctx.fill();
       }
 
-      // Cap packets
-      if (packets.length > 40) packets.splice(0, packets.length - 40);
+      // Cap signal count
+      if (signals.length > 80) signals.splice(0, signals.length - 80);
 
-      // --- Draw nodes with glyphs ---
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-
+      // Draw nodes with mouse reactivity and breathing
       for (const n of nodes) {
         const distToMouse = Math.sqrt((n.x - mx) ** 2 + (n.y - my) ** 2);
         const mouseBoost = Math.max(0, 1 - distToMouse / MOUSE_RADIUS);
-        const pulse = 0.4 + Math.sin(time * 0.001 + n.glow) * 0.15 + mouseBoost * 0.4;
-        const nodeSize = n.size * (1 + mouseBoost * 0.5);
+        const pulse = 0.3 + Math.sin(time * 0.0015 + n.glow * 10) * 0.15 + mouseBoost * 0.5;
+        const nodeSize = n.size * (1 + mouseBoost * 0.8);
 
         // Outer glow
-        const ng = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, nodeSize * 5);
-        ng.addColorStop(0, `hsla(160, 60%, 60%, ${pulse * 0.15})`);
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, nodeSize * 4, 0, Math.PI * 2);
+        const ng = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, nodeSize * 4);
+        ng.addColorStop(0, `hsla(210, 80%, 75%, ${pulse * 0.2})`);
         ng.addColorStop(1, 'transparent');
         ctx.fillStyle = ng;
-        ctx.beginPath();
-        ctx.arc(n.x, n.y, nodeSize * 5, 0, Math.PI * 2);
         ctx.fill();
 
-        // Core dot
+        // Core
         ctx.beginPath();
         ctx.arc(n.x, n.y, nodeSize, 0, Math.PI * 2);
-        ctx.fillStyle = `hsla(160, 55%, 65%, ${pulse})`;
+        ctx.fillStyle = `hsla(210, 60%, 85%, ${pulse})`;
         ctx.fill();
-
-        // Software glyph label — only show when mouse is near
-        const targetAlpha = mouseBoost > 0.3 ? mouseBoost * 0.7 : 0;
-        n.labelAlpha += (targetAlpha - n.labelAlpha) * 0.08;
-
-        if (n.labelAlpha > 0.02) {
-          ctx.font = `${10 * dpr}px "SF Mono", "Monaco", "Inconsolata", monospace`;
-          ctx.fillStyle = `hsla(160, 40%, 70%, ${n.labelAlpha})`;
-          ctx.fillText(n.label, n.x, n.y - nodeSize * 4 - 6);
-        }
       }
 
       animRef.current = requestAnimationFrame(draw);
