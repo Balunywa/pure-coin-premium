@@ -1,5 +1,6 @@
+import React from 'react';
 import { motion } from 'framer-motion';
-import { Star, Wand2, Gem } from 'lucide-react';
+import { Star, Wand2, Gem, CheckCircle2 } from 'lucide-react';
 import { FadeIn } from '@/components/ui/AnimatedText';
 
 const storySteps = [
@@ -8,70 +9,195 @@ const storySteps = [
     title: 'Discovery',
     description: 'Define the vision. Align on outcomes. Map the technical architecture.',
     icon: Star,
-    number: '01',
+    color: '#8B5CF6',
+    freq: 'Syncing...',
   },
   {
     id: 'design',
     title: 'Design',
     description: 'Craft the system. Refine every interaction. Build the foundation.',
     icon: Wand2,
-    number: '02',
+    color: '#3B82F6',
+    freq: 'Processing',
   },
   {
     id: 'delivery',
     title: 'Delivery',
     description: 'Ship with confidence. Monitor performance. Iterate with data.',
     icon: Gem,
-    number: '03',
+    color: '#10B981',
+    freq: 'Uploaded',
   },
 ];
 
+const ActiveGrid = ({ color }: { color: string }) => {
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-[0.15]">
+      <svg className="absolute inset-0 w-full h-full" width="100%" height="100%">
+        <defs>
+          <pattern id={`grid-${color}`} width="40" height="40" patternUnits="userSpaceOnUse">
+            <path d="M 40 0 L 0 0 0 40" fill="none" stroke={color} strokeWidth="1" />
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill={`url(#grid-${color})`} />
+      </svg>
+      {[...Array(3)].map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute h-[1px] w-12 bg-white/50"
+          style={{ top: `${20 + i * 30}%`, left: '-10%', boxShadow: `0 0 10px ${color}` }}
+          animate={{ left: ['-20%', '120%'] }}
+          transition={{ duration: 4 + i, repeat: Infinity, ease: "linear", delay: i * 1.5 }}
+        />
+      ))}
+    </div>
+  );
+};
+
+const HoloCard = ({ step, index }: { step: typeof storySteps[0], index: number }) => {
+  const Icon = step.icon;
+  const isEven = index % 2 === 0;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: isEven ? -50 : 50 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ duration: 0.7, delay: index * 0.2 }}
+      className="relative group z-10"
+    >
+      <div 
+        className="absolute -inset-0.5 bg-gradient-to-r from-transparent via-white/10 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 blur-md transition duration-500"
+        style={{ backgroundImage: `linear-gradient(to right, transparent, ${step.color}40, transparent)` }}
+      />
+
+      <div className="relative h-full bg-[#030303] border border-white/10 rounded-2xl overflow-hidden p-8">
+        <ActiveGrid color={step.color} />
+        
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -skew-x-12"
+          animate={{ x: ['-150%', '200%'] }}
+          transition={{ duration: 3, repeat: Infinity, repeatDelay: 1 }}
+        />
+
+        <div className="relative z-10 flex flex-col gap-6">
+          <div className="flex items-start justify-between">
+            <div className="w-12 h-12 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center relative overflow-hidden group-hover:border-white/20 transition-colors">
+              <Icon className="w-6 h-6 text-white/90 relative z-10" />
+              <motion.div 
+                className="absolute inset-0 border-2 border-transparent border-t-white/20 rounded-lg"
+                animate={{ rotate: 360 }}
+                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+              />
+            </div>
+            <span className="text-[10px] font-mono text-white/40 uppercase tracking-widest border border-white/5 px-2 py-1 rounded-full bg-black/50 backdrop-blur-md">
+              0{index + 1} // {step.freq}
+            </span>
+          </div>
+
+          <div>
+            <h3 className="text-2xl font-bold text-white mb-2 tracking-tight">{step.title}</h3>
+            <p className="text-white/50 leading-relaxed text-sm">{step.description}</p>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+const CenterSpine = () => {
+  return (
+    <div className="absolute left-1/2 top-0 bottom-0 w-[2px] -translate-x-1/2 hidden md:block">
+      <div className="absolute inset-0 bg-white/5" />
+      <motion.div
+        className="absolute top-0 w-full bg-gradient-to-b from-transparent via-indigo-500 to-transparent shadow-[0_0_15px_rgba(99,102,241,0.5)]"
+        style={{ height: '200px' }}
+        animate={{ top: ['-20%', '110%'] }}
+        transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+      />
+    </div>
+  );
+};
+
+const HorizontalBeam = ({ isLeft, color, delay }: { isLeft: boolean, color: string, delay: number }) => {
+  return (
+    <div className={`absolute top-1/2 -translate-y-1/2 hidden md:block h-[2px] w-12 lg:w-24 overflow-hidden ${isLeft ? 'right-0 translate-x-full' : 'left-0 -translate-x-full'}`}>
+      <div className="absolute inset-0 bg-white/5" />
+      <motion.div
+        className="absolute inset-y-0 w-1/2 bg-gradient-to-r from-transparent via-white to-transparent opacity-70"
+        style={{ right: isLeft ? '100%' : 'auto', left: isLeft ? 'auto' : '100%', boxShadow: `0 0 10px ${color}` }}
+        animate={{ right: isLeft ? ['100%', '-100%'] : 'auto', left: isLeft ? 'auto' : ['100%', '-100%'] }}
+        transition={{ duration: 2, repeat: Infinity, delay: delay, ease: "circOut" }}
+      />
+    </div>
+  );
+};
+
+const CenterNode = ({ color, delay }: { color: string, delay: number }) => {
+  return (
+    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 hidden md:block z-20">
+      <div className="w-4 h-4 rounded-full bg-[#050505] border border-white/20 flex items-center justify-center">
+        <motion.div 
+          className="w-1.5 h-1.5 rounded-full"
+          style={{ backgroundColor: color }}
+          animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }}
+          transition={{ duration: 2, repeat: Infinity, delay: delay }}
+        />
+      </div>
+      <motion.div
+        className="absolute inset-0 rounded-full border border-white/30"
+        initial={{ scale: 1, opacity: 1 }}
+        animate={{ scale: 3, opacity: 0 }}
+        transition={{ duration: 2, repeat: Infinity, delay: delay }}
+      />
+    </div>
+  );
+};
+
 export const StorySection = () => {
   return (
-    <section className="py-32 relative overflow-hidden">
-      <div className="section-container relative z-10">
-        {/* Stats row */}
-        <FadeIn>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24 border-b border-border pb-12">
-            {[
-              { label: 'Engineering Excellence', value: '12+', sub: 'Years' },
-              { label: 'Products Shipped', value: '30+', sub: 'Global' },
-              { label: 'Time to Market', value: '8wks', sub: 'Average' },
-            ].map((stat, i) => (
-              <div key={i} className="text-center">
-                <p className="text-4xl md:text-5xl font-medium text-foreground mb-2 tracking-tight">{stat.value}</p>
-                <p className="text-sm text-muted-foreground uppercase tracking-[0.15em]">{stat.label}</p>
-              </div>
-            ))}
-          </div>
-        </FadeIn>
+    <section className="py-32 bg-black relative overflow-hidden">
+      <div className="absolute inset-0 w-full h-full pointer-events-none">
+        <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+        <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-900/10 blur-[120px] rounded-full" />
+      </div>
 
-        {/* Process cards */}
-        <FadeIn className="mb-16">
-          <h2 className="text-foreground mb-4">Our process.</h2>
-          <p className="text-muted-foreground text-lg max-w-xl">
-            A proven framework for building world-class products.
-          </p>
-        </FadeIn>
+      <div className="container relative z-10 mx-auto px-4 max-w-6xl">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24 border-b border-white/5 pb-12"
+        >
+          {[
+            { label: 'Engineering Excellence', value: '12+', sub: 'Years' },
+            { label: 'Products Shipped', value: '30+', sub: 'Global' },
+            { label: 'Time to Market', value: '8wks', sub: 'Average' },
+          ].map((stat, i) => (
+            <div key={i} className="text-center group cursor-default">
+              <p className="text-4xl md:text-5xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors duration-300">{stat.value}</p>
+              <p className="text-sm text-white/40 uppercase tracking-widest">{stat.label}</p>
+            </div>
+          ))}
+        </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {storySteps.map((step, index) => {
-            const Icon = step.icon;
-            return (
-              <FadeIn key={step.id} delay={index * 0.1}>
-                <div className="group p-8 rounded-2xl border border-border bg-card hover:border-foreground/15 transition-all duration-300">
-                  <div className="flex items-start justify-between mb-6">
-                    <div className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center group-hover:bg-foreground/5 transition-colors">
-                      <Icon className="w-6 h-6 text-foreground/70" />
-                    </div>
-                    <span className="text-sm font-medium text-muted-foreground">{step.number}</span>
+        <div className="relative">
+          <CenterSpine />
+          <div className="space-y-24">
+            {storySteps.map((step, index) => {
+              const isLeft = index % 2 === 0;
+              return (
+                <div key={step.id} className="relative grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-0">
+                  <div className={`relative ${isLeft ? 'md:pr-12 lg:pr-24' : 'md:order-2 md:pl-12 lg:pl-24'}`}>
+                    <HoloCard step={step} index={index} />
+                    <HorizontalBeam isLeft={isLeft} color={step.color} delay={index * 0.2} />
                   </div>
-                  <h3 className="text-xl font-medium mb-3 text-foreground">{step.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{step.description}</p>
+                  <div className={`${isLeft ? 'md:order-2' : 'md:order-1'}`} />
+                  <CenterNode color={step.color} delay={index * 0.2} />
                 </div>
-              </FadeIn>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>

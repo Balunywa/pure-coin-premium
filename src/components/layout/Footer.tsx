@@ -17,17 +17,17 @@ export const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-border">
+    <footer className="border-t border-border/50 bg-card/30">
       <div className="section-container py-16">
         <div className="grid grid-cols-2 md:grid-cols-3 gap-12 mb-16">
           <div className="col-span-2 md:col-span-1">
             <Link to="/" className="flex items-center gap-2.5 text-foreground hover:opacity-80 transition-opacity">
-              <img src={logo} alt="Pure Coin" className="w-6 h-6" />
-              <span className="text-base font-semibold tracking-[-0.02em]" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+              <img src={logo} alt="Pure Coin" className="w-7 h-7" />
+              <span className="text-lg font-semibold tracking-[-0.02em]" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
                 Pure Coin
               </span>
             </Link>
-            <p className="text-muted-foreground text-sm mt-4 max-w-xs leading-relaxed">
+            <p className="text-muted-foreground text-sm mt-4 max-w-xs leading-[1.7]">
               Engineering excellence.<br />Software that sets the standard.
             </p>
           </div>
@@ -55,7 +55,7 @@ export const Footer = () => {
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4 pt-8 border-t border-border">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 pt-8 border-t border-border/50">
           <p className="text-muted-foreground text-sm">© {currentYear} Pure Coin Innovations. All rights reserved.</p>
           <div className="flex items-center gap-6">
             <Link to="/legal" className="text-muted-foreground text-sm hover:text-foreground transition-colors">Privacy Policy</Link>
