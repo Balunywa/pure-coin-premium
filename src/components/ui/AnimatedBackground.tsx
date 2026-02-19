@@ -1,40 +1,41 @@
 import { useEffect, useRef } from 'react';
 
 /**
- * Premium ambient background inspired by Apple's spatial computing visuals.
- * Uses layered, organic light meshes with extremely subtle movement.
- * No gimmicks — just depth, light, and atmosphere.
+ * Network topology background — engineered connections, not bouncing particles.
+ * Static node positions with animated signal pulses traveling along edges.
+ * Inspired by circuit board / network architecture visualizations.
  */
 
-interface LightOrb {
+interface Node {
   x: number;
   y: number;
-  targetX: number;
-  targetY: number;
-  radius: number;
-  hue: number;
-  saturation: number;
-  lightness: number;
-  alpha: number;
+  size: number;
+  connections: number[];
+  glow: number;
+}
+
+interface Signal {
+  from: number;
+  to: number;
+  progress: number;
   speed: number;
-  drift: number;
-  phase: number;
+  alpha: number;
 }
 
 export const AnimatedBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animRef = useRef<number>(0);
-  const orbsRef = useRef<LightOrb[]>([]);
-  const dpr = typeof window !== 'undefined' ? Math.min(window.devicePixelRatio, 2) : 1;
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext('2d', { alpha: true });
+    const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    let w = 0;
-    let h = 0;
+    let w = 0, h = 0;
+    let nodes: Node[] = [];
+    let signals: Signal[] = [];
+    const dpr = Math.min(window.devicePixelRatio, 2);
 
     const resize = () => {
       const rect = canvas.getBoundingClientRect();
@@ -42,101 +43,180 @@ export const AnimatedBackground = () => {
       h = rect.height * dpr;
       canvas.width = w;
       canvas.height = h;
-      initOrbs();
+      build();
     };
 
-    const initOrbs = () => {
-      // 5-7 large, soft light orbs — like Apple's ambient mesh gradients
-      const count = 6;
-      orbsRef.current = [];
-      
-      const palette = [
-        { h: 220, s: 30, l: 12 },  // deep navy
-        { h: 240, s: 20, l: 8 },   // dark indigo
-        { h: 200, s: 15, l: 10 },  // steel blue
-        { h: 260, s: 12, l: 7 },   // deep purple hint
-        { h: 210, s: 25, l: 14 },  // muted blue
-        { h: 190, s: 10, l: 6 },   // near-black teal
-      ];
+    const build = () => {
+      nodes = [];
+      signals = [];
 
-      for (let i = 0; i < count; i++) {
-        const color = palette[i % palette.length];
-        const orb: LightOrb = {
-          x: Math.random() * w,
-          y: Math.random() * h,
-          targetX: Math.random() * w,
-          targetY: Math.random() * h,
-          radius: Math.max(w, h) * (0.25 + Math.random() * 0.35),
-          hue: color.h,
-          saturation: color.s,
-          lightness: color.l,
-          alpha: 0.4 + Math.random() * 0.3,
-          speed: 0.0003 + Math.random() * 0.0004,
-          drift: 0.00015 + Math.random() * 0.0002,
-          phase: Math.random() * Math.PI * 2,
-        };
-        orbsRef.current.push(orb);
+      // Place nodes on a deliberate grid with jitter — like infrastructure topology
+      const cols = Math.ceil(w / 140);
+      const rows = Math.ceil(h / 140);
+      const spacingX = w / cols;
+      const spacingY = h / rows;
+
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          // Skip ~40% for organic feel
+          if (Math.random() < 0.4) continue;
+          nodes.push({
+            x: spacingX * (c + 0.5) + (Math.random() - 0.5) * spacingX * 0.5,
+            y: spacingY * (r + 0.5) + (Math.random() - 0.5) * spacingY * 0.5,
+            size: 1.2 + Math.random() * 1.3,
+            connections: [],
+            glow: Math.random(),
+          });
+        }
+      }
+
+      // Build connections — each node connects to 1-3 nearest neighbors
+      const maxDist = Math.max(spacingX, spacingY) * 2.2;
+      for (let i = 0; i < nodes.length; i++) {
+        const distances: { idx: number; dist: number }[] = [];
+        for (let j = 0; j < nodes.length; j++) {
+          if (i === j) continue;
+          const dx = nodes[i].x - nodes[j].x;
+          const dy = nodes[i].y - nodes[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < maxDist) {
+            distances.push({ idx: j, dist });
+          }
+        }
+        distances.sort((a, b) => a.dist - b.dist);
+        const connectCount = Math.min(1 + Math.floor(Math.random() * 3), distances.length);
+        for (let k = 0; k < connectCount; k++) {
+          const target = distances[k].idx;
+          if (!nodes[i].connections.includes(target)) {
+            nodes[i].connections.push(target);
+          }
+        }
       }
     };
 
-    const easeTarget = (current: number, target: number, factor: number) => {
-      return current + (target - current) * factor;
+    const spawnSignal = () => {
+      if (nodes.length === 0) return;
+      const fromIdx = Math.floor(Math.random() * nodes.length);
+      const node = nodes[fromIdx];
+      if (node.connections.length === 0) return;
+      const toIdx = node.connections[Math.floor(Math.random() * node.connections.length)];
+      signals.push({
+        from: fromIdx,
+        to: toIdx,
+        progress: 0,
+        speed: 0.003 + Math.random() * 0.006,
+        alpha: 0.6 + Math.random() * 0.4,
+      });
     };
 
+    let lastSpawn = 0;
+
     const draw = (time: number) => {
-      // Soft clear — full black base
-      ctx.globalCompositeOperation = 'source-over';
-      ctx.fillStyle = 'hsl(0 0% 0%)';
-      ctx.fillRect(0, 0, w, h);
+      ctx.clearRect(0, 0, w, h);
 
-      // Use screen blending for light accumulation
-      ctx.globalCompositeOperation = 'screen';
+      // Spawn signals at intervals
+      if (time - lastSpawn > 120) {
+        spawnSignal();
+        spawnSignal();
+        lastSpawn = time;
+      }
 
-      orbsRef.current.forEach((orb) => {
-        // Ultra-slow organic drift
-        const t = time * orb.speed;
-        orb.targetX = (w * 0.5) + Math.sin(t + orb.phase) * w * 0.35;
-        orb.targetY = (h * 0.5) + Math.cos(t * 0.7 + orb.phase) * h * 0.3;
+      // Draw edges — static, very subtle
+      ctx.lineWidth = 0.5;
+      const drawn = new Set<string>();
+      for (let i = 0; i < nodes.length; i++) {
+        const n = nodes[i];
+        for (const j of n.connections) {
+          const key = `${Math.min(i, j)}-${Math.max(i, j)}`;
+          if (drawn.has(key)) continue;
+          drawn.add(key);
+          const m = nodes[j];
+          ctx.beginPath();
+          ctx.moveTo(n.x, n.y);
+          ctx.lineTo(m.x, m.y);
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
+          ctx.stroke();
+        }
+      }
 
-        orb.x = easeTarget(orb.x, orb.targetX, 0.003);
-        orb.y = easeTarget(orb.y, orb.targetY, 0.003);
+      // Draw signals traveling along edges
+      for (let s = signals.length - 1; s >= 0; s--) {
+        const sig = signals[s];
+        sig.progress += sig.speed;
 
-        // Breathing alpha
-        const breathe = Math.sin(time * orb.drift + orb.phase) * 0.08;
-        const currentAlpha = Math.max(0.05, orb.alpha + breathe);
+        if (sig.progress >= 1) {
+          // Chain: signal arrives, may continue
+          const arrivedNode = nodes[sig.to];
+          if (arrivedNode.connections.length > 0 && Math.random() < 0.5) {
+            const next = arrivedNode.connections[Math.floor(Math.random() * arrivedNode.connections.length)];
+            signals.push({
+              from: sig.to,
+              to: next,
+              progress: 0,
+              speed: sig.speed,
+              alpha: sig.alpha * 0.8,
+            });
+          }
+          signals.splice(s, 1);
+          continue;
+        }
 
-        // Radial gradient orb
-        const gradient = ctx.createRadialGradient(
-          orb.x, orb.y, 0,
-          orb.x, orb.y, orb.radius
-        );
+        const from = nodes[sig.from];
+        const to = nodes[sig.to];
+        const x = from.x + (to.x - from.x) * sig.progress;
+        const y = from.y + (to.y - from.y) * sig.progress;
 
-        const baseColor = `hsla(${orb.hue}, ${orb.saturation}%, ${orb.lightness}%`;
+        // Signal trail — lit edge segment
+        const trailLen = 0.15;
+        const trailStart = Math.max(0, sig.progress - trailLen);
+        const tx1 = from.x + (to.x - from.x) * trailStart;
+        const ty1 = from.y + (to.y - from.y) * trailStart;
 
-        gradient.addColorStop(0, `${baseColor}, ${currentAlpha})`);
-        gradient.addColorStop(0.4, `${baseColor}, ${currentAlpha * 0.5})`);
-        gradient.addColorStop(0.7, `${baseColor}, ${currentAlpha * 0.15})`);
-        gradient.addColorStop(1, `${baseColor}, 0)`);
-
+        const grad = ctx.createLinearGradient(tx1, ty1, x, y);
+        grad.addColorStop(0, `rgba(120, 180, 255, 0)`);
+        grad.addColorStop(1, `rgba(120, 180, 255, ${sig.alpha * 0.3})`);
         ctx.beginPath();
-        ctx.arc(orb.x, orb.y, orb.radius, 0, Math.PI * 2);
-        ctx.fillStyle = gradient;
+        ctx.moveTo(tx1, ty1);
+        ctx.lineTo(x, y);
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        // Signal head
+        ctx.beginPath();
+        ctx.arc(x, y, 2, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(160, 210, 255, ${sig.alpha * 0.8})`;
         ctx.fill();
-      });
 
-      // Add an extremely subtle top-center light wash — like a distant light source
-      ctx.globalCompositeOperation = 'screen';
-      const topLight = ctx.createRadialGradient(
-        w * 0.5, h * -0.1, 0,
-        w * 0.5, h * -0.1, h * 0.8
-      );
-      topLight.addColorStop(0, 'hsla(220, 20%, 18%, 0.25)');
-      topLight.addColorStop(0.5, 'hsla(220, 15%, 10%, 0.08)');
-      topLight.addColorStop(1, 'transparent');
-      ctx.fillStyle = topLight;
-      ctx.fillRect(0, 0, w, h);
+        // Glow
+        const g = ctx.createRadialGradient(x, y, 0, x, y, 12);
+        g.addColorStop(0, `rgba(100, 170, 255, ${sig.alpha * 0.25})`);
+        g.addColorStop(1, 'transparent');
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(x, y, 12, 0, Math.PI * 2);
+        ctx.fill();
+      }
 
-      ctx.globalCompositeOperation = 'source-over';
+      // Draw nodes — static dots with subtle pulse
+      for (const n of nodes) {
+        const pulse = 0.3 + Math.sin(time * 0.001 + n.glow * 10) * 0.1;
+
+        // Outer glow ring
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.size * 3, 0, Math.PI * 2);
+        const ng = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.size * 3);
+        ng.addColorStop(0, `rgba(150, 200, 255, ${pulse * 0.15})`);
+        ng.addColorStop(1, 'transparent');
+        ctx.fillStyle = ng;
+        ctx.fill();
+
+        // Core
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(200, 220, 255, ${pulse})`;
+        ctx.fill();
+      }
 
       animRef.current = requestAnimationFrame(draw);
     };
@@ -149,14 +229,12 @@ export const AnimatedBackground = () => {
       cancelAnimationFrame(animRef.current);
       window.removeEventListener('resize', resize);
     };
-  }, [dpr]);
+  }, []);
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 w-full h-full"
-      />
+      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
+      <div className="absolute inset-0 noise" />
     </div>
   );
 };
