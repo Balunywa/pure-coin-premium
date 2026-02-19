@@ -21,7 +21,6 @@ export const Navbar = () => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
-
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -31,93 +30,73 @@ export const Navbar = () => {
   }, [location.pathname]);
 
   useEffect(() => {
-    // Lock body scroll when mobile menu is open
     if (isMobileMenuOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
     }
-
-    return () => {
-      document.body.style.overflow = '';
-    };
+    return () => { document.body.style.overflow = ''; };
   }, [isMobileMenuOpen]);
 
   return (
     <motion.header
-      initial={{ y: -20, opacity: 0 }}
+      initial={{ y: -10, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: [0.25, 0.4, 0.25, 1] }}
+      transition={{ duration: 0.4 }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled || isMobileMenuOpen
-          ? 'bg-background/80 backdrop-blur-xl border-b border-border/50'
-          : 'bg-transparent'
+          ? 'bg-background/95 backdrop-blur-md border-b border-border'
+          : 'bg-background border-b border-transparent'
       }`}
     >
       <nav className="section-container">
-        <div className="flex items-center justify-between h-16 md:h-20">
+        <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link
-            to="/"
-            className="flex items-center gap-2.5 text-foreground hover:opacity-80 transition-opacity relative group"
-          >
-            <img src={logo} alt="Pure Coin" className="w-7 h-7" />
+          <Link to="/" className="flex items-center gap-2.5 text-foreground hover:opacity-80 transition-opacity">
+            <img src={logo} alt="Pure Coin" className="w-6 h-6" />
             <span 
-              className="text-lg font-semibold tracking-[-0.02em]"
-              style={{
-                fontFamily: "'Space Grotesk', sans-serif",
-              }}
+              className="text-base font-semibold tracking-[-0.02em]"
+              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
             >
               Pure Coin
             </span>
           </Link>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Navigation - center */}
           <div className="hidden md:flex items-center gap-1">
             {navLinks.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
-                className={`px-4 py-2 text-sm font-medium transition-all rounded-lg relative ${
+                className={`px-4 py-2 text-sm font-medium transition-colors rounded-lg ${
                   location.pathname === link.path 
-                    ? 'text-foreground bg-card/50' 
-                    : 'text-muted-foreground hover:text-foreground hover:bg-card/30'
+                    ? 'text-foreground' 
+                    : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
                 {link.name}
-                {location.pathname === link.path && (
-                  <motion.div
-                    layoutId="activeNav"
-                    className="absolute inset-0 bg-card/50 rounded-lg -z-10"
-                    transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                  />
-                )}
               </Link>
             ))}
           </div>
 
           {/* Desktop CTA */}
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-3">
             <Button 
               asChild 
               size="sm" 
-              className="rounded-full px-6 bg-foreground text-background hover:bg-foreground/90 button-shine"
+              className="rounded-lg px-5 bg-foreground text-background hover:bg-foreground/90 text-sm font-medium"
             >
-              <Link to="/contact">Contact sales</Link>
+              <Link to="/contact">Contact us</Link>
             </Button>
           </div>
 
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden p-2 -mr-2 rounded-lg text-foreground hover:bg-card transition-colors"
+            className="md:hidden p-2 -mr-2 rounded-lg text-foreground hover:bg-muted transition-colors"
             aria-label="Toggle menu"
           >
-            {isMobileMenuOpen ? (
-              <X className="w-5 h-5" />
-            ) : (
-              <Menu className="w-5 h-5" />
-            )}
+            {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
       </nav>
@@ -129,16 +108,14 @@ export const Navbar = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3, ease: [0.25, 0.4, 0.25, 1] }}
-            className="md:hidden bg-background/95 backdrop-blur-xl border-b border-border/50 overflow-hidden"
+            transition={{ duration: 0.3 }}
+            className="md:hidden bg-background border-b border-border overflow-hidden"
           >
             <div className="section-container py-6 space-y-1">
               <Link
                 to="/"
                 className={`block py-3 px-4 rounded-lg text-base font-medium transition-colors ${
-                  location.pathname === '/' 
-                    ? 'bg-card text-foreground' 
-                    : 'text-muted-foreground hover:text-foreground hover:bg-card'
+                  location.pathname === '/' ? 'bg-muted text-foreground' : 'text-muted-foreground hover:text-foreground hover:bg-muted'
                 }`}
               >
                 Home
@@ -148,20 +125,15 @@ export const Navbar = () => {
                   key={link.path}
                   to={link.path}
                   className={`block py-3 px-4 rounded-lg text-base font-medium transition-colors ${
-                    location.pathname === link.path 
-                      ? 'bg-card text-foreground' 
-                      : 'text-muted-foreground hover:text-foreground hover:bg-card'
+                    location.pathname === link.path ? 'bg-muted text-foreground' : 'text-muted-foreground hover:text-foreground hover:bg-muted'
                   }`}
                 >
                   {link.name}
                 </Link>
               ))}
               <div className="pt-4">
-                <Button 
-                  asChild 
-                  className="w-full rounded-full bg-foreground text-background hover:bg-foreground/90 button-shine"
-                >
-                  <Link to="/contact">Contact sales</Link>
+                <Button asChild className="w-full rounded-lg bg-foreground text-background hover:bg-foreground/90">
+                  <Link to="/contact">Contact us</Link>
                 </Button>
               </div>
             </div>
