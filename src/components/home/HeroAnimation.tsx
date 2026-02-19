@@ -1,178 +1,202 @@
-import { motion } from 'framer-motion';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { Float, MeshTransmissionMaterial, Environment, ContactShadows } from '@react-three/drei';
+import { useRef, useMemo, Suspense } from 'react';
+import * as THREE from 'three';
 
-const FloatCard = ({ delay, children, y = 0 }: { delay: number; children: React.ReactNode; y?: number }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.8, delay, ease: [0.25, 0.4, 0.25, 1] }}
-  >
-    <motion.div
-      animate={{ y: [0, y - 8, 0] }}
-      transition={{ duration: 4 + delay, repeat: Infinity, ease: 'easeInOut' }}
-    >
-      {children}
-    </motion.div>
-  </motion.div>
+// Mouse-tracking camera rig
+const CameraRig = () => {
+  const { camera } = useThree();
+  const mouse = useRef({ x: 0, y: 0 });
+  const target = useRef({ x: 0, y: 0 });
+
+  useFrame(() => {
+    // Smooth lerp toward mouse
+    target.current.x += (mouse.current.x - target.current.x) * 0.05;
+    target.current.y += (mouse.current.y - target.current.y) * 0.05;
+    camera.position.x = THREE.MathUtils.lerp(camera.position.x, target.current.x * 0.8, 0.05);
+    camera.position.y = THREE.MathUtils.lerp(camera.position.y, target.current.y * 0.5 + 1.5, 0.05);
+    camera.lookAt(0, 0, 0);
+  });
+
+  // Update mouse position from pointer events on the canvas
+  useThree(({ gl }) => {
+    const handler = (e: PointerEvent) => {
+      const rect = gl.domElement.getBoundingClientRect();
+      mouse.current.x = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
+      mouse.current.y = -((e.clientY - rect.top) / rect.height - 0.5) * 2;
+    };
+    gl.domElement.addEventListener('pointermove', handler);
+    return () => gl.domElement.removeEventListener('pointermove', handler);
+  });
+
+  return null;
+};
+
+// Floating glass torus — the hero piece
+const GlassTorus = () => {
+  const ref = useRef<THREE.Mesh>(null);
+
+  useFrame(({ clock }) => {
+    if (ref.current) {
+      ref.current.rotation.x = Math.sin(clock.elapsedTime * 0.3) * 0.15;
+      ref.current.rotation.y = clock.elapsedTime * 0.15;
+    }
+  });
+
+  return (
+    <Float speed={1.5} rotationIntensity={0.3} floatIntensity={0.8}>
+      <mesh ref={ref} position={[0, 0.2, 0]}>
+        <torusGeometry args={[1.4, 0.45, 64, 128]} />
+        <MeshTransmissionMaterial
+          backside
+          samples={6}
+          thickness={0.2}
+          chromaticAberration={0.5}
+          anisotropy={0.2}
+          distortion={0.15}
+          distortionScale={0.3}
+          temporalDistortion={0.1}
+          ior={1.25}
+          color="#a78bfa"
+          roughness={0}
+          transmission={1}
+        />
+      </mesh>
+    </Float>
+  );
+};
+
+// Orbiting small spheres
+const OrbitingSpheres = () => {
+  const groupRef = useRef<THREE.Group>(null);
+
+  const spheres = useMemo(() => [
+    { radius: 2.2, speed: 0.4, size: 0.12, color: '#3b82f6', offset: 0 },
+    { radius: 2.5, speed: -0.3, size: 0.09, color: '#10b981', offset: Math.PI * 0.7 },
+    { radius: 1.9, speed: 0.5, size: 0.1, color: '#f59e0b', offset: Math.PI * 1.3 },
+    { radius: 2.8, speed: -0.2, size: 0.08, color: '#ef4444', offset: Math.PI * 0.4 },
+    { radius: 2.1, speed: 0.35, size: 0.11, color: '#8b5cf6', offset: Math.PI * 1.8 },
+  ], []);
+
+  useFrame(({ clock }) => {
+    if (!groupRef.current) return;
+    groupRef.current.children.forEach((child, i) => {
+      const s = spheres[i];
+      const t = clock.elapsedTime * s.speed + s.offset;
+      child.position.x = Math.cos(t) * s.radius;
+      child.position.z = Math.sin(t) * s.radius;
+      child.position.y = Math.sin(t * 1.5) * 0.4;
+    });
+  });
+
+  return (
+    <group ref={groupRef}>
+      {spheres.map((s, i) => (
+        <mesh key={i}>
+          <sphereGeometry args={[s.size, 24, 24]} />
+          <meshStandardMaterial color={s.color} emissive={s.color} emissiveIntensity={2} toneMapped={false} />
+        </mesh>
+      ))}
+    </group>
+  );
+};
+
+// Glowing ring particles
+const ParticleRing = () => {
+  const ref = useRef<THREE.Points>(null);
+
+  const [positions, colors] = useMemo(() => {
+    const count = 300;
+    const pos = new Float32Array(count * 3);
+    const col = new Float32Array(count * 3);
+    const palette = [
+      new THREE.Color('#8b5cf6'),
+      new THREE.Color('#3b82f6'),
+      new THREE.Color('#10b981'),
+    ];
+
+    for (let i = 0; i < count; i++) {
+      const angle = (i / count) * Math.PI * 2;
+      const radius = 2.6 + (Math.random() - 0.5) * 0.8;
+      pos[i * 3] = Math.cos(angle) * radius;
+      pos[i * 3 + 1] = (Math.random() - 0.5) * 0.6;
+      pos[i * 3 + 2] = Math.sin(angle) * radius;
+
+      const c = palette[Math.floor(Math.random() * palette.length)];
+      col[i * 3] = c.r;
+      col[i * 3 + 1] = c.g;
+      col[i * 3 + 2] = c.b;
+    }
+    return [pos, col];
+  }, []);
+
+  useFrame(({ clock }) => {
+    if (ref.current) {
+      ref.current.rotation.y = clock.elapsedTime * 0.08;
+    }
+  });
+
+  return (
+    <points ref={ref}>
+      <bufferGeometry>
+        <bufferAttribute attach="attributes-position" count={positions.length / 3} array={positions} itemSize={3} />
+        <bufferAttribute attach="attributes-color" count={colors.length / 3} array={colors} itemSize={3} />
+      </bufferGeometry>
+      <pointsMaterial size={0.03} vertexColors transparent opacity={0.7} sizeAttenuation depthWrite={false} />
+    </points>
+  );
+};
+
+// Ambient glow plane behind everything
+const GlowPlane = () => {
+  const ref = useRef<THREE.Mesh>(null);
+
+  useFrame(({ clock }) => {
+    if (ref.current) {
+      const mat = ref.current.material as THREE.MeshBasicMaterial;
+      mat.opacity = 0.12 + Math.sin(clock.elapsedTime * 0.5) * 0.04;
+    }
+  });
+
+  return (
+    <mesh ref={ref} position={[0, 0, -3]} rotation={[0, 0, 0]}>
+      <planeGeometry args={[12, 12]} />
+      <meshBasicMaterial color="#0a0a0a" transparent opacity={0.95} />
+    </mesh>
+  );
+};
+
+const Scene = () => (
+  <>
+    <CameraRig />
+    <ambientLight intensity={0.3} />
+    <pointLight position={[5, 5, 5]} intensity={1} color="#8b5cf6" />
+    <pointLight position={[-5, 3, -5]} intensity={0.6} color="#3b82f6" />
+    <spotLight position={[0, 8, 0]} intensity={0.8} angle={0.4} penumbra={0.8} color="#ffffff" />
+
+    <GlassTorus />
+    <OrbitingSpheres />
+    <ParticleRing />
+    <GlowPlane />
+
+    <ContactShadows position={[0, -1.8, 0]} opacity={0.4} scale={8} blur={2.5} far={4} color="#7c3aed" />
+    <Environment preset="night" />
+  </>
 );
 
 export const HeroAnimation = () => {
   return (
-    <div className="relative w-full max-w-[420px] aspect-square mx-auto">
-      {/* Central phone mockup */}
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
-        <FloatCard delay={0.3}>
-          <div className="w-[140px] bg-[#0A0A0A] border border-white/15 rounded-2xl p-2.5 shadow-[0_20px_60px_rgba(0,0,0,0.6)]">
-            <div className="w-14 h-1.5 bg-white/10 rounded-full mx-auto mb-2" />
-            <div className="space-y-2 px-0.5">
-              <div className="h-3 bg-white/10 rounded-full w-3/4" />
-              <div className="h-2 bg-white/5 rounded-full w-full" />
-              <div className="h-2 bg-white/5 rounded-full w-2/3" />
-              <div className="flex gap-1 mt-3">
-                <motion.div className="h-10 flex-1 bg-blue-500/20 border border-blue-500/30 rounded-lg"
-                  animate={{ opacity: [0.5, 1, 0.5] }} transition={{ duration: 3, repeat: Infinity }} />
-                <motion.div className="h-10 flex-1 bg-emerald-500/20 border border-emerald-500/30 rounded-lg"
-                  animate={{ opacity: [0.5, 1, 0.5] }} transition={{ duration: 3, repeat: Infinity, delay: 0.5 }} />
-              </div>
-              <motion.div className="h-5 bg-white/8 rounded-lg flex items-center justify-center"
-                animate={{ opacity: [0.3, 0.7, 0.3] }} transition={{ duration: 2, repeat: Infinity }}>
-                <div className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-              </motion.div>
-            </div>
-          </div>
-        </FloatCard>
-      </div>
-
-      {/* Code editor - top right */}
-      <div className="absolute right-[2%] top-[2%] z-20">
-        <FloatCard delay={0.6} y={-6}>
-          <div className="bg-[#0A0A0A] border border-white/10 rounded-xl p-3 w-[145px] shadow-[0_12px_40px_rgba(0,0,0,0.5)]">
-            <div className="flex items-center gap-1.5 mb-2">
-              <div className="w-2 h-2 rounded-full bg-red-400/60" />
-              <div className="w-2 h-2 rounded-full bg-yellow-400/60" />
-              <div className="w-2 h-2 rounded-full bg-green-400/60" />
-              <span className="text-[8px] text-white/30 ml-auto font-mono">app.tsx</span>
-            </div>
-            <div className="space-y-1.5 font-mono text-[8px]">
-              <div><span className="text-violet-400">const </span><span className="text-blue-300">pay</span><span className="text-white/40"> = </span><span className="text-emerald-400">async</span></div>
-              <motion.div animate={{ opacity: [0.4, 1, 0.4] }} transition={{ duration: 2, repeat: Infinity, delay: 0.3 }}>
-                <span className="text-white/20">{'  '}</span><span className="text-yellow-300">await </span><span className="text-blue-300">transfer</span><span className="text-white/40">()</span>
-              </motion.div>
-              <div><span className="text-white/20">{'  '}</span><span className="text-violet-400">return </span><span className="text-emerald-300">success</span></div>
-            </div>
-          </div>
-        </FloatCard>
-      </div>
-
-      {/* Design system - top left */}
-      <div className="absolute left-[2%] top-[5%] z-20">
-        <FloatCard delay={0.9} y={-10}>
-          <div className="bg-[#0A0A0A] border border-white/10 rounded-xl p-3 w-[125px] shadow-[0_12px_40px_rgba(0,0,0,0.5)]">
-            <div className="text-[8px] text-white/30 uppercase tracking-widest mb-2">Design System</div>
-            <div className="grid grid-cols-3 gap-1">
-              {['bg-blue-500/40', 'bg-violet-500/40', 'bg-emerald-500/40', 'bg-amber-500/40', 'bg-rose-500/40', 'bg-cyan-500/40'].map((color, i) => (
-                <motion.div key={i} className={`h-5 rounded ${color}`}
-                  animate={{ opacity: [0.4, 0.8, 0.4] }}
-                  transition={{ duration: 2, repeat: Infinity, delay: i * 0.2 }} />
-              ))}
-            </div>
-            <div className="mt-2 space-y-1">
-              <div className="h-1.5 bg-white/10 rounded-full w-full" />
-              <div className="h-1.5 bg-white/10 rounded-full w-2/3" />
-            </div>
-          </div>
-        </FloatCard>
-      </div>
-
-      {/* Performance - bottom right */}
-      <div className="absolute right-[2%] bottom-[5%] z-20">
-        <FloatCard delay={1.2} y={-5}>
-          <div className="bg-[#0A0A0A] border border-white/10 rounded-xl p-3 w-[140px] shadow-[0_12px_40px_rgba(0,0,0,0.5)]">
-            <div className="text-[8px] text-white/30 uppercase tracking-widest mb-2">Performance</div>
-            <div className="flex items-end gap-[3px] h-10">
-              {[40, 65, 45, 80, 60, 90, 75, 95].map((h, i) => (
-                <motion.div key={i} className="flex-1 bg-emerald-500/30 rounded-t"
-                  initial={{ height: 0 }}
-                  animate={{ height: `${h}%` }}
-                  transition={{ duration: 0.8, delay: 1.5 + i * 0.1, ease: 'easeOut' }} />
-              ))}
-            </div>
-            <div className="flex items-center justify-between mt-2">
-              <span className="text-[9px] text-emerald-400 font-mono">↑ 42%</span>
-              <span className="text-[8px] text-white/20">7d</span>
-            </div>
-          </div>
-        </FloatCard>
-      </div>
-
-      {/* Deployment - bottom left */}
-      <div className="absolute left-[2%] bottom-[8%] z-20">
-        <FloatCard delay={1.5} y={-7}>
-          <div className="bg-[#0A0A0A] border border-white/10 rounded-xl p-3 w-[130px] shadow-[0_12px_40px_rgba(0,0,0,0.5)]">
-            <div className="text-[8px] text-white/30 uppercase tracking-widest mb-2">Deployment</div>
-            <div className="space-y-2">
-              {[
-                { label: 'Build', done: true },
-                { label: 'Test', done: true },
-                { label: 'Deploy', done: false },
-              ].map((step, i) => (
-                <div key={i} className="flex items-center gap-2">
-                  {step.done ? (
-                    <motion.div className="w-3 h-3 rounded-full bg-emerald-500/40 border border-emerald-500/60 flex items-center justify-center"
-                      initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 2 + i * 0.3 }}>
-                      <div className="w-1 h-1 bg-emerald-400 rounded-full" />
-                    </motion.div>
-                  ) : (
-                    <motion.div className="w-3 h-3 rounded-full border border-blue-500/60"
-                      animate={{ borderColor: ['rgba(59,130,246,0.3)', 'rgba(59,130,246,0.8)', 'rgba(59,130,246,0.3)'] }}
-                      transition={{ duration: 1.5, repeat: Infinity }}>
-                      <motion.div className="w-full h-full rounded-full bg-blue-500/30"
-                        animate={{ scale: [0.5, 1, 0.5] }} transition={{ duration: 1.5, repeat: Infinity }} />
-                    </motion.div>
-                  )}
-                  <span className="text-[9px] text-white/50">{step.label}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </FloatCard>
-      </div>
-
-      {/* Connection lines via SVG */}
-      <svg className="absolute inset-0 w-full h-full z-0" viewBox="0 0 420 420" fill="none">
-        <defs>
-          <linearGradient id="lg1" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="white" stopOpacity="0" />
-            <stop offset="50%" stopColor="white" stopOpacity="0.12" />
-            <stop offset="100%" stopColor="white" stopOpacity="0" />
-          </linearGradient>
-        </defs>
-        <motion.path d="M 100 80 Q 210 40 330 70" stroke="url(#lg1)" strokeWidth="1" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.5, delay: 1 }} />
-        <motion.path d="M 330 70 Q 370 210 330 350" stroke="url(#lg1)" strokeWidth="1" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.5, delay: 1.2 }} />
-        <motion.path d="M 330 350 Q 210 390 100 350" stroke="url(#lg1)" strokeWidth="1" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.5, delay: 1.4 }} />
-        <motion.path d="M 100 350 Q 50 210 100 80" stroke="url(#lg1)" strokeWidth="1" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.5, delay: 1.6 }} />
-        {/* Lines to center */}
-        <motion.line x1="210" y1="170" x2="120" y2="100" stroke="url(#lg1)" strokeWidth="1" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, delay: 1.8 }} />
-        <motion.line x1="210" y1="170" x2="320" y2="90" stroke="url(#lg1)" strokeWidth="1" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, delay: 2 }} />
-        <motion.line x1="210" y1="260" x2="120" y2="340" stroke="url(#lg1)" strokeWidth="1" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, delay: 2.2 }} />
-        <motion.line x1="210" y1="260" x2="320" y2="340" stroke="url(#lg1)" strokeWidth="1" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, delay: 2.4 }} />
-        
-        {/* Pulsing nodes */}
-        {[[210, 170], [210, 260], [120, 100], [320, 90], [120, 340], [320, 340]].map(([cx, cy], i) => (
-          <motion.circle key={i} cx={cx} cy={cy} r="2.5" fill="white"
-            animate={{ opacity: [0.15, 0.5, 0.15] }}
-            transition={{ duration: 2, delay: 2 + i * 0.2, repeat: Infinity }} />
-        ))}
-      </svg>
-
-      {/* Floating particles */}
-      {Array.from({ length: 6 }).map((_, i) => (
-        <motion.div key={i}
-          className="absolute w-1 h-1 rounded-full bg-white/15"
-          style={{ left: `${20 + i * 12}%`, top: `${15 + (i % 3) * 25}%` }}
-          animate={{ y: [0, -15, 0], opacity: [0.1, 0.35, 0.1] }}
-          transition={{ duration: 3 + i * 0.5, repeat: Infinity, delay: i * 0.5, ease: 'easeInOut' }}
-        />
-      ))}
+    <div className="w-full h-[500px] lg:h-[600px]">
+      <Canvas
+        camera={{ position: [0, 1.5, 5.5], fov: 40 }}
+        dpr={[1, 1.5]}
+        gl={{ antialias: true, alpha: true }}
+        style={{ background: 'transparent' }}
+      >
+        <Suspense fallback={null}>
+          <Scene />
+        </Suspense>
+      </Canvas>
     </div>
   );
 };
