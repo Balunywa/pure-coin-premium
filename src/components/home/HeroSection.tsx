@@ -70,8 +70,8 @@ export const HeroSection = () => {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.3 }}
-            className="hidden lg:block relative"
+            transition={{ duration: 1.2, delay: 0.3 }}
+            className="hidden lg:flex items-center justify-center relative"
           >
             <HeroAnimation />
           </motion.div>
